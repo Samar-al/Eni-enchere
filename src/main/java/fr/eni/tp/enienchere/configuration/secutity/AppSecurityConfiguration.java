@@ -23,13 +23,13 @@ public class AppSecurityConfiguration {
             auth.anyRequest().permitAll();
 
         });
-        httpSecurity.formLogin(Customizer.withDefaults());
+      //  httpSecurity.formLogin(Customizer.withDefaults());
 
-     /*   httpSecurity.formLogin(form-> {
+        httpSecurity.formLogin(form-> {
             form.loginPage("/login").permitAll();
             form.defaultSuccessUrl("/encheres");
 
-        });*/
+        });
 
         httpSecurity.logout(logout -> logout
                 .invalidateHttpSession(true)
@@ -45,12 +45,13 @@ public class AppSecurityConfiguration {
 
     @Bean
     UserDetailsManager userDetailsManager(DataSource dataSource) {
-        String selectUserByPseudo = "SELECT username, email, password, 1 FROM USERS WHERE username = ? OR email = ?";
-       // String selectRoleByPseudo = "SELECT u.username, u.email, u.admin FROM  AS r INNER JOIN MEMBER AS m ON r.IS_ADMIN = m.admin WHERE m.pseudo = ?";
+        String selectUserByPseudo = "SELECT username, password, 1 FROM USERS WHERE username = ?";
+        String selectRolesByAdmin = "SELECT username, admin FROM USERS WHERE username = ?";
+
 
         JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
         jdbcUserDetailsManager.setUsersByUsernameQuery(selectUserByPseudo);
-     //   jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(selectRoleByPseudo);
+        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(selectRolesByAdmin);
 
         return jdbcUserDetailsManager;
     }

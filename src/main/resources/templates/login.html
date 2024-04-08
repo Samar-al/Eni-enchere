@@ -5,6 +5,23 @@
     <title>Title</title>
 </head>
 <body>
-    <h1>LOGIN</h1>
+<main class="center-main">
+    <div class="content">
+        <form th:action="@{/login}" method="POST">
+            <fieldset>
+                <legend th:text="#{login.legend}"></legend>
+                <div>
+                    <label for="username" class="form-label mt-4" th:text="#{login.email}"></label>
+                    <input type="text" class="form-control" name="username" id="username" aria-describedby="emailHelp" placeholder="Enter email">
+                </div>
+                <div>
+                    <label for="password" class="form-label mt-4" th:text="#{login.password}"></label>
+                    <input type="password" class="form-control" id="password" placeholder="Password" name="password" autocomplete="off">
+                </div>
+                <button type="submit" class="btn btn-primary" th:text="#{login.legend}"></button>
+            </fieldset>
+        </form>
+    </div>
+</main>
 </body>
 </html>
