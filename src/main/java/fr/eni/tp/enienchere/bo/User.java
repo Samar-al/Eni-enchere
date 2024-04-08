@@ -13,7 +13,7 @@ public class User {
     private String email;
     private String phone;
     private String street;
-    private long zipCode;
+    private String zipCode;
     private String city;
     private String password;
     private long credit;
@@ -92,11 +92,11 @@ public class User {
         this.street = street;
     }
 
-    public long getZipCode() {
+    public String getZipCode() {
         return zipCode;
     }
 
-    public void setZipCode(long zipCode) {
+    public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
     }
 
