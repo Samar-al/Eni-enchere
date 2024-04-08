@@ -14,6 +14,7 @@ public class User {
     private String phone;
     private String street;
     private long zipCode;
+    private String city;
     private String password;
     private long credit;
     private boolean admin;
@@ -97,6 +98,14 @@ public class User {
 
     public void setZipCode(long zipCode) {
         this.zipCode = zipCode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getPassword() {
