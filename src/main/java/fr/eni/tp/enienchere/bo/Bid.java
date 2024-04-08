@@ -3,21 +3,22 @@ package fr.eni.tp.enienchere.bo;
 import org.springframework.security.core.userdetails.User;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 public class Bid {
-    private Date bidDate;
+    private LocalDateTime bidDate;
     private BigDecimal bidAmount;
 
     private User user;
 
     private SoldItem soldItem;
 
-    public Date getBidDate() {
+    public LocalDateTime getBidDate() {
         return bidDate;
     }
 
-    public void setBidDate(Date bidDate) {
+    public void setBidDate(LocalDateTime bidDate) {
         this.bidDate = bidDate;
     }
 
