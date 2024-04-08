@@ -14,11 +14,11 @@ public class Bid {
 
     private SoldItem soldItem;
 
-    public Date getBidDate() {
+    public LocalDateTime getBidDate() {
         return bidDate;
     }
 
-    public void setBidDate(Date bidDate) {
+    public void setBidDate(LocalDateTime bidDate) {
         this.bidDate = bidDate;
     }
 
