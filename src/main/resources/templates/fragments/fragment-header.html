@@ -1,11 +1,11 @@
 <header xmlns:th="http://www.thymeleaf.org" th:fragment="frag-header">
     <nav class="navbar navbar-expand-lg bg-dark d-flex justify-content-between" data-bs-theme="dark">
         <div>
-            <a class="navbar-brand" href="#" th:text="#{header.nav.name}"></a>
+            <a th:href="@{/}" class="navbar-brand" th:text="#{header.nav.name}"></a>
         </div>
         <div>
-            <a class="navbar-brand" href="#" th:text="#{header.nav.signup}"></a>
-            <a class="navbar-brand" th:href="@{/login}" th:text="#{header.nav.login}"></a>
+            <a th:href="@{/inscription}" class="navbar-brand" th:text="#{header.nav.register}"></a>
+            <a th:href="@{/login}" class="navbar-brand"  th:text="#{header.nav.login}"></a>
         </div>
     </nav>
 </header>

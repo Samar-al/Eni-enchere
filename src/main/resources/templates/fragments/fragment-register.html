@@ -1,0 +1,49 @@
+<form
+        xmlns:th="http://www.thymeleaf.org"
+        th:fragment="frag-form-register(action)"
+        th:action="${action}"
+        th:method="POST"
+        class="d-flex flex-column gap-4">
+
+    <div class="d-flex flex-row gap-2 justify-content-center">
+        <div>
+            <label for="pseudo" class="form-label mt-4" th:text="#{frag-form-register.pseudo}"></label>
+            <input type="text" class="form-control" name="pseudo" id="pseudo">
+
+            <label for="firstname" class="form-label mt-4" th:text="#{frag-form-register.firstname}"></label>
+            <input type="text" class="form-control" name="firstname" id="firstname">
+
+            <label for="phone" class="form-label mt-4" th:text="#{frag-form-register.phone}"></label>
+            <input type="text" class="form-control" name="phone" id="phone">
+
+            <label for="zipcode" class="form-label mt-4" th:text="#{frag-form-register.zipcode}"></label>
+            <input type="text" class="form-control" name="zipcode" id="zipcode">
+
+            <label for="password" class="form-label mt-4" th:text="#{frag-form-register.password}"></label>
+            <input type="password" class="form-control" name="password" id="password">
+        </div>
+        <div>
+            <label for="lastname" class="form-label mt-4" th:text="#{frag-form-register.lastname}"></label>
+            <input type="text" class="form-control" name="lastname" id="lastname">
+
+            <label for="email" class="form-label mt-4" th:text="#{frag-form-register.email}"></label>
+            <input type="text" class="form-control" name="email" id="email">
+
+            <label for="street" class="form-label mt-4" th:text="#{frag-form-register.street}"></label>
+            <input type="text" class="form-control" name="street" id="street">
+
+            <label for="city" class="form-label mt-4" th:text="#{frag-form-register.city}"></label>
+            <input type="text" class="form-control" name="city" id="city">
+
+            <label for="confirmPassword" class="form-label mt-4" th:text="#{frag-form-register.confirmPassword}"></label>
+            <input type="password" class="form-control" name="confirmPassword" id="confirmPassword">
+        </div>
+    </div>
+    <div class="d-flex justify-content-center gap-4">
+        <button type="submit" class="btn btn-primary" th:text="#{frag-form-register.create}"></button>
+        <a th:href="@{/}">
+            <button type="button" class="btn btn-primary" th:text="#{frag-form-register.cancel}"></button>
+        </a>
+    </div>
+
+</form>
