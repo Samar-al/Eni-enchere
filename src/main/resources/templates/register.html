@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,4 +8,24 @@
 <body>
 
 </body>
+=======
+
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        th:replace="~{layout/layout :: layout(
+            pageContent=~{:: .main-content},
+            pageTitle=~{:: title}
+        )}"
+>
+
+<title th:text="#{register.title}"></title>
+
+<main class="main-content">
+    <h1 class="text-center" th:text="#{register.h1}"></h1>
+
+    <form th:replace="~{fragments/fragment-register :: frag-form-register('/inscription')}"></form>
+
+</main>
+
+>>>>>>> 565172949fefc64d6bc1156aafd9be6e4855cdbc
 </html>
