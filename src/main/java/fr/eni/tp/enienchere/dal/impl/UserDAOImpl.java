@@ -21,9 +21,6 @@ public class UserDAOImpl implements UserDAO {
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     public UserDAOImpl(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
@@ -45,10 +42,9 @@ public class UserDAOImpl implements UserDAO {
         namedParameters.addValue("street", user.getStreet());
         namedParameters.addValue("zip_code", user.getZipCode());
         namedParameters.addValue("city", user.getCity());
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        namedParameters.addValue("password", encodedPassword);
-        namedParameters.addValue("credit", 0);
-        namedParameters.addValue("admin", 0);
+        namedParameters.addValue("password", user.getPassword());
+        namedParameters.addValue("credit", user.getCredit());
+        namedParameters.addValue("admin", user.isAdmin());
 
         namedParameterJdbcTemplate.update(INSERT_USER,namedParameters);
     }

@@ -4,6 +4,7 @@ import fr.eni.tp.enienchere.bll.UserService;
 import fr.eni.tp.enienchere.bo.User;
 import fr.eni.tp.enienchere.dal.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +13,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserDAO userDAO;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public List<User> getAllUsers() {
         return userDAO.findAll();
@@ -19,6 +23,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setCredit(0);
+        user.setAdmin(false);
         userDAO.create(user);
     }
 }

@@ -8,14 +8,17 @@
         )}"
 >
 
+
 <title th:text="#{login.legend}"></title>
+
 
 <main class="main-content center-main">
     <div class="content d-flex justify-content-center">
        <div class="col-8 offset-2">
             <div th:if="${loginError}" class="alert alert-danger">
-						<span>
-							L'identifiant ou le mot de passe est incorrect
+
+						<span th:text="#{error.login}">
+
 						</span>
             </div>
             <form th:action="@{/login}" method="POST" class="d-flex flex-column gap-2">
@@ -32,7 +35,9 @@
                     <button type="submit" class="btn btn-primary" th:text="#{login.legend}"></button>
                 </div>
 
+
             </form>
+
        </div>
     </div>
 </main>
