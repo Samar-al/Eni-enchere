@@ -3,6 +3,7 @@ package fr.eni.tp.enienchere.bo;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ public class User {
 
     private long userNb;
     @NotEmpty
-    @Pattern(regexp = "^[a-zA-Z0-9]+$")
+    @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "{username.pattern}")
     private String username;
     @NotEmpty
     private String lastname;
@@ -21,11 +22,15 @@ public class User {
     @NotBlank
     private String email;
     @NotBlank
+    @Size(min=6, max=15, message="{Size.user.phone}")
     private String phone;
     private String street;
+    @Size(max=10, message="{Size.user.zipcode}")
     private String zipCode;
+    @Size(max=30, message="{Size.user.city}")
     private String city;
     @NotBlank
+    @NotEmpty
     private String password;
     private long credit = 0;
     private boolean admin = false;
