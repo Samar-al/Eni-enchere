@@ -7,31 +7,35 @@
         )}"
 >
 
-<main class="main-content">
+<main class="main-content gap-4">
     <div class="d-flex flex-row gap-2 justify-content-center">
         <div>
             <label for="username" class="form-label mt-4" th:text="#{frag-form-register.pseudo}"></label>
-            <input type="text" class="form-control" name="username" id="username">
+            <input type="text" class="form-control" name="username" id="username" disabled>
 
             <label for="lastname" class="form-label mt-4" th:text="#{frag-form-register.lastname}"></label>
-            <input type="text" class="form-control" name="lastname" id="lastname">
+            <input type="text" class="form-control" name="lastname" id="lastname" disabled>
 
             <label for="firstname" class="form-label mt-4" th:text="#{frag-form-register.firstname}"></label>
-            <input type="text" class="form-control" name="firstname" id="firstname">
+            <input type="text" class="form-control" name="firstname" id="firstname" disabled>
 
             <label for="phone" class="form-label mt-4" th:text="#{frag-form-register.phone}"></label>
-            <input type="text" class="form-control" name="phone" id="phone">
+            <input type="text" class="form-control" name="phone" id="phone" disabled>
 
             <label for="street" class="form-label mt-4" th:text="#{frag-form-register.street}"></label>
-            <input type="text" class="form-control" name="street" id="street">
+            <input type="text" class="form-control" name="street" id="street" disabled>
 
             <label for="zipCode" class="form-label mt-4" th:text="#{frag-form-register.zipcode}"></label>
-            <input type="text" class="form-control" name="zipCode" id="zipCode">
+            <input type="text" class="form-control" name="zipCode" id="zipCode" disabled>
 
             <label for="city" class="form-label mt-4" th:text="#{frag-form-register.city}"></label>
-            <input type="text" class="form-control" name="city" id="city">
-
+            <input type="text" class="form-control" name="city" id="city" disabled>
         </div>
+    </div>
+    <div class="d-flex justify-content-center">
+        <a href="#">
+            <button type="button" class="btn btn-primary">Modifier</button>
+        </a>
     </div>
 </main>
 </html>
