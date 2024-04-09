@@ -8,7 +8,6 @@
         )}"
 >
 
-
 <title th:text="#{login.legend}"></title>
 
 
@@ -17,9 +16,8 @@
        <div class="col-8 offset-2">
             <div th:if="${loginError}" class="alert alert-danger">
 
-						<span th:text="#{error.login}">
 
-						</span>
+						<span th:text="#{error.login}"></span>
             </div>
             <form th:action="@{/login}" method="POST" class="d-flex flex-column gap-2">
                 <h1 th:text="#{login.legend}" class="text-center"></h1>
@@ -36,8 +34,8 @@
                 </div>
 
 
-            </form>
 
+            </form>
        </div>
     </div>
 </main>
