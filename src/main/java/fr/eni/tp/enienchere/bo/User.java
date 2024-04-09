@@ -1,5 +1,10 @@
 package fr.eni.tp.enienchere.bo;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -7,17 +12,28 @@ import java.util.Objects;
 public class User {
 
     private long userNb;
+    @NotEmpty
+    @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "{username.pattern}")
     private String username;
+    @NotEmpty
     private String lastname;
+    @NotBlank
     private String firstname;
+    @NotBlank
     private String email;
+    @NotBlank
+    @Size(min=6, max=15, message="{Size.user.phone}")
     private String phone;
     private String street;
-    private long zipCode;
+    @Size(max=10, message="{Size.user.zipcode}")
+    private String zipCode;
+    @Size(max=30, message="{Size.user.city}")
     private String city;
+    @NotBlank
+    @NotEmpty
     private String password;
-    private long credit;
-    private boolean admin;
+    private long credit = 0;
+    private boolean admin = false;
 
     List<Bid> bids = new ArrayList<>();
 
@@ -92,11 +108,11 @@ public class User {
         this.street = street;
     }
 
-    public long getZipCode() {
+    public String getZipCode() {
         return zipCode;
     }
 
-    public void setZipCode(long zipCode) {
+    public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
     }
 
@@ -181,6 +197,8 @@ public class User {
                 ", phone='" + phone + '\'' +
                 ", street='" + street + '\'' +
                 ", zipCode=" + zipCode +
+                ", city=" + city +
+                ", password=" + password +
                 ", credit=" + credit +
                 ", admin=" + admin +
                 '}';

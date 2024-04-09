@@ -1,0 +1,7 @@
+<div
+        xmlns:th="http://www.thymeleaf.org"
+        th:fragment="frag-errors"
+        th:if="${#fields.hasErrors('*')}"
+>
+    <h2 class="error" th:text="#{frag-errors.h2}"></h2>
+</div>
