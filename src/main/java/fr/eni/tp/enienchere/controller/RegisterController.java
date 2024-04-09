@@ -40,7 +40,7 @@ public class RegisterController {
         }
         // en cas d'erreur
        /* model.addAttribute("roles", Role.values());*/
-        return "security/register";
+        return "register";
 
     }
 }
