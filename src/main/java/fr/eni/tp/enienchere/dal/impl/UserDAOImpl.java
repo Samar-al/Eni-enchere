@@ -43,8 +43,8 @@ public class UserDAOImpl implements UserDAO {
         namedParameters.addValue("zip_code", user.getZipCode());
         namedParameters.addValue("city", user.getCity());
         namedParameters.addValue("password", user.getPassword());
-        namedParameters.addValue("credit", 0);
-        namedParameters.addValue("admin", 0);
+        namedParameters.addValue("credit", user.getCredit());
+        namedParameters.addValue("admin", user.isAdmin());
 
         namedParameterJdbcTemplate.update(INSERT_USER,namedParameters);
     }
