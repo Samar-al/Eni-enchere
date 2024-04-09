@@ -7,9 +7,11 @@
         )}"
 >
 
-<title>Encheres</title>
+<title th:text="#{index.title.h1}"></title>
 
 <main class="main-content">
-    <h1 class="text-center">Liste des enchères</h1>
+    <h1 th:text="#{index.h1}" class="text-center"></h1>
+
+    <div th:replace="~{fragments/fragment-search :: frag-search}"></div>
 </main>
 </html>
