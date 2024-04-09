@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h1>Hello</h1>
-</body>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        th:replace="~{layout/layout :: layout(
+            pageContent=~{:: .main-content},
+            pageTitle=~{:: title}
+        )}"
+>
+
+<title>Encheres</title>
+
+<main class="main-content">
+    <h1 class="text-center">Liste des enchères</h1>
+</main>
 </html>
