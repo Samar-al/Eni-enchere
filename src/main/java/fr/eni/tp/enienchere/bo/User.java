@@ -192,6 +192,8 @@ public class User {
                 ", phone='" + phone + '\'' +
                 ", street='" + street + '\'' +
                 ", zipCode=" + zipCode +
+                ", city=" + city +
+                ", password=" + password +
                 ", credit=" + credit +
                 ", admin=" + admin +
                 '}';
