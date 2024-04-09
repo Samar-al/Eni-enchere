@@ -30,6 +30,7 @@ public class RegisterController {
     }
 
     @PostMapping(value = "/inscription")
+
     public String register(@Valid @ModelAttribute User user,
                            BindingResult bindingResult,
                            @RequestParam(name = "confirmPassword") String confirmPassword,

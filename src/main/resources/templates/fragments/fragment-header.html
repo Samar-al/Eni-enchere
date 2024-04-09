@@ -4,10 +4,10 @@
             <a th:href="@{/}" class="navbar-brand" th:text="#{header.nav.name}"></a>
         </div>
         <div>
-            <a class="navbar-brand" th:href="@{/inscription}" th:text="#{header.nav.register}"></a>
+            <a class="navbar-brand" th:if="${!#authorization.expression('isAuthenticated')}" th:href="@{/inscription}" th:text="#{header.nav.register}"></a>
+            <a class="memberConnect navbar-brand" th:if="${#authorization.expression('isAuthenticated')}" th:href="@{/encheres/informations}" th:text="#{register.h1}"></a>
             <a class="navbar-brand" th:if="${!#authorization.expression('isAuthenticated')}" th:href="@{/login}" th:text="#{header.nav.login}"></a>
             <a class="navbar-brand" th:if="${#authorization.expression('isAuthenticated')}" th:href="@{/logout}" th:text="#{header.nav.logout}"></a>
-
         </div>
     </nav>
 </header>
