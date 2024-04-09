@@ -1,27 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<main class="center-main">
-    <div class="content">
-        <form th:action="@{/login}" method="POST">
-            <fieldset>
-                <legend th:text="#{login.legend}"></legend>
-                <div>
-                    <label for="username" class="form-label mt-4" th:text="#{login.email}"></label>
-                    <input type="text" class="form-control" name="username" id="username" aria-describedby="emailHelp" placeholder="Enter email">
-                </div>
-                <div>
-                    <label for="password" class="form-label mt-4" th:text="#{login.password}"></label>
-                    <input type="password" class="form-control" id="password" placeholder="Password" name="password" autocomplete="off">
-                </div>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        th:replace="~{layout/layout :: layout(
+            pageContent=~{:: .main-content},
+            pageTitle=~{:: title}
+        )}"
+>
+
+<title>Se connecter</title>
+
+<main class="main-content center-main">
+    <div class="content d-flex justify-content-center">
+        <form th:action="@{/login}" method="POST" class="d-flex flex-column gap-2">
+            <h1 th:text="#{login.legend}" class="text-center"></h1>
+            <div>
+                <label for="username" class="form-label mt-4" th:text="#{login.email}"></label>
+                <input type="text" class="form-control" name="username" id="username" aria-describedby="emailHelp" placeholder="Email">
+            </div>
+            <div>
+                <label for="password" class="form-label mt-4" th:text="#{login.password}"></label>
+                <input type="password" class="form-control" id="password" placeholder="Mot de passe" name="password" autocomplete="off">
+            </div>
+            <div class="d-flex justify-content-center">
                 <button type="submit" class="btn btn-primary" th:text="#{login.legend}"></button>
-            </fieldset>
+            </div>
+
         </form>
     </div>
 </main>
-</body>
 </html>
