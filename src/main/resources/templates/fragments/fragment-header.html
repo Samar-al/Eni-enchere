@@ -5,7 +5,8 @@
         </div>
         <div>
             <a class="navbar-brand" href="#" th:text="#{header.nav.signup}"></a>
-            <a class="navbar-brand" th:href="@{/login}" th:text="#{header.nav.login}"></a>
+            <a class="navbar-brand" th:if="${!#authorization.expression('isAuthenticated')}" th:href="@{/login}" th:text="#{header.nav.login}"></a>
+            <a class="navbar-brand" th:if="${#authorization.expression('isAuthenticated')}" th:href="@{/logout}" th:text="#{header.nav.logout}"></a>
         </div>
     </nav>
 </header>
