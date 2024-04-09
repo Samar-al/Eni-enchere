@@ -14,6 +14,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class RegisterController {
@@ -23,14 +24,24 @@ public class RegisterController {
     private UserService userService;
     @GetMapping("/inscription")
     public String index(Model model) {
+        User user = new User();
+        model.addAttribute("user", user);
         return "register";
     }
 
     @PostMapping(value = "/inscription")
-    public String register(@Valid @ModelAttribute User user, BindingResult bindingResult, Model model) {
+
+    public String register(@Valid @ModelAttribute User user,
+                           BindingResult bindingResult,
+                           @RequestParam(name = "confirmPassword") String confirmPassword,
+                           Model model) {
+
         if(bindingResult.hasErrors()){
             return "register";
-        }else{
+        } else if(!user.getPassword().equals(confirmPassword)){
+            model.addAttribute("loginError", true);
+            return "register";
+        } else {
             try {
                 userService.addUser(user);
                 return "redirect:/login";
