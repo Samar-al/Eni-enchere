@@ -2,9 +2,12 @@ package fr.eni.tp.enienchere.dal.impl;
 
 import fr.eni.tp.enienchere.bo.User;
 import fr.eni.tp.enienchere.dal.UserDAO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,9 +15,14 @@ import java.util.List;
 public class UserDAOImpl implements UserDAO {
 
     private static final String SELECT_ALL = "SELECT u.lastname, u.firstname FROM USERS as u";
+    private static final String INSERT_USER = "INSERT INTO USERS (username, lastname, firstname, email, phone, street, zip_code, city, password, credit, admin) \n" +
+            "VALUES (:username, :lastname, :firstname, :email, :phone, :street, :zip_code, :city, :password, :credit, :admin);";
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public UserDAOImpl(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -24,5 +32,24 @@ public class UserDAOImpl implements UserDAO {
     public List<User> findAll() {
         List<User>users = jdbcTemplate.query(SELECT_ALL, new BeanPropertyRowMapper<>(User.class));
         return users;
+    }
+
+    @Override
+    public void create(User user) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("username", user.getUsername());
+        namedParameters.addValue("lastname", user.getLastname());
+        namedParameters.addValue("firstname", user.getFirstname());
+        namedParameters.addValue("email", user.getEmail());
+        namedParameters.addValue("phone", user.getPhone());
+        namedParameters.addValue("street", user.getStreet());
+        namedParameters.addValue("zip_code", user.getZipCode());
+        namedParameters.addValue("city", user.getCity());
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        namedParameters.addValue("password", encodedPassword);
+        namedParameters.addValue("credit", 0);
+        namedParameters.addValue("admin", 0);
+
+        namedParameterJdbcTemplate.update(INSERT_USER,namedParameters);
     }
 }

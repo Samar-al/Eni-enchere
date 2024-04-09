@@ -1,5 +1,9 @@
 package fr.eni.tp.enienchere.bo;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -7,14 +11,21 @@ import java.util.Objects;
 public class User {
 
     private long userNb;
+    @NotEmpty
+    @Pattern(regexp = "^[a-zA-Z0-9]+$")
     private String username;
+    @NotEmpty
     private String lastname;
+    @NotBlank
     private String firstname;
+    @NotBlank
     private String email;
+    @NotBlank
     private String phone;
     private String street;
     private String zipCode;
     private String city;
+    @NotBlank
     private String password;
     private long credit;
     private boolean admin;
