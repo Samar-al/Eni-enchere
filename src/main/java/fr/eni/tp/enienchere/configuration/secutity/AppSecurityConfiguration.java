@@ -39,7 +39,7 @@ public class AppSecurityConfiguration {
                 .clearAuthentication(true)
                 .deleteCookies("JSESSIONID")
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/")
+                .logoutSuccessUrl("/encheres/")
                 .permitAll()
         );
 

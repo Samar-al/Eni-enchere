@@ -4,8 +4,10 @@
             <a th:href="@{/}" class="navbar-brand" th:text="#{header.nav.name}"></a>
         </div>
         <div>
-            <a th:href="@{/inscription}" class="navbar-brand" th:text="#{header.nav.register}"></a>
-            <a th:href="@{/login}" class="navbar-brand"  th:text="#{header.nav.login}"></a>
+            <a class="navbar-brand" th:href="@{/register}" th:text="#{header.nav.signup}"></a>
+            <a class="navbar-brand" th:if="${!#authorization.expression('isAuthenticated')}" th:href="@{/login}" th:text="#{header.nav.login}"></a>
+            <a class="navbar-brand" th:if="${#authorization.expression('isAuthenticated')}" th:href="@{/logout}" th:text="#{header.nav.logout}"></a>
+
         </div>
     </nav>
 </header>
