@@ -27,4 +27,8 @@ public class UserController {
         return "index.html";
     }
 
+    @GetMapping(value="/informations")
+    public String displayUser(Model model) {
+        return "user/details.html";
+    }
 }

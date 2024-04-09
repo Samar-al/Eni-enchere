@@ -192,6 +192,7 @@ public class User {
                 ", phone='" + phone + '\'' +
                 ", street='" + street + '\'' +
                 ", zipCode=" + zipCode +
+                ", city=" + city +
                 ", credit=" + credit +
                 ", admin=" + admin +
                 '}';
