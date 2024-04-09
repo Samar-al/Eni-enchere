@@ -1,21 +1,18 @@
 <!DOCTYPE html>
 <html
         xmlns:th="http://www.thymeleaf.org"
-       <!-- th:fragment="layout-movie(pageContent, pageTitle, additionalCss)"-->
-        lang="en">
+        lang="en"
+        th:fragment="layout(pageContent, pageTitle)"
+>
 <head>
     <meta charset="UTF-8">
-   <!-- <title th:replace="${pageTitle} ?: ~{}"></title>-->
-  <!--  <link rel="stylesheet" th:href="@{/css/style.css}">-->
-  <!--  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">-->
-  <!--  <th:block th:replace="${additionalCss} ?: ~{}"></th:block>-->
+    <title th:replace="${pageTitle} ?: ~{}"></title>
+    <link th:href="@{/css/bootstrap.min-2.css}" rel="stylesheet">
 </head>
 <body>
-<!--
-<div th:replace="~{fragments/fragment-header :: frag-nav}"> </div>
+    <header th:replace="~{fragments/fragment-header :: frag-header}"></header>
 
-<main th:replace="${pageContent} ?: ~{}"></main>
+    <main th:replace="${pageContent} ?: ~{}"></main>
 
-<div th:replace="~{fragments/fragment-footer :: frag-footer}"> </div>-->
 </body>
 </html>
