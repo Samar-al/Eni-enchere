@@ -27,8 +27,8 @@ public class User {
     private String city;
     @NotBlank
     private String password;
-    private long credit;
-    private boolean admin;
+    private long credit = 0;
+    private boolean admin = false;
 
     List<Bid> bids = new ArrayList<>();
 
