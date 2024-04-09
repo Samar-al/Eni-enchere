@@ -2,12 +2,14 @@ package fr.eni.tp.enienchere.configuration.secutity;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
@@ -28,6 +30,7 @@ public class AppSecurityConfiguration {
         httpSecurity.formLogin(form-> {
             form.loginPage("/login").permitAll();
             form.defaultSuccessUrl("/encheres/");
+            form.failureUrl("/login-error");
 
         });
 
@@ -54,5 +57,10 @@ public class AppSecurityConfiguration {
         jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(selectRolesByAdmin);
 
         return jdbcUserDetailsManager;
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

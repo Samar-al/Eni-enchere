@@ -11,8 +11,14 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     @Autowired
     UserDAO userDAO;
+
     @Override
     public List<User> getAllUsers() {
         return userDAO.findAll();
+    }
+
+    @Override
+    public void addUser(User user) {
+        userDAO.create(user);
     }
 }

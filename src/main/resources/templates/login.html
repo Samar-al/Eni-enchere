@@ -7,6 +7,12 @@
 <body>
 <main class="center-main">
     <div class="content">
+        <div class="col-8 offset-2">
+            <div th:if="${loginError}" class="alert alert-danger">
+						<span>
+							L'username ou mot de passe est incorrect
+						</span>
+            </div>
         <form th:action="@{/login}" method="POST">
             <fieldset>
                 <legend th:text="#{login.legend}"></legend>
