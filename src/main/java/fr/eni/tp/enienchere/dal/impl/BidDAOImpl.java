@@ -1,13 +1,24 @@
 package fr.eni.tp.enienchere.dal.impl;
 
 import fr.eni.tp.enienchere.bo.Bid;
+import fr.eni.tp.enienchere.bo.Category;
+import fr.eni.tp.enienchere.bo.SoldItem;
+import fr.eni.tp.enienchere.bo.User;
 import fr.eni.tp.enienchere.dal.BidDAO;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
-
+@Repository
 public class BidDAOImpl implements BidDAO {
+
+    private static final String SELECT_ALL = "SELECT b.bid_date, b.bid_amount, s.user_nb, s.item_nb, s.item_name, s.description, s.start_bid_date, s.end_bid_date, s.initial_price, c.wording, u.user_nb, u.username FROM BIDS as b LEFT JOIN SOLD_ITEMS as s ON b.item_nb = s.item_nb LEFT JOIN  CATEGORY AS c ON s.category_nb = c.category_nb LEFT JOIN USERS as u ON s.user_nb = u.user_nb";
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -18,6 +29,45 @@ public class BidDAOImpl implements BidDAO {
     }
     @Override
     public List<Bid> findAll() {
-        return null;
+        List<Bid>bids = jdbcTemplate.query(SELECT_ALL, new BidRowMapper());
+        return bids;
+    }
+
+    public class BidRowMapper implements RowMapper<Bid> {
+
+        @Override
+        public Bid mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+            Bid bid = new Bid();
+            bid.setBidDate(toLocalDateTime(rs.getTimestamp("b.bid_date")));
+            bid.setBidAmount(rs.getBigDecimal("b.bid_amount"));
+
+            SoldItem soldItem = new SoldItem();
+            soldItem.setItemNb(rs.getInt("s.item_nb"));
+            soldItem.setItemName(rs.getString("s.item_name"));
+            soldItem.setDescription(rs.getString("s.description"));
+            soldItem.setDateStartBid(rs.getDate("s.start_bid_date"));
+            soldItem.setDateEndBid(rs.getDate("s.end_bid_date"));
+            soldItem.setInitialPrice(rs.getInt("s.initial_price"));
+
+
+            Category category = new Category();
+            category.setWording(rs.getString("c.wording"));
+            soldItem.setCategory(category);
+
+
+            User user = new User();
+            user.setUserNb(rs.getInt("s.user_nb"));
+            user.setUsername(rs.getString("u.username"));
+            soldItem.setSoldUser(user);
+            bid.setSoldItem(soldItem);
+            return bid;
+
+
+        }
+
+        private LocalDateTime toLocalDateTime(java.sql.Timestamp timestamp) {
+            return timestamp != null ? timestamp.toLocalDateTime() : null;
+        }
     }
 }
