@@ -10,9 +10,11 @@
 <title>Mon profil</title>
 <main class="main-content">
     <h1 class="text-center">Mon profil</h1>
-    <form action="#" method="post">
+    <form th:action="${'/encheres/profil'}" th:method="post">
         <div class="d-flex flex-row gap-2 justify-content-center">
             <div>
+                <input type="hidden" class="form-control" name="userNb" id="userNb" th:value="${user.userNb}">
+
                 <label for="username" class="form-label mt-4">Pseudo</label>
                 <input type="text" class="form-control" name="username" id="username" th:value="${user.username}">
 
@@ -24,12 +26,6 @@
 
                 <label for="zipCode" class="form-label mt-4" th:text="#{frag-form-register.zipcode}"></label>
                 <input type="text" class="form-control" name="zipCode" id="zipCode" th:value="${user.zipCode}">
-
-                <label for="password" class="form-label mt-4">Mot de passe actuel</label>
-                <input type="password" class="form-control" name="password" id="password" required>
-
-                <label for="newPassword" class="form-label mt-4">Nouveau mot de passe</label>
-                <input type="password" class="form-control" name="newPassword" id="newPassword" required>
 
                 <label for="credit" class="form-label mt-4">Crédit : </label>
                 <input type="text" class="form-control" name="credit" id="credit" th:value="${user.credit}" disabled>
@@ -46,9 +42,6 @@
 
                 <label for="city" class="form-label mt-4" th:text="#{frag-form-register.city}"></label>
                 <input type="text" class="form-control" name="city" id="city" th:value="${user.city}">
-
-                <label for="confirmPassword" class="form-label mt-4" th:text="#{frag-form-register.confirmPassword}"></label>
-                <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" required>
 
             </div>
         </div>
