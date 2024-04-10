@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        th:replace="~{layout/layout :: layout(
+            pageContent=~{:: .main-content},
+            pageTitle=~{:: title}
+        )}"
+        th:object=""
+>
+<title>Mon profil</title>
+<main class="main-content">
+    <h1 class="text-center">Mon profil</h1>
+    <form action="#" method="post">
+        <div class="d-flex flex-row gap-2 justify-content-center">
+            <div>
+                <label for="username" class="form-label mt-4">Pseudo</label>
+                <input type="text" class="form-control" name="username" id="username" th:value="${user.username}">
+
+                <label for="firstname" class="form-label mt-4" th:text="#{frag-form-register.firstname}" ></label>
+                <input type="text" class="form-control" name="firstname" id="firstname" th:value="${user.firstname}">
+
+                <label for="phone" class="form-label mt-4" th:text="#{frag-form-register.phone}"></label>
+                <input type="text" class="form-control" name="phone" id="phone" th:value="${user.phone}">
+
+                <label for="zipCode" class="form-label mt-4" th:text="#{frag-form-register.zipcode}"></label>
+                <input type="text" class="form-control" name="zipCode" id="zipCode" th:value="${user.zipCode}">
+
+                <label for="password" class="form-label mt-4">Mot de passe actuel</label>
+                <input type="password" class="form-control" name="password" id="password" required>
+
+                <label for="newPassword" class="form-label mt-4">Nouveau mot de passe</label>
+                <input type="password" class="form-control" name="newPassword" id="newPassword" required>
+
+                <label for="credit" class="form-label mt-4">Crédit : </label>
+                <input type="text" class="form-control" name="credit" id="credit" th:value="${user.credit}" disabled>
+            </div>
+            <div>
+                <label for="lastname" class="form-label mt-4" th:text="#{frag-form-register.lastname}"></label>
+                <input type="text" class="form-control" name="lastname" id="lastname" th:value="${user.lastname}">
+
+                <label for="email" class="form-label mt-4" th:text="#{frag-form-register.email}"></label>
+                <input type="text" class="form-control" name="email" id="email" th:value="${user.email}">
+
+                <label for="street" class="form-label mt-4" th:text="#{frag-form-register.street}"></label>
+                <input type="text" class="form-control" name="street" id="street" th:value="${user.street}">
+
+                <label for="city" class="form-label mt-4" th:text="#{frag-form-register.city}"></label>
+                <input type="text" class="form-control" name="city" id="city" th:value="${user.city}">
+
+                <label for="confirmPassword" class="form-label mt-4" th:text="#{frag-form-register.confirmPassword}"></label>
+                <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" required>
+
+            </div>
+        </div>
+        <div class="d-flex justify-content-center gap-4">
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+
+            <button type="button" class="btn btn-primary">Supprimer mon compte</button>
+        </div>
+    </form>
+</main>
+</html>

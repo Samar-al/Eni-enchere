@@ -28,4 +28,12 @@ public class UserServiceImpl implements UserService {
         user.setAdmin(false);
         userDAO.create(user);
     }
+
+    public User getUserById(long userId) {
+        return userDAO.read(userId);
+    }
+
+    public User getUserByUsername(String username) {
+        return userDAO.read(username);
+    }
 }
