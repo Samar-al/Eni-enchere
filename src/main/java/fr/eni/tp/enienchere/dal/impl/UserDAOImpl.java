@@ -1,5 +1,6 @@
 package fr.eni.tp.enienchere.dal.impl;
 
+import fr.eni.tp.enienchere.bo.Category;
 import fr.eni.tp.enienchere.bo.User;
 import fr.eni.tp.enienchere.dal.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class UserDAOImpl implements UserDAO {
     private static final String SELECT_ALL = "SELECT u.lastname, u.firstname FROM USERS as u";
     private static final String INSERT_USER = "INSERT INTO USERS (username, lastname, firstname, email, phone, street, zip_code, city, password, credit, admin) \n" +
             "VALUES (:username, :lastname, :firstname, :email, :phone, :street, :zip_code, :city, :password, :credit, :admin);";
-
+    private static final String SELECT_BY_USERNAME= "SELECT * FROM USERS WHERE username = :username";
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -47,5 +48,18 @@ public class UserDAOImpl implements UserDAO {
         namedParameters.addValue("admin", user.isAdmin());
 
         namedParameterJdbcTemplate.update(INSERT_USER,namedParameters);
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("username", username);
+        User user = namedParameterJdbcTemplate.queryForObject(
+                SELECT_BY_USERNAME,
+                namedParameters,
+                new BeanPropertyRowMapper<>(User.class)
+        );
+
+        return user;
     }
 }
