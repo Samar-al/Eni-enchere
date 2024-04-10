@@ -30,11 +30,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-
     public User getUser(String username) {
 
         return userDAO.findByUsername(username);
-
+    }
     public void updateUser(User user) {
         userDAO.update(user);
     }

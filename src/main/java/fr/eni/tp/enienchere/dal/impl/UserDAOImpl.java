@@ -19,9 +19,9 @@ public class UserDAOImpl implements UserDAO {
     private static final String INSERT_USER = "INSERT INTO USERS (username, lastname, firstname, email, phone, street, zip_code, city, password, credit, admin) \n" +
             "VALUES (:username, :lastname, :firstname, :email, :phone, :street, :zip_code, :city, :password, :credit, :admin);";
 
-    private static final String SELECT_BY_ID = "SELECT user_nb, username, lastname, firstname, email, phone, street, zip_code, city FROM users WHERE user_nb = :userId;";
-    private static final String SELECT_BY_USERNAME = "SELECT user_nb, username, lastname, firstname, email, phone, street, zip_code, city FROM users WHERE username = :username;";
-    private static final String UPDATE_USER = "UPDATE users SET username = :username, lastname = :lastname, email = :email, phone = :phone, street = :street, zip_code = :zip_code, city = :city WHERE user_nb = :userId;";
+    private static final String SELECT_BY_ID = "SELECT user_nb, username, lastname, firstname, email, phone, street, zip_code, city FROM USERS WHERE user_nb = :userId;";
+    private static final String SELECT_BY_USERNAME = "SELECT user_nb, username, lastname, firstname, email, phone, street, zip_code, city, credit, admin FROM USERS WHERE username = :username;";
+    private static final String UPDATE_USER = "UPDATE USERS SET username = :username, lastname = :lastname, email = :email, phone = :phone, street = :street, zip_code = :zip_code, city = :city WHERE user_nb = :userId;";
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -64,7 +64,8 @@ public class UserDAOImpl implements UserDAO {
                 namedParameters,
                 new BeanPropertyRowMapper<>(User.class)
         );
-
+        return user;
+    }
 
     public void update(User user) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
