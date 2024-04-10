@@ -28,4 +28,19 @@ public class UserServiceImpl implements UserService {
         user.setAdmin(false);
         userDAO.create(user);
     }
+
+    @Override
+    public void updateUser(User user) {
+        userDAO.update(user);
+    }
+
+    @Override
+    public User getUserById(long userId) {
+        return userDAO.read(userId);
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        return userDAO.read(username);
+    }
 }
