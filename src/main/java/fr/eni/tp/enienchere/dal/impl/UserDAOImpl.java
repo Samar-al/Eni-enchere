@@ -1,5 +1,6 @@
 package fr.eni.tp.enienchere.dal.impl;
 
+import fr.eni.tp.enienchere.bo.Category;
 import fr.eni.tp.enienchere.bo.User;
 import fr.eni.tp.enienchere.dal.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ public class UserDAOImpl implements UserDAO {
     private static final String SELECT_ALL = "SELECT u.lastname, u.firstname FROM USERS as u";
     private static final String INSERT_USER = "INSERT INTO USERS (username, lastname, firstname, email, phone, street, zip_code, city, password, credit, admin) \n" +
             "VALUES (:username, :lastname, :firstname, :email, :phone, :street, :zip_code, :city, :password, :credit, :admin);";
+
     private static final String SELECT_BY_ID = "SELECT user_nb, username, lastname, firstname, email, phone, street, zip_code, city FROM users WHERE user_nb = :userId;";
     private static final String SELECT_BY_USERNAME = "SELECT user_nb, username, lastname, firstname, email, phone, street, zip_code, city FROM users WHERE username = :username;";
     private static final String UPDATE_USER = "UPDATE users SET username = :username, lastname = :lastname, email = :email, phone = :phone, street = :street, zip_code = :zip_code, city = :city WHERE user_nb = :userId;";
@@ -53,6 +55,17 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
+
+    public User findByUsername(String username) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("username", username);
+        User user = namedParameterJdbcTemplate.queryForObject(
+                SELECT_BY_USERNAME,
+                namedParameters,
+                new BeanPropertyRowMapper<>(User.class)
+        );
+
+
     public void update(User user) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("username", user.getUsername());
@@ -81,6 +94,7 @@ public class UserDAOImpl implements UserDAO {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("username", username);
         User user = namedParameterJdbcTemplate.queryForObject(SELECT_BY_USERNAME, namedParameters, new BeanPropertyRowMapper<>(User.class));
+
         return user;
     }
 }

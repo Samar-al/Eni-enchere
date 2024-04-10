@@ -1,5 +1,7 @@
 package fr.eni.tp.enienchere.bo;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -9,11 +11,13 @@ public class SoldItem implements Serializable {
     private long itemNb;
     private String itemName;
     private String description;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateStartBid;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateEndBid;
     private int initialPrice;
     private int salePrice;
-    private boolean saleStatus;
+    private int saleStatus;
 
     private User soldUser;
     private User boughtUser;
@@ -23,7 +27,7 @@ public class SoldItem implements Serializable {
 
     public SoldItem() {}
 
-    public SoldItem(long itemNb, String itemName, String description, Date dateStartBid, Date dateEndBid, int initialPrice, int salePrice, boolean saleStatus) {
+    public SoldItem(long itemNb, String itemName, String description, Date dateStartBid, Date dateEndBid, int initialPrice, int salePrice, int saleStatus) {
         this.itemNb = itemNb;
         this.itemName = itemName;
         this.description = description;
@@ -90,11 +94,11 @@ public class SoldItem implements Serializable {
         this.salePrice = salePrice;
     }
 
-    public boolean isSaleStatus() {
+    public int getSaleStatus() {
         return saleStatus;
     }
 
-    public void setSaleStatus(boolean saleStatus) {
+    public void setSaleStatus(int saleStatus) {
         this.saleStatus = saleStatus;
     }
 
