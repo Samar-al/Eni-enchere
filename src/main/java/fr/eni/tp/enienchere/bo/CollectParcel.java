@@ -1,10 +1,11 @@
 package fr.eni.tp.enienchere.bo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class CollectParcel {
+public class CollectParcel implements Serializable {
     private String street;
     private String zipCode;
     private String city;

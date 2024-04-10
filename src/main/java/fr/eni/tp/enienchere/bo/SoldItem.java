@@ -1,10 +1,11 @@
 package fr.eni.tp.enienchere.bo;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class SoldItem {
+public class SoldItem implements Serializable {
     private long itemNb;
     private String itemName;
     private String description;
@@ -12,7 +13,7 @@ public class SoldItem {
     private Date dateEndBid;
     private int initialPrice;
     private int salePrice;
-    private int saleStatus;
+    private boolean saleStatus;
 
     private User soldUser;
     private User boughtUser;
@@ -22,7 +23,7 @@ public class SoldItem {
 
     public SoldItem() {}
 
-    public SoldItem(long itemNb, String itemName, String description, Date dateStartBid, Date dateEndBid, int initialPrice, int salePrice, int saleStatus) {
+    public SoldItem(long itemNb, String itemName, String description, Date dateStartBid, Date dateEndBid, int initialPrice, int salePrice, boolean saleStatus) {
         this.itemNb = itemNb;
         this.itemName = itemName;
         this.description = description;
@@ -89,11 +90,11 @@ public class SoldItem {
         this.salePrice = salePrice;
     }
 
-    public int getSaleStatus() {
+    public boolean isSaleStatus() {
         return saleStatus;
     }
 
-    public void setSaleStatus(int saleStatus) {
+    public void setSaleStatus(boolean saleStatus) {
         this.saleStatus = saleStatus;
     }
 
@@ -164,6 +165,11 @@ public class SoldItem {
                 ", initialPrice=" + initialPrice +
                 ", salePrice=" + salePrice +
                 ", saleStatus=" + saleStatus +
+                ", soldUser=" + soldUser +
+                ", boughtUser=" + boughtUser +
+                ", bids=" + bids +
+                ", category=" + category +
+                ", collectParcel=" + collectParcel +
                 '}';
     }
 }

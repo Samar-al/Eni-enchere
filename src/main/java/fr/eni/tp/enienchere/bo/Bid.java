@@ -2,11 +2,12 @@ package fr.eni.tp.enienchere.bo;
 
 import org.springframework.security.core.userdetails.User;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 
-public class Bid {
+public class Bid implements Serializable {
     private LocalDateTime bidDate;
     private BigDecimal bidAmount;
 
@@ -52,6 +53,7 @@ public class Bid {
                 "bidDate=" + bidDate +
                 ", bidAmount=" + bidAmount +
                 ", user=" + user +
+                ", soldItem=" + soldItem +
                 '}';
     }
 }

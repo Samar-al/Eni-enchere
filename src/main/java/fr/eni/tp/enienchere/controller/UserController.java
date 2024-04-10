@@ -23,7 +23,6 @@ public class UserController {
     public String displayUsers(Model model) {
         List<User> users = userService.getAllUsers();
         model.addAttribute(users);
-        System.out.println(users);
         return "index.html";
     }
 
