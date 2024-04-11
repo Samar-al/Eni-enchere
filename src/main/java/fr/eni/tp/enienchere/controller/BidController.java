@@ -19,10 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.text.ParseException;
@@ -34,6 +31,7 @@ import java.util.List;
 import static java.sql.Types.NULL;
 
 @Controller
+@RequestMapping(value = "/encheres")
 @SessionAttributes({"categorySession"})
 public class BidController {
 
@@ -47,9 +45,6 @@ public class BidController {
         this.categoryService = categoryService;
         this.userService = userService;
     }
-
-    @Autowired
-    CategoryService categoryService;
 
     @GetMapping(value = "/")
     public String displayAllBids(Model model) {
@@ -105,7 +100,6 @@ public class BidController {
                         *//*   bidService.updateBid(bid, loggedUser);*//*
                     } else {*/
                         // Create new movie
-                    System.out.println(bid);
                     bidService.createBid(bid, currentUserName);
 
 

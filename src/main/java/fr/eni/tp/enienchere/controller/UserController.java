@@ -23,12 +23,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(value = "/")
+  /*  @GetMapping(value = "/")
     public String displayUsers(Model model) {
         List<User> users = userService.getAllUsers();
         model.addAttribute(users);
         return "index.html";
-    }
+    }*/
 
     @GetMapping(value="/informations")
     public String displayUser(
