@@ -52,7 +52,6 @@ public class BidController {
         List<Category> categories = categoryService.getAllCategory();
         model.addAttribute("bids", bids);
         model.addAttribute("categories", categories);
-        System.out.println(categories);
         return "index.html";
     }
 

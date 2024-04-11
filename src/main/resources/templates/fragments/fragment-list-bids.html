@@ -9,7 +9,11 @@
             <p class="lead text-light text-decoration-underline fw-normal" th:text="${bid.soldItem.itemName}"></p>
             <p class="lead text-light">Prix : <span th:text="${bid.soldItem.initialPrice}"></span></p>
             <p class="lead text-light">Fin de l'enchère : <span th:text="${bid.soldItem.dateEndBid}"></span></p>
-            <p class="lead text-light">Vendeur : <span th:text="${bid.soldItem.soldUser.username}"></span></p>
+            <p class="lead text-light">Vendeur :
+                <a th:href="@{/encheres/informations/vendeur(userId=${bid.soldItem.soldUser.userNb})}" class="text-decoration-none text-light">
+                    <span th:text="${bid.soldItem.soldUser.username}"></span>
+                </a>
+            </p>
         </div>
     </div>
 </div>
