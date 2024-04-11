@@ -1,9 +1,10 @@
 <form
         xmlns:th="http://www.thymeleaf.org"
-        th:fragment="frag-form-bid-Creation(action)"
+        th:fragment="frag-form-soldItem-Creation(action)"
         th:action="${action}"
-        th:object="${bid}"
+        th:object="${soldItem}"
         th:method="POST"
+        enctype="multipart/form-data"
         class="d-flex flex-column gap-4">
     <div th:replace="~{fragments/fragment-errors :: frag-errors}"></div>
     <p class="error" th:each="error : ${#fields.errors('global')}" th:text="#{${error}}"></p>
@@ -16,16 +17,16 @@
                 <img alt="" th:src="@{/images/add-item_25362.png}" width="200rem">
             </div>
             <label for="itemName" class="form-label mt-4"  th:text="#{frag-form-bid.itemName}"></label>
-            <input type="text" class="form-control" name="itemName" id="itemName" th:field="*{soldItem.itemName}" required>
+            <input type="text" class="form-control" name="itemName" id="itemName" th:field="*{itemName}" required>
             <br>
-            <div th:replace="~{fragments/fragment-error :: frag-error('soldItem.itemName')}"></div>
+            <div th:replace="~{fragments/fragment-error :: frag-error('itemName')}"></div>
 
              <label for="description" class="form-label mt-4" th:text="#{frag-form-bid.description}"></label>
-                <input type="text" class="form-control" name="description" id="description" th:field="*{soldItem.description}">
+                <input type="text" class="form-control" name="description" id="description" th:field="*{description}">
                 <br>
-                <div th:replace="~{fragments/fragment-error :: frag-error('soldItem.description')}"></div>
+                <div th:replace="~{fragments/fragment-error :: frag-error('description')}"></div>
                <label class="form-label mt-4" for="category" th:text="#{frag-form-bid.category}"></label>
-                <select class="form-select" name="category" id="category" th:field="*{soldItem.category.categoryNb}" >
+                <select class="form-select" name="category" id="category" th:field="*{category.categoryNb}" >
                     <option
                             th:each="category :${categorySession}"
                             th:value="${category.categoryNb}"
@@ -33,40 +34,44 @@
 
                     ></option>
                 </select>
-             <div th:replace="~{fragments/fragment-error :: frag-error('soldItem.category')}"></div>
+             <div th:replace="~{fragments/fragment-error :: frag-error('category')}"></div>
+
+            <label for="picture" class="form-label mt-4" th:text="#{frag-form-bid.picture}"></label>
+            <input type="file" class="form-control" name="picture" id="picture">
+            <br>
 
                 <label for="initialPrice" class="form-label mt-4" th:text="#{frag-form-bid.amount}"></label>
-             <input type="number"  pattern="^\d+(.\d{1,2})?€" class="form-control" name="initialPrice" id="initialPrice" th:field="*{soldItem.initialPrice}">
+             <input type="number"  pattern="^\d+(.\d{1,2})?€" class="form-control" name="initialPrice" id="initialPrice" th:field="*{initialPrice}">
              <br>
-             <div th:replace="~{fragments/fragment-error :: frag-error('soldItem.initialPrice')}"></div>
+             <div th:replace="~{fragments/fragment-error :: frag-error('initialPrice')}"></div>
 
              <label for="dateStartBid" class="form-label mt-4" th:text="#{frag-form-bid.startbid}"></label>
-             <input type="date" class="form-control" name="dateStartBid" id="dateStartBid" th:field="*{soldItem.dateStartBid}" pattern="\d{4}-\d{2}-\d{2}" placeholder="yyyy-MM-dd">
+             <input type="date" class="form-control" name="dateStartBid" id="dateStartBid" th:field="*{dateStartBid}" pattern="\d{4}-\d{2}-\d{2}" placeholder="yyyy-MM-dd">
              <br>
-             <div th:replace="~{fragments/fragment-error :: frag-error('soldItem.dateStartBid')}"></div>
+             <div th:replace="~{fragments/fragment-error :: frag-error('dateStartBid')}"></div>
 
              <label for="dateEndBid" class="form-label mt-4" th:text="#{frag-form-bid.endBId}"></label>
-             <input type="date" class="form-control" name="dateEndBid" id="dateEndBid" th:field="*{soldItem.dateEndBid}" required pattern="\d{4}-\d{2}-\d{2}" placeholder="yyyy-MM-dd">
+             <input type="date" class="form-control" name="dateEndBid" id="dateEndBid" th:field="*{dateEndBid}" required pattern="\d{4}-\d{2}-\d{2}" placeholder="yyyy-MM-dd">
              <br>
-             <div th:replace="~{fragments/fragment-error :: frag-error('soldItem.dateEndBid')}"></div>
+             <div th:replace="~{fragments/fragment-error :: frag-error('dateEndBid')}"></div>
          </div>
          <div class="flex-content p-2" style="margin: 0 auto; width: 80%">
              <fieldset>
                  <legend th:text="#{frag-form-bid.legend.title}"></legend>
                  <label for="street" class="form-label mt-4" th:text="#{frag-form-bid.street}"></label>
-                 <input type="text" class="form-control" name="street" id="street" th:field="*{soldItem.collectParcel.street}">
+                 <input type="text" class="form-control" name="street" id="street" th:field="*{collectParcel.street}">
                  <br>
-                 <div th:replace="~{fragments/fragment-error :: frag-error('soldItem.collectParcel.street')}"></div>
+                 <div th:replace="~{fragments/fragment-error :: frag-error('collectParcel.street')}"></div>
 
                  <label for="zipCode" class="form-label mt-4" th:text="#{frag-form-bid.zipcode}"></label>
-                 <input type="text" class="form-control" name="zipCode" id="zipCode" th:field="*{soldItem.collectParcel.zipCode}">
+                 <input type="text" class="form-control" name="zipCode" id="zipCode" th:field="*{collectParcel.zipCode}">
                  <br>
-                 <div th:replace="~{fragments/fragment-error :: frag-error('soldItem.collectParcel.zipCode')}"></div>
+                 <div th:replace="~{fragments/fragment-error :: frag-error('collectParcel.zipCode')}"></div>
 
                  <label for="city" class="form-label mt-4" th:text="#{frag-form-bid.city}"></label>
-                 <input type="text" class="form-control" name="city" id="city" th:field="*{soldItem.collectParcel.city}">
+                 <input type="text" class="form-control" name="city" id="city" th:field="*{collectParcel.city}">
                  <br>
-                 <div th:replace="~{fragments/fragment-error :: frag-error('soldItem.collectParcel.street')}"></div>
+                 <div th:replace="~{fragments/fragment-error :: frag-error('collectParcel.street')}"></div>
              </fieldset>
          </div>
     </div>
