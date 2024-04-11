@@ -33,7 +33,7 @@ public class SoldItemServiceImpl implements SoldItemService {
     }
 
     @Override
-    public void create(SoldItem soldItem, String loggedUser) {
+    public Long create(SoldItem soldItem, String loggedUser) {
         BusinessException businessException = new BusinessException();
         User user = userDAO.findByUsername(loggedUser);
         soldItem.setSoldUser(user);
@@ -60,6 +60,7 @@ public class SoldItemServiceImpl implements SoldItemService {
 
         Long newItemId = soldItemDAO.create(soldItem);
         collectParcelDAO.create(soldItem.getCollectParcel(), newItemId);
+        return newItemId;
     }
 
     @Override
