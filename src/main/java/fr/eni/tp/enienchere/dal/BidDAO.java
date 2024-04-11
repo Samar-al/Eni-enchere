@@ -7,4 +7,7 @@ import java.util.List;
 
 public interface BidDAO {
     public List<Bid> findAll();
+    public void create(Bid bid, User user, Long itemNb);
+    public void update(Bid bid);
+
 }

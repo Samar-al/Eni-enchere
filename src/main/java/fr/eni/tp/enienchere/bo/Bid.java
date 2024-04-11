@@ -19,6 +19,9 @@ public class Bid implements Serializable {
         return bidDate;
     }
 
+    public Bid() {
+    }
+
     public void setBidDate(LocalDateTime bidDate) {
         this.bidDate = bidDate;
     }
