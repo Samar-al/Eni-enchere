@@ -30,6 +30,10 @@ public class UserController {
         return "index.html";
     }*/
 
+
+
+
+
     @GetMapping(value="/informations")
     public String displayUser(
             @ModelAttribute("userSession") User userSession,

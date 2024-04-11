@@ -40,36 +40,8 @@ public class BidServiceImpl implements BidService {
 
     @Override
     public void createBid(Bid bid, String loggedUser) {
-        BusinessException businessException = new BusinessException();
-        User user = userDAO.findByUsername(loggedUser);
-        BigDecimal bidAmount = new BigDecimal(bid.getSoldItem().getInitialPrice());
-        bid.setBidAmount(bidAmount);
-        bid.setBidDate(LocalDateTime.now());
-        bid.getSoldItem().setSoldUser(user);
-        Date today = new Date();
-        if(bid.getSoldItem().getDateStartBid().before(today)) {
-            bid.getSoldItem().setSaleStatus(0);
-        }
-        if((bid.getSoldItem().getDateStartBid().equals(today) || bid.getSoldItem().getDateStartBid().after(today)) &&
-                bid.getSoldItem().getDateEndBid().equals(today) || bid.getSoldItem().getDateEndBid().after(today)
-        ) {
-            bid.getSoldItem().setSaleStatus(1);
-        }
-        if(bid.getSoldItem().getDateEndBid().before(today)){
-            bid.getSoldItem().setSaleStatus(2);
-        }
-        if((bid.getSoldItem().getCollectParcel().getStreet() == null || bid.getSoldItem().getCollectParcel().getStreet().isEmpty()) ||
-                (bid.getSoldItem().getCollectParcel().getZipCode() == null || bid.getSoldItem().getCollectParcel().getZipCode().isEmpty()) ||
-                (bid.getSoldItem().getCollectParcel().getCity() == null || bid.getSoldItem().getCollectParcel().getCity().isEmpty())
-        ) {
-            bid.getSoldItem().getCollectParcel().setStreet(user.getStreet());
-            bid.getSoldItem().getCollectParcel().setZipCode(user.getZipCode());
-            bid.getSoldItem().getCollectParcel().setCity(user.getCity());
-        }
 
-        Long newItemId = soldItemDAO.create(bid.getSoldItem());
-        collectParcelDAO.create(bid.getSoldItem().getCollectParcel(), newItemId);
-        bidDAO.create(bid, user, newItemId);
+      //  bidDAO.create(bid, user, newItemId);
 
 
 
