@@ -22,7 +22,24 @@ public class AppSecurityConfiguration {
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(auth-> {
 
-            auth.anyRequest().permitAll();
+            auth.requestMatchers(
+                    "/",
+                    "/encheres",
+                    "/css/**",
+
+                    "/inscription"
+
+            ).permitAll();
+
+            auth.requestMatchers(
+                    "/encheres/profil",
+                    "/encheres/creer-vente",
+                    "/encheres/informations",
+
+                    "/login/details"
+            ).authenticated();
+
+            auth.anyRequest().denyAll();
 
         });
       //  httpSecurity.formLogin(Customizer.withDefaults());
