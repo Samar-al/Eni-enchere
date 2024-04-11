@@ -3,13 +3,15 @@
      th:fragment="frag-list-bids">
     <div class="bg-dark rounded d-flex flex-row gap-4" th:each="soldItem : ${soldItems}">
         <div>
-            <img src="#" alt="Image de l'article">
+            <img th:src="@{'/images/' + ${soldItem.soldUser.username} + '/image' + ${soldItem.itemNb} + '.png'}" width="200" alt="Image de l'article">
+
         </div>
         <div class="p-4">
             <p class="lead text-light text-decoration-underline fw-normal" th:text="${soldItem.itemName}"></p>
-            <p class="lead text-light">Prix : <span th:text="${soldItem.initialPrice}"></span></p>
-            <p class="lead text-light">Fin de l'enchère : <span th:text="${soldItem.dateEndBid}"></span></p>
-            <p class="lead text-light">Vendeur : <span th:text="${soldItem.soldUser.username}"></span></p>
+            <p class="lead text-light"><span th:text="'Prix : ' + ${soldItem.initialPrice}"></span></p>
+            <p class="lead text-light"><span th:text="'Fin de l\'enchere : '+ ${soldItem.dateEndBid}"></span></p>
+            <p class="lead text-light"><span th:text="'Prix : ' + ${soldItem.soldUser.username}"></span></p>
         </div>
     </div>
 </div>
+
