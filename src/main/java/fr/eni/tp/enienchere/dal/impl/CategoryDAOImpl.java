@@ -14,7 +14,8 @@ import java.util.List;
 public class CategoryDAOImpl implements CategoryDAO {
 
     private static final String SELECT_BY_ID= "SELECT category_nb, wording FROM CATEGORY WHERE category_nb = :id";
-    private static final String SELECT_ALL= "SELECT category_nb, wording FROM CATEGORY";
+
+    private static final String SELECT_ALL= "SELECT category_nb, wording FROM CATEGORY;";
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -37,7 +38,8 @@ public class CategoryDAOImpl implements CategoryDAO {
     }
 
     @Override
-    public List<Category> findAll() {
+    public List<Category> findAll() {   
+      
         List<Category>categories = jdbcTemplate.query(SELECT_ALL, new BeanPropertyRowMapper<>(Category.class));
         return categories;
     }

@@ -2,10 +2,16 @@ package fr.eni.tp.enienchere.controller;
 
 import fr.eni.tp.enienchere.bll.BidService;
 import fr.eni.tp.enienchere.bll.CategoryService;
+
+import fr.eni.tp.enienchere.bo.Bid;
+import fr.eni.tp.enienchere.bo.Category;
+import fr.eni.tp.enienchere.bo.User;
+
 import fr.eni.tp.enienchere.bll.UserService;
 import fr.eni.tp.enienchere.bo.*;
 import fr.eni.tp.enienchere.exception.BusinessException;
 import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,11 +48,16 @@ public class BidController {
         this.userService = userService;
     }
 
+    @Autowired
+    CategoryService categoryService;
+
     @GetMapping(value = "/")
     public String displayAllBids(Model model) {
         List<Bid> bids = bidService.getAllBids();
-        model.addAttribute(bids);
-        System.out.println(bids);
+        List<Category> categories = categoryService.getAllCategory();
+        model.addAttribute("bids", bids);
+        model.addAttribute("categories", categories);
+        System.out.println(categories);
         return "index.html";
     }
 

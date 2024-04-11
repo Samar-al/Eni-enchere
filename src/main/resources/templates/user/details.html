@@ -7,7 +7,7 @@
         )}"
         th:object=""
 >
-<title>Profil utilisateur</title>
+<title th:text="#{profil.details.title}"></title>
 <main class="main-content gap-4">
     <div class="d-flex flex-row gap-2 justify-content-center">
         <div>
@@ -38,7 +38,7 @@
     </div>
     <div class="d-flex justify-content-center">
         <a th:href="@{/encheres/profil}">
-            <button type="button" class="btn btn-primary">Modifier</button>
+            <button type="button" class="btn btn-primary" th:text="#{profil.details.edit}"></button>
         </a>
     </div>
 </main>

@@ -6,6 +6,10 @@ import java.util.List;
 
 public interface CategoryService {
     public Category getCategoryById(int categoryNb);
+
+    List<Category> getAllCategory();
+
     List<Category> getCategories();
+
 
 }
