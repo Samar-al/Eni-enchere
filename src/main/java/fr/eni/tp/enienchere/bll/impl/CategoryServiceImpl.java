@@ -6,6 +6,8 @@ import fr.eni.tp.enienchere.dal.CategoryDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CategoryServiceImpl implements CategoryService {
     @Autowired
@@ -13,5 +15,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category getCategoryById(int categoryNb) {
         return categoryDAO.findById(categoryNb);
+    }
+
+    @Override
+    public List<Category> getAllCategory() {
+        return categoryDAO.findAll();
     }
 }

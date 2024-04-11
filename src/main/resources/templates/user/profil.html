@@ -7,15 +7,15 @@
         )}"
         th:object=""
 >
-<title>Mon profil</title>
+<title th:text="#{profil.title}"></title>
 <main class="main-content">
-    <h1 class="text-center">Mon profil</h1>
+    <h1 class="text-center" th:text="#{profil.title}"></h1>
     <form th:action="${'/encheres/profil'}" th:method="post">
         <div class="d-flex flex-row gap-2 justify-content-center">
             <div>
                 <input type="hidden" class="form-control" name="userNb" id="userNb" th:value="${user.userNb}">
 
-                <label for="username" class="form-label mt-4">Pseudo</label>
+                <label for="username" class="form-label mt-4" th:text="#{frag-form-register.pseudo}"></label>
                 <input type="text" class="form-control" name="username" id="username" th:value="${user.username}">
 
                 <label for="firstname" class="form-label mt-4" th:text="#{frag-form-register.firstname}" ></label>
@@ -27,7 +27,7 @@
                 <label for="zipCode" class="form-label mt-4" th:text="#{frag-form-register.zipcode}"></label>
                 <input type="text" class="form-control" name="zipCode" id="zipCode" th:value="${user.zipCode}">
 
-                <label for="credit" class="form-label mt-4">Crédit : </label>
+                <label for="credit" class="form-label mt-4" th:text="#{profil.credit}"></label>
                 <input type="text" class="form-control" name="credit" id="credit" th:value="${user.credit}" disabled>
             </div>
             <div>
@@ -46,9 +46,9 @@
             </div>
         </div>
         <div class="d-flex justify-content-center gap-4">
-            <button type="submit" class="btn btn-primary">Enregistrer</button>
+            <button type="submit" class="btn btn-primary" th:text="#{profil.save}"></button>
 
-            <button type="button" class="btn btn-primary">Supprimer mon compte</button>
+            <button type="button" class="btn btn-primary" th:text="#{profil.delete}"></button>
         </div>
     </form>
 </main>

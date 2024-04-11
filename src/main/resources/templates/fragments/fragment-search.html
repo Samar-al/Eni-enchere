@@ -9,7 +9,7 @@
         <div>
             <label for="categories" class="form-label mt-4" th:text="#{search.div.label}"></label>
             <select class="form-select" id="categories">
-                <option>1</option>
+                <option th:each="categorie : ${categories}" th:value="${categorie.wording}"></option>
             </select>
         </div>
     </div>
