@@ -23,24 +23,13 @@ public class UserController {
         this.userService = userService;
     }
 
-  /*  @GetMapping(value = "/")
-    public String displayUsers(Model model) {
-        List<User> users = userService.getAllUsers();
-        model.addAttribute(users);
-        return "index.html";
-    }*/
-
-
-
-
-
     @GetMapping(value="/informations")
     public String displayUser(
             @ModelAttribute("userSession") User userSession,
             Model model
     ) {
+        System.out.println(userSession.getUserNb());
         model.addAttribute("user", userService.getUserById(userSession.getUserNb()));
-        System.out.println(model);
         return "user/details.html";
     }
 
