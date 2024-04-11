@@ -29,7 +29,7 @@ public class AppSecurityConfiguration {
 
         httpSecurity.formLogin(form-> {
             form.loginPage("/login").permitAll();
-            form.defaultSuccessUrl("/login/details");
+            form.defaultSuccessUrl("/encheres/");
             form.failureUrl("/login-error");
 
         });

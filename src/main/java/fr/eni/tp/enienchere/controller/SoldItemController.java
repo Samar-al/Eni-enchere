@@ -3,62 +3,62 @@ package fr.eni.tp.enienchere.controller;
 import fr.eni.tp.enienchere.bll.BidService;
 import fr.eni.tp.enienchere.bll.CategoryService;
 
+import fr.eni.tp.enienchere.bll.SoldItemService;
 import fr.eni.tp.enienchere.bo.Bid;
 import fr.eni.tp.enienchere.bo.Category;
 import fr.eni.tp.enienchere.bo.User;
 
 import fr.eni.tp.enienchere.bll.UserService;
 import fr.eni.tp.enienchere.bo.*;
-import fr.eni.tp.enienchere.exception.BusinessException;
 import jakarta.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
-
-import static java.sql.Types.NULL;
 
 @Controller
 @RequestMapping(value = "/encheres")
 @SessionAttributes({"categorySession"})
-public class BidController {
+public class SoldItemController {
 
-    private BidService bidService;
+    private SoldItemService soldItemService;
     private CategoryService categoryService;
 
     private UserService userService;
 
-    public BidController(BidService bidService, CategoryService categoryService, UserService userService) {
-        this.bidService = bidService;
+    public SoldItemController(SoldItemService soldItemService, CategoryService categoryService, UserService userService) {
+        this.soldItemService = soldItemService;
         this.categoryService = categoryService;
         this.userService = userService;
     }
 
+
+
     @GetMapping(value = "/")
-    public String displayAllBids(Model model) {
-        List<Bid> bids = bidService.getAllBids();
-        List<Category> categories = categoryService.getAllCategory();
-        model.addAttribute("bids", bids);
-        model.addAttribute("categories", categories);
-        System.out.println(categories);
-        return "index.html";
+    public String displayAllSoldItem(@ModelAttribute("categorySession") Category categorySession, Model model) {
+        List<SoldItem> soldItems = soldItemService.getAllSoldItems();
+        model.addAttribute("soldItems", soldItems);
+        return "home/index";
     }
 
     @GetMapping(value = ("/creer-vente"))
-    public String CreateBid(Principal principal, @ModelAttribute("categorySession") Category categorySession, Model model) throws ParseException {
-        Bid bid = new Bid();
+    public String CreateSoldItem(Principal principal, @ModelAttribute("categorySession") Category categorySession, Model model) throws ParseException {
+
         SoldItem soldItem = new SoldItem();
         soldItem.setItemName(" ");
         soldItem.setDescription(" ");
@@ -77,41 +77,51 @@ public class BidController {
         collectParcel.setZipCode(" ");
         collectParcel.setCity(" ");
         soldItem.setCollectParcel(collectParcel);
-        bid.setSoldItem(soldItem);
-        model.addAttribute("bid", bid);
+
         model.addAttribute("soldItem",soldItem );
-        return "bid/create";
+        return "soldItem/create";
     }
 
-    @PostMapping(value ="/creer-vente")
-    public String createOrUpdateBid(@Valid @ModelAttribute("bid") Bid bid, BindingResult bindingResult, Principal principal) {
+    @PostMapping(value = "/creer-vente")
+    public String createOrUpdateSoldItem(@Valid @ModelAttribute("soldItem") SoldItem soldItem,
+                                    BindingResult bindingResult,
+                                    Principal principal,
+                                    @RequestParam("picture") MultipartFile file) {
 
-        if(principal == null) {
-           return "redirect:/encheres/";
-        }else {
+        if (principal == null) {
+            return "redirect:/encheres/";
+        } else {
             String currentUserName = principal.getName();
+            if (file.isEmpty()) {
+                // Handle empty file
+                return "redirect:/error";
+            }
 
             if (bindingResult.hasErrors()) {
-                return "bid/create";
+                return "soldItem/create";
             } else {
                 try {
-                   /* if (bid.getUser() != null && bid.getSoldItem() != null) {
-                        // Update existing movie
-                        *//*   bidService.updateBid(bid, loggedUser);*//*
-                    } else {*/
-                        // Create new movie
-                    bidService.createBid(bid, currentUserName);
 
+                    // Define the directory where you want to save the file
+                    String uploadDir = Paths.get("src/main/resources/static/images/").toAbsolutePath()+currentUserName;
+                    // If the directory doesn't exist, create it
+                    File uploadDirFile = new File(uploadDir);
+                    if (!uploadDirFile.exists()) {
+                        uploadDirFile.mkdirs();
+                    }
 
-                   // }
+                    // Save the file to the defined directory
+                    Path filePath = Paths.get(uploadDir, file.getOriginalFilename());
+                    Files.write(filePath, file.getBytes());
+
+                    // Continue with your business logic
+                    soldItemService.create(soldItem, currentUserName);
+
                     return "redirect:/encheres/";
-                } catch (BusinessException businessException) {
-                    businessException.getKeys().forEach(message -> {
-                        ObjectError error = new ObjectError("globalError", message);
-                        bindingResult.addError(error);
-                    });
-                    return "bid/create";
-
+                } catch (IOException e) {
+                    // Handle file writing exception
+                    e.printStackTrace();
+                    return "redirect:/error";
                 }
             }
         }

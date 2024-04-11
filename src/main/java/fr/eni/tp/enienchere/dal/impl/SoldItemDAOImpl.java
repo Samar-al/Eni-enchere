@@ -1,23 +1,31 @@
 package fr.eni.tp.enienchere.dal.impl;
 
 import fr.eni.tp.enienchere.bll.SoldItemService;
+import fr.eni.tp.enienchere.bo.Bid;
 import fr.eni.tp.enienchere.bo.Category;
 import fr.eni.tp.enienchere.bo.SoldItem;
 import fr.eni.tp.enienchere.bo.User;
 import fr.eni.tp.enienchere.dal.SoldItemDAO;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Repository
 public class SoldItemDAOImpl implements SoldItemDAO {
 
     private static final String SELECT_BY_ID= "SELECT item_name, description, start_bid_date, end_bid_date, initial_price, sale_price, user_nb, category_nb, sales_status FROM SOLD_ITEMS WHERE item_nb=:id";
     private static final String INSERT_INTO = "INSERT INTO SOLD_ITEMS (item_name, description, start_bid_date, end_bid_date, initial_price, sale_price, user_nb, category_nb, sales_status) VALUES (:item_name, :description, :start_bid_date, :end_bid_date, :initial_price, :sale_price, :user_nb, :category_nb, :sales_status)";
+    private static final String SELECT_ALL = "SELECT s.user_nb, s.item_nb, s.item_name, s.description, s.start_bid_date, s.end_bid_date, s.initial_price, s.sales_status, c.wording, u.user_nb, u.username FROM  SOLD_ITEMS as s  LEFT JOIN  CATEGORY AS c ON s.category_nb = c.category_nb LEFT JOIN USERS as u ON s.user_nb = u.user_nb";
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -56,5 +64,43 @@ public class SoldItemDAOImpl implements SoldItemDAO {
         namedParameterJdbcTemplate.update(INSERT_INTO, namedParameters, keyHolder);
         Number key = keyHolder.getKey();
         return key.longValue();
+    }
+
+    @Override
+    public List<SoldItem> findAll() {
+        List<SoldItem>soldItems = jdbcTemplate.query(SELECT_ALL, new SoldItemDAOImpl.SoldItemRowMapper());
+        return soldItems;
+    }
+
+    public class SoldItemRowMapper implements RowMapper<SoldItem> {
+
+        @Override
+        public SoldItem mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+            SoldItem soldItem = new SoldItem();
+            soldItem.setItemNb(rs.getInt("s.item_nb"));
+            soldItem.setItemName(rs.getString("s.item_name"));
+            soldItem.setDescription(rs.getString("s.description"));
+            soldItem.setDateStartBid(rs.getDate("s.start_bid_date"));
+            soldItem.setDateEndBid(rs.getDate("s.end_bid_date"));
+            soldItem.setInitialPrice(rs.getInt("s.initial_price"));
+            soldItem.setInitialPrice(rs.getInt("s.sales_status"));
+
+
+            Category category = new Category();
+            category.setWording(rs.getString("c.wording"));
+            soldItem.setCategory(category);
+
+
+            User user = new User();
+            user.setUserNb(rs.getInt("s.user_nb"));
+            user.setUsername(rs.getString("u.username"));
+            soldItem.setSoldUser(user);
+
+            return soldItem;
+
+
+        }
+
     }
 }
