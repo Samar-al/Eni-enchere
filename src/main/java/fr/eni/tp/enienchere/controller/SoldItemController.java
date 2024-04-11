@@ -102,21 +102,10 @@ public class SoldItemController {
             } else {
                 try {
 
-                    // Define the directory where you want to save the file
-                    String uploadDir = Paths.get("src/main/resources/static/images/").toAbsolutePath()+currentUserName;
-                    // If the directory doesn't exist, create it
-                    File uploadDirFile = new File(uploadDir);
-                    if (!uploadDirFile.exists()) {
-                        uploadDirFile.mkdirs();
-                    }
-
-                    // Save the file to the defined directory
-                    Path filePath = Paths.get(uploadDir, file.getOriginalFilename());
-                    Files.write(filePath, file.getBytes());
 
                     // Continue with your business logic
-                    soldItemService.create(soldItem, currentUserName);
-
+                    Long newItemId = soldItemService.create(soldItem, currentUserName);
+                    savePicture(file, currentUserName, newItemId);
                     return "redirect:/encheres/";
                 } catch (IOException e) {
                     // Handle file writing exception
@@ -125,6 +114,25 @@ public class SoldItemController {
                 }
             }
         }
+    }
+
+    private void savePicture(MultipartFile file, String currentUserName, Long itemNb) throws IOException {
+        // Define the directory where you want to save the file
+        String uploadDir = Paths.get("src/main/resources/static/images/", currentUserName).toString();
+
+        // If the directory doesn't exist, create it
+        File uploadDirFile = new File(uploadDir);
+        if (!uploadDirFile.exists()) {
+            uploadDirFile.mkdirs();
+        }
+
+        // Construct the new filename with item number
+        String originalFilename = file.getOriginalFilename();
+        String newFilename = "image" + itemNb + originalFilename.substring(originalFilename.lastIndexOf('.'));
+
+        // Save the file to the defined directory
+        Path filePath = Paths.get(uploadDir, newFilename);
+        Files.write(filePath, file.getBytes());
     }
 
     public Long getCurrentUserId() {

@@ -40,6 +40,7 @@ public class UserController {
             Model model
     ) {
         model.addAttribute("user", userService.getUserById(userSession.getUserNb()));
+        System.out.println(model);
         return "user/details.html";
     }
 
@@ -68,5 +69,16 @@ public class UserController {
             });
             return "user/profil.html";
         }
+    }
+
+    @GetMapping(value="/informations/vendeur")
+    public String displayVendeur(
+        @RequestParam(value = "userId") String userId,
+        Model model
+    ) {
+        long id = Long.parseLong(userId);
+        User user = userService.getUserById(id);
+        model.addAttribute("user", user);
+        return "user/details.html";
     }
 }
