@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -26,6 +27,7 @@ public class UserController {
 
     @GetMapping(value="/informations")
     public String displayUser(
+            Principal principal,
             @ModelAttribute("userSession") User userSession,
             Model model
     ) {
@@ -68,8 +70,27 @@ public class UserController {
     ) {
         long id = Long.parseLong(userId);
         User user = userService.getUserById(id);
-        model.addAttribute("user", user);
-        return "user/details.html";
+
+        //Vérifie si le compte user supprimé, on ne donne pas assez à la page d'informations d'un vendeur
+        if (user.getUsername().equals("Utilisateur supprimé")
+                && user.getLastname().equals("none")
+                && user.getFirstname().equals("none")
+                && user.getEmail().equals("none@none.com")
+        ) {
+            return "redirect:/encheres/";
+        } else {
+            model.addAttribute("user", user);
+            return "user/details.html";
+        }
+    }
+
+    @GetMapping(value="/supprimerCompte")
+    public String deleteUser(
+        @ModelAttribute("userSession") User userSession,
+        Model model
+    ) {
+        userService.deleteUser(userSession);
+        return "redirect:/logout";
     }
 
     @GetMapping("/profil/password")
