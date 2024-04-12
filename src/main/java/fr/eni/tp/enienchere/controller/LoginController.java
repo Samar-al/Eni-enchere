@@ -23,13 +23,13 @@ public class LoginController {
 
     @GetMapping("/login")
     public String login() {
-        return "login";
+        return "login.html";
     }
 
     @GetMapping("/login-error")
     public String login(Model model) {
         model.addAttribute("loginError", true);
-        return "login";
+        return "login.html";
     }
 
     @GetMapping("/login/details")
