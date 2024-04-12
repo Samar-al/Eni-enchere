@@ -4,12 +4,14 @@ import fr.eni.tp.enienchere.bll.UserService;
 import fr.eni.tp.enienchere.bo.User;
 import fr.eni.tp.enienchere.exception.BusinessException;
 import jakarta.validation.Valid;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -23,24 +25,14 @@ public class UserController {
         this.userService = userService;
     }
 
-  /*  @GetMapping(value = "/")
-    public String displayUsers(Model model) {
-        List<User> users = userService.getAllUsers();
-        model.addAttribute(users);
-        return "index.html";
-    }*/
-
-
-
-
-
     @GetMapping(value="/informations")
     public String displayUser(
+            Principal principal,
             @ModelAttribute("userSession") User userSession,
             Model model
     ) {
+
         model.addAttribute("user", userService.getUserById(userSession.getUserNb()));
-        System.out.println(model);
         return "user/details.html";
     }
 
@@ -78,7 +70,49 @@ public class UserController {
     ) {
         long id = Long.parseLong(userId);
         User user = userService.getUserById(id);
-        model.addAttribute("user", user);
-        return "user/details.html";
+
+        //Vérifie si le compte user supprimé, on ne donne pas assez à la page d'informations d'un vendeur
+        if (user.getUsername().equals("Utilisateur supprimé")
+                && user.getLastname().equals("none")
+                && user.getFirstname().equals("none")
+                && user.getEmail().equals("none@none.com")
+        ) {
+            return "redirect:/encheres/";
+        } else {
+            model.addAttribute("user", user);
+            return "user/details.html";
+        }
+    }
+
+    @GetMapping(value="/supprimerCompte")
+    public String deleteUser(
+        @ModelAttribute("userSession") User userSession,
+        Model model
+    ) {
+        userService.deleteUser(userSession);
+        return "redirect:/logout";
+    }
+
+    @GetMapping("/profil/password")
+    public String showChangePasswordForm( @ModelAttribute("userSession") User userSession,Model model) {
+        // Add any necessary model attributes
+      /*  System.out.println(userService.getUserById(userSession.getUserNb()));
+        model.addAttribute("user", userService.getUserById(userSession.getUserNb()));*/
+        return "user/change-password"; // This should be the name of your change password page
+    }
+
+    @PostMapping(value = "/profil/password")
+    public  String changePassword(@ModelAttribute User user,
+                                  @RequestParam(name = "confirmPassword") String confirmPassword,
+                                  Model model) {
+       if (!user.getPassword().equals(confirmPassword)) {
+
+            model.addAttribute("loginError", true);
+            return "user/change-password";
+        } else {
+
+            userService.updatepassword(user);
+            return "redirect:/encheres/profil";
+        }
     }
 }

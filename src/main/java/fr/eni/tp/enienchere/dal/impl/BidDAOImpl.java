@@ -25,6 +25,8 @@ public class BidDAOImpl implements BidDAO {
     private static final String SELECT_ALL = "SELECT b.bid_date, b.bid_amount, s.user_nb, s.item_nb, s.item_name, s.description, s.start_bid_date, s.end_bid_date, s.initial_price, s.sales_status, c.wording, u.user_nb, u.username FROM BIDS as b LEFT JOIN SOLD_ITEMS as s ON b.item_nb = s.item_nb LEFT JOIN  CATEGORY AS c ON s.category_nb = c.category_nb LEFT JOIN USERS as u ON s.user_nb = u.user_nb";
     private static final String SELECT_BY_ITEM_ID = "SELECT b.bid_date, b.bid_amount, s.user_nb, s.item_nb, s.item_name, s.description, s.start_bid_date, s.end_bid_date, s.initial_price, s.sales_status, c.wording, u.user_nb, u.username, u.lastname, MAX(b.bid_amount) bidAmount FROM BIDS as b LEFT JOIN SOLD_ITEMS as s ON b.item_nb = s.item_nb LEFT JOIN  CATEGORY AS c ON s.category_nb = c.category_nb LEFT JOIN USERS as u ON s.user_nb = u.user_nb WHERE s.item_nb=:itemId";
     private static final String INSERT_INTO = "INSERT INTO BIDS (user_nb, item_nb, bid_date, bid_amount) VALUES (:user_nb, :item_nb, :bid_date, :bid_amount)";
+    private static final String SELECT_BY_ITEMID = "SELECT * FROM BIDS WHERE item_nb= :item_nb";
+    private static final String UPDATE_BID = "UPDATE BIDS SET user_nb = :user_nb, bid_date = :bid_date, bid_amount= :bid_amount WHERE item_nb = :item_nb";
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -37,6 +39,7 @@ public class BidDAOImpl implements BidDAO {
         List<Bid>bids = jdbcTemplate.query(SELECT_ALL, new BidRowMapper());
         return bids;
     }
+
 
     @Override
     public Bid findByItemId(int itemId) {
@@ -62,24 +65,38 @@ public class BidDAOImpl implements BidDAO {
     }
 
     @Override
-    public void create(Bid bid, User user, Long itemNb) {
+    public Bid getBidByItemNumber(int itemNumber) {
+
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-        namedParameters.addValue("user_nb", user.getUserNb());
-        namedParameters.addValue("item_nb", itemNb);
-        namedParameters.addValue("bid_date", bid.getBidDate());
-        namedParameters.addValue("bid_amount", bid.getBidAmount());
-
-        namedParameterJdbcTemplate.update(INSERT_INTO, namedParameters);
-
-
+        namedParameters.addValue("item_nb", itemNumber);
+        Bid bid = namedParameterJdbcTemplate.queryForObject(
+                SELECT_BY_ITEMID,
+                namedParameters,
+                new BeanPropertyRowMapper<>(Bid.class)
+        );
+        return null;
     }
 
     @Override
-    public void update(Bid bid) {
+    public void insertBid(Bid newBid, Long userNb, int itemNumber) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("user_nb", userNb);
+        namedParameters.addValue("item_nb", itemNumber);
+        namedParameters.addValue("bid_date", newBid.getBidDate());
+        namedParameters.addValue("bid_amount", newBid.getBidAmount());
 
-
+        namedParameterJdbcTemplate.update(INSERT_INTO, namedParameters);
     }
 
+    @Override
+    public void updateBid(Bid newBid, Long userNb) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("user_nb", userNb);
+        namedParameters.addValue("item_nb", newBid.getSoldItem().getItemNb());
+        namedParameters.addValue("bid_date", newBid.getBidDate());
+        namedParameters.addValue("bid_amount", newBid.getBidAmount());
+        namedParameterJdbcTemplate.update(UPDATE_BID, namedParameters);
+    }
 
     public class BidRowMapper implements RowMapper<Bid> {
 

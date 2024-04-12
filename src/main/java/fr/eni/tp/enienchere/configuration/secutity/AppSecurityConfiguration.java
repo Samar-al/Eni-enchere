@@ -45,7 +45,9 @@ public class AppSecurityConfiguration {
                     "/login/details"
             ).authenticated();
 
+
             auth.anyRequest().permitAll();
+
 
         });
       //  httpSecurity.formLogin(Customizer.withDefaults());
@@ -54,7 +56,6 @@ public class AppSecurityConfiguration {
             form.loginPage("/login").permitAll();
             form.defaultSuccessUrl("/login/details");
             form.failureUrl("/login-error");
-
         });
 
         httpSecurity.logout(logout -> logout

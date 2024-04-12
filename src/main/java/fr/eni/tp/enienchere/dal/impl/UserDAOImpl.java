@@ -22,6 +22,11 @@ public class UserDAOImpl implements UserDAO {
     private static final String SELECT_BY_ID = "SELECT user_nb, username, lastname, firstname, email, phone, street, zip_code, city, credit, admin FROM USERS WHERE user_nb = :userId;";
     private static final String SELECT_BY_USERNAME = "SELECT user_nb, username, lastname, firstname, email, phone, street, zip_code, city, credit, admin FROM USERS WHERE username = :username;";
     private static final String UPDATE_USER = "UPDATE USERS SET username = :username, lastname = :lastname, email = :email, phone = :phone, street = :street, zip_code = :zip_code, city = :city WHERE user_nb = :userId;";
+    private static final String UPDATE_USER_PASSWORD = "UPDATE USERS SET password = :password WHERE user_nb = :userId;";
+
+    private static final String UPDATE_BIDS_FOR_DELETE = "UPDATE bids SET user_nb = 4 WHERE user_nb = :userId;";
+    private static final String UPDATE_SOLD_ITEMS_FOR_DELETE = "UPDATE sold_items SET user_nb = 4 WHERE user_nb = :userId;";
+    private static final String DELETE_USER = "DELETE FROM USERS WHERE user_nb = :userId;";
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -83,6 +88,15 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
+    public void updatePassword(User user) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("password", user.getPassword());
+        namedParameters.addValue("userId", user.getUserNb());
+
+        namedParameterJdbcTemplate.update(UPDATE_USER_PASSWORD,namedParameters);
+    }
+
+    @Override
     public User read(long userId) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("userId", userId);
@@ -98,4 +112,14 @@ public class UserDAOImpl implements UserDAO {
 
         return user;
     }
+
+    @Override
+    public void delete(User user) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("userId", user.getUserNb());
+        namedParameterJdbcTemplate.update(UPDATE_BIDS_FOR_DELETE, namedParameters);
+        namedParameterJdbcTemplate.update(UPDATE_SOLD_ITEMS_FOR_DELETE, namedParameters);
+        namedParameterJdbcTemplate.update(DELETE_USER, namedParameters);
+    }
+
 }

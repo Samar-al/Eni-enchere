@@ -13,5 +13,7 @@ public interface UserDAO {
     public User read(long userId);
     User read(String username);
     void update(User user);
+    void updatePassword(User user);
+    void delete(User user);
 
 }

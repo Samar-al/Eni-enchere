@@ -57,7 +57,7 @@ public class SoldItemController {
     public String displayAllSoldItem(@ModelAttribute("categorySession") Category categorySession, Model model) {
         List<SoldItem> soldItems = soldItemService.getAllSoldItems();
         model.addAttribute("soldItems", soldItems);
-        return "home/index";
+        return "home/index.html";
     }
 
     @GetMapping(value = ("/creer-vente"))
@@ -83,7 +83,7 @@ public class SoldItemController {
         soldItem.setCollectParcel(collectParcel);
 
         model.addAttribute("soldItem",soldItem );
-        return "soldItem/create";
+        return "soldItem/create.html";
     }
 
     @PostMapping(value = "/creer-vente")
@@ -102,7 +102,7 @@ public class SoldItemController {
             }
 
             if (bindingResult.hasErrors()) {
-                return "soldItem/create";
+                return "soldItem/create.html";
             } else {
                 try {
 
