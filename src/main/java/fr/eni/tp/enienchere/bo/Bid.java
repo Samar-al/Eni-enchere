@@ -1,6 +1,5 @@
 package fr.eni.tp.enienchere.bo;
 
-import org.springframework.security.core.userdetails.User;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
