@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface BidService {
     List<Bid>getAllBids();
+    Bid getBidByItemId(int itemId);
 
     public void createBid(Bid bid, String loggedUser);
    /* public void updateBid(Bid bid, Long loggedUser);*/

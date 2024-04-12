@@ -13,48 +13,102 @@
     </div>
     <div class="flex-content p-2">
         <div class="flex-content p-2" style="margin: 0 auto; width: 80%">
-            <div>
+            <div th:if="${#strings.isEmpty(action)}">
                 <img alt="" th:src="@{/images/add-item_25362.png}" width="200rem">
             </div>
-            <label for="itemName" class="form-label mt-4"  th:text="#{frag-form-bid.itemName}"></label>
-            <input type="text" class="form-control" name="itemName" id="itemName" th:field="*{itemName}" required>
+            <div th:unless="${#strings.isEmpty(action)}">
+                <img alt="" th:src="@{/images/add-item_25362.png}" width="200rem">
+            </div>
+            <div th:if="${#strings.isEmpty(action)}">
+                <label for="itemName" id="itemName-label" name="itemName" th:text="${soldItem.itemName}"></label>
+            </div>
+                <div th:unless="${#strings.isEmpty(action)}">
+                    <label for="itemName" class="form-label mt-4"  th:text="#{frag-form-bid.itemName}"></label>
+                    <input type="text" class="form-control" name="itemName" id="itemName" th:field="*{itemName}" required>
+                </div>
             <br>
             <div th:replace="~{fragments/fragment-error :: frag-error('itemName')}"></div>
 
              <label for="description" class="form-label mt-4" th:text="#{frag-form-bid.description}"></label>
-                <input type="text" class="form-control" name="description" id="description" th:field="*{description}">
+                <div th:if="${#strings.isEmpty(action)}">
+                    <label for="description" id="description-label" name="description" th:text="${soldItem.description}"></label>
+                </div>
+                <div th:unless="${#strings.isEmpty(action)}">
+                    <input type="text" class="form-control" name="description" id="description" th:field="*{description}">
+                </div>
                 <br>
                 <div th:replace="~{fragments/fragment-error :: frag-error('description')}"></div>
                <label class="form-label mt-4" for="category" th:text="#{frag-form-bid.category}"></label>
-                <select class="form-select" name="category" id="category" th:field="*{category.categoryNb}" >
-                    <option
-                            th:each="category :${categorySession}"
-                            th:value="${category.categoryNb}"
-                            th:text="${category.wording}"
+                <div th:if="${#strings.isEmpty(action)}">
+                    <label for="category-label" id="category-label" name="category" th:text="${soldItem.category.wording}"></label>
+                </div>
+                <div th:unless="${#strings.isEmpty(action)}">
+                    <select class="form-select" name="category" id="category" th:field="*{category.categoryNb}" >
+                        <option
+                                th:each="category :${categorySession}"
+                                th:value="${category.categoryNb}"
+                                th:text="${category.wording}"
 
-                    ></option>
-                </select>
+                        ></option>
+                    </select>
+                </div>
              <div th:replace="~{fragments/fragment-error :: frag-error('category')}"></div>
 
-            <label for="picture" class="form-label mt-4" th:text="#{frag-form-bid.picture}"></label>
-            <input type="file" class="form-control" name="picture" id="picture">
+            <div th:if="${#strings.isEmpty(action)}">
+
+            </div>
+            <div th:unless="${#strings.isEmpty(action)}">
+                <label for="picture" class="form-label mt-4" th:text="#{frag-form-bid.picture}"></label>
+                <input type="file" class="form-control" name="picture" id="picture">
+            </div>
+
             <br>
 
+
+            <div th:if="${#strings.isEmpty(action)}">
+                <label th:if="${bidItem.bidAmount} != null" for="initialPrice" class="form-label mt-4" th:text="#{frag-form-bid.best.bid}"></label>
+                <br>
+                <label th:if="${bidItem.bidAmount} != null" for="salePrice-label" id="bestOffer-label" name="bidAmount" th:text="${bidItem.bidAmount} + ' pts par ' + ${bidItem.user.lastname}"></label>
+            </div>
+
                 <label for="initialPrice" class="form-label mt-4" th:text="#{frag-form-bid.amount}"></label>
+            <div th:if="${#strings.isEmpty(action)}">
+                <label for="salePrice-label" id="salePrice-label" name="salePrice" th:text="${soldItem.salePrice} + ' points'"></label>
+            </div>
+            <div th:unless="${#strings.isEmpty(action)}">
              <input type="number"  pattern="^\d+(.\d{1,2})?€" class="form-control" name="initialPrice" id="initialPrice" th:field="*{initialPrice}">
-             <br>
+            </div>
+            <br>
              <div th:replace="~{fragments/fragment-error :: frag-error('initialPrice')}"></div>
 
+            <div th:unless="${#strings.isEmpty(action)}">
              <label for="dateStartBid" class="form-label mt-4" th:text="#{frag-form-bid.startbid}"></label>
              <input type="date" class="form-control" name="dateStartBid" id="dateStartBid" th:field="*{dateStartBid}" pattern="\d{4}-\d{2}-\d{2}" placeholder="yyyy-MM-dd">
-             <br>
+            </div>
+            <br>
              <div th:replace="~{fragments/fragment-error :: frag-error('dateStartBid')}"></div>
 
-             <label for="dateEndBid" class="form-label mt-4" th:text="#{frag-form-bid.endBId}"></label>
+            <label for="dateEndBid" class="form-label mt-4" th:text="#{frag-form-bid.endBId}"></label>
+
+            <div th:if="${#strings.isEmpty(action)}">
+                <label for="dateEndBid-label" id="dateEndBid-label" name="dateEndBid" th:text="${soldItem.dateEndBid}"></label>
+            </div>
+            <div th:unless="${#strings.isEmpty(action)}">
              <input type="date" class="form-control" name="dateEndBid" id="dateEndBid" th:field="*{dateEndBid}" required pattern="\d{4}-\d{2}-\d{2}" placeholder="yyyy-MM-dd">
-             <br>
+            </div>
+
+            <br>
              <div th:replace="~{fragments/fragment-error :: frag-error('dateEndBid')}"></div>
          </div>
+
+        <div th:if="${#strings.isEmpty(action)}">
+            <div class="flex-content p-2" style="margin: 0 auto; width: 80%">
+            <label id="retrait-label" th:text="#{frag-form-bid.legend.title}"></label>
+            <br>
+            <label for="street-retrait-label" id="street-retrait-label" name="street" th:text="${soldItem.collectParcel.street} + ' ' + ${soldItem.collectParcel.zipCode} + ' ' + ${soldItem.collectParcel.city} "></label>
+            </div>
+        </div>
+        <div th:unless="${#strings.isEmpty(action)}">
          <div class="flex-content p-2" style="margin: 0 auto; width: 80%">
              <fieldset>
                  <legend th:text="#{frag-form-bid.legend.title}"></legend>
@@ -74,12 +128,23 @@
                  <div th:replace="~{fragments/fragment-error :: frag-error('collectParcel.street')}"></div>
              </fieldset>
          </div>
+        </div>
     </div>
-    <div class="d-flex justify-content-center gap-4">
-        <button type="submit" class="btn btn-primary" th:text="#{frag-form-bid.create}"></button>
-        <a th:href="@{/encheres/}">
-            <button type="button" class="btn btn-primary" th:text="#{frag-form-bid.cancel}"></button>
-        </a>
+
+    <div th:if="${#strings.isEmpty(action)}">
+        <div id="bid-container">
+            <label for="bid-container" th:text="#{frag-form-bid.bid.title} + ':' "></label>
+            <input type="number" class="form-control" name="bidAmount"  style="width:20%" id="bid_amount-input" th:value="${bidItem.bidAmount}">
+            <button type="submit" class="btn btn-primary" th:text="#{frag-form-bid.bid}"></button>
+        </div>
+    </div>
+    <div th:unless="${#strings.isEmpty(action)}">
+        <div class="d-flex justify-content-center gap-4">
+            <button type="submit" class="btn btn-primary" th:text="#{frag-form-bid.create}"></button>
+            <a th:href="@{/encheres/}">
+                <button type="button" class="btn btn-primary" th:text="#{frag-form-bid.cancel}"></button>
+            </a>
+        </div>
     </div>
 
 </form>

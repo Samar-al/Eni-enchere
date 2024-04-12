@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -33,18 +34,21 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = "/encheres")
-@SessionAttributes({"categorySession"})
+@SessionAttributes({"categorySession", "userSession"})
 public class SoldItemController {
 
     private SoldItemService soldItemService;
     private CategoryService categoryService;
 
+    private BidService bidService;
+
     private UserService userService;
 
-    public SoldItemController(SoldItemService soldItemService, CategoryService categoryService, UserService userService) {
+    public SoldItemController(SoldItemService soldItemService, CategoryService categoryService, UserService userService, BidService bidService) {
         this.soldItemService = soldItemService;
         this.categoryService = categoryService;
         this.userService = userService;
+        this.bidService = bidService;
     }
 
 
@@ -114,6 +118,30 @@ public class SoldItemController {
                 }
             }
         }
+    }
+
+    @GetMapping(value = ("/detail"))
+    public String displaySoldItem(@RequestParam(value="id", required = false) String id,
+                                  @ModelAttribute("categorySession") Category categorySession,
+//                                  @ModelAttribute("userSession") User userSession,
+                                  Model model
+    ) {
+            int idItem = Integer.parseInt(id);
+            SoldItem soldItem = soldItemService.getSoldItemById(idItem);
+            soldItem.setCategory(categorySession);
+
+                Bid bid = bidService.getBidByItemId(idItem);
+                if(bid != null){
+                    model.addAttribute("bidItem", bid);
+                }else {
+                    Bid bidEmpty = new Bid();
+                    bidEmpty.setBidAmount(BigDecimal.valueOf(0));
+                    model.addAttribute("bidItem", bidEmpty);
+                }
+            System.out.println(bid);
+            model.addAttribute("soldItem", soldItem);
+
+            return "soldItem/details.html";
     }
 
     private void savePicture(MultipartFile file, String currentUserName, Long itemNb) throws IOException {

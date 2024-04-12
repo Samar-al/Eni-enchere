@@ -2,15 +2,31 @@
      xmlns:th="http://www.thymeleaf.org"
      th:fragment="frag-list-bids">
     <div class="bg-dark rounded d-flex flex-row gap-4" th:each="soldItem : ${soldItems}">
-        <div>
-            <img th:src="@{'/images/' + ${soldItem.soldUser.username} + '/image' + ${soldItem.itemNb} + '.png'}" width="200" alt="Image de l'article">
+        <div th:if="${#authorization.expression('isAuthenticated')}">
+        <a class="soldItem-button" th:href="@{/encheres/detail(id=${soldItem.itemNb})}">
+            <div>
+                <img th:src="@{'/images/' + ${soldItem.soldUser.username} + '/image' + ${soldItem.itemNb} + '.png'}" width="200" alt="Image de l'article">
 
+            </div>
+            <div class="p-4">
+                <p class="lead text-light text-decoration-underline fw-normal" th:text="${soldItem.itemName}"></p>
+                <p class="lead text-light"><span th:text="'Prix : ' + ${soldItem.initialPrice}"></span></p>
+                <p class="lead text-light"><span th:text="'Fin de l\'enchere : '+ ${soldItem.dateEndBid}"></span></p>
+                <p class="lead text-light"><span th:text="'Prix : ' + ${soldItem.soldUser.username}"></span></p>
+            </div>
+        </a>
         </div>
-        <div class="p-4">
-            <p class="lead text-light text-decoration-underline fw-normal" th:text="${soldItem.itemName}"></p>
-            <p class="lead text-light"><span th:text="'Prix : ' + ${soldItem.initialPrice}"></span></p>
-            <p class="lead text-light"><span th:text="'Fin de l\'enchere : '+ ${soldItem.dateEndBid}"></span></p>
-            <p class="lead text-light"><span th:text="'Prix : ' + ${soldItem.soldUser.username}"></span></p>
+        <div th:unless="${#authorization.expression('isAuthenticated')}">
+            <div>
+                <img th:src="@{'/images/' + ${soldItem.soldUser.username} + '/image' + ${soldItem.itemNb} + '.png'}" width="200" alt="Image de l'article">
+
+            </div>
+            <div class="p-4">
+                <p class="lead text-light text-decoration-underline fw-normal" th:text="${soldItem.itemName}"></p>
+                <p class="lead text-light"><span th:text="'Prix : ' + ${soldItem.initialPrice}"></span></p>
+                <p class="lead text-light"><span th:text="'Fin de l\'enchere : '+ ${soldItem.dateEndBid}"></span></p>
+                <p class="lead text-light"><span th:text="'Prix : ' + ${soldItem.soldUser.username}"></span></p>
+            </div>
         </div>
     </div>
 </div>
