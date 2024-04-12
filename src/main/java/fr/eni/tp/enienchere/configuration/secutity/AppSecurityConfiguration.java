@@ -39,8 +39,6 @@ public class AppSecurityConfiguration {
                     "/login/details"
             ).authenticated();
 
-
-
 //            auth.anyRequest().denyAll();
             auth.anyRequest().permitAll();
 
