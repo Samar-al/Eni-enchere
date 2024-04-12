@@ -2,7 +2,7 @@
      xmlns:th="http://www.thymeleaf.org"
      th:fragment="frag-list-bids">
     <div class="bg-dark rounded d-flex flex-row gap-4" th:each="soldItem : ${soldItems}">
-        <div th:if="${#authorization.expression('isAuthenticated')}">
+
         <a class="soldItem-button" th:href="@{/encheres/detail(id=${soldItem.itemNb})}">
             <div>
                 <img th:src="@{'/images/' + ${soldItem.soldUser.username} + '/image' + ${soldItem.itemNb} + '.png'}" width="200" alt="Image de l'article">
@@ -25,4 +25,3 @@
         </a>
     </div>
 </div>
-
