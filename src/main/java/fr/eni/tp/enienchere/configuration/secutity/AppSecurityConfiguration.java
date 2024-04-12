@@ -39,16 +39,19 @@ public class AppSecurityConfiguration {
                     "/login/details"
             ).authenticated();
 
-            auth.anyRequest().denyAll();
+
+
+//            auth.anyRequest().denyAll();
+            auth.anyRequest().permitAll();
+
 
         });
       //  httpSecurity.formLogin(Customizer.withDefaults());
 
         httpSecurity.formLogin(form-> {
             form.loginPage("/login").permitAll();
-            form.defaultSuccessUrl("/encheres/");
+            form.defaultSuccessUrl("/login/details");
             form.failureUrl("/login-error");
-
         });
 
         httpSecurity.logout(logout -> logout

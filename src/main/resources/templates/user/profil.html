@@ -48,7 +48,9 @@
         <div class="d-flex justify-content-center gap-4">
             <button type="submit" class="btn btn-primary" th:text="#{profil.save}"></button>
 
-            <button type="button" class="btn btn-primary" th:text="#{profil.delete}"></button>
+            <a th:href="@{/encheres/supprimerCompte}">
+                <button type="button" class="btn btn-primary" th:text="#{profil.delete}"></button>
+            </a>
         </div>
     </form>
 </main>

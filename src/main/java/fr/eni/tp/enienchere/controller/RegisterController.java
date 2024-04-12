@@ -26,7 +26,7 @@ public class RegisterController {
     public String index(Model model) {
         User user = new User();
         model.addAttribute("user", user);
-        return "register";
+        return "register.html";
     }
 
     @PostMapping(value = "/inscription")
@@ -37,10 +37,10 @@ public class RegisterController {
                            Model model) {
 
         if(bindingResult.hasErrors()){
-            return "register";
+            return "register.html";
         } else if(!user.getPassword().equals(confirmPassword)){
             model.addAttribute("loginError", true);
-            return "register";
+            return "register.html";
         } else {
             try {
                 userService.addUser(user);
@@ -50,7 +50,7 @@ public class RegisterController {
                     ObjectError error = new ObjectError("globalError", message);
                     bindingResult.addError(error);
                 });
-                return "register";
+                return "register.html";
             }
 
         }
