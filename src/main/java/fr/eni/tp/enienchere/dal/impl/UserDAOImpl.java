@@ -22,6 +22,7 @@ public class UserDAOImpl implements UserDAO {
     private static final String SELECT_BY_ID = "SELECT user_nb, username, lastname, firstname, email, phone, street, zip_code, city, credit, admin FROM USERS WHERE user_nb = :userId;";
     private static final String SELECT_BY_USERNAME = "SELECT user_nb, username, lastname, firstname, email, phone, street, zip_code, city, credit, admin FROM USERS WHERE username = :username;";
     private static final String UPDATE_USER = "UPDATE USERS SET username = :username, lastname = :lastname, email = :email, phone = :phone, street = :street, zip_code = :zip_code, city = :city WHERE user_nb = :userId;";
+    private static final String UPDATE_USER_PASSWORD = "UPDATE USERS SET password = :password WHERE user_nb = :userId;";
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -80,6 +81,15 @@ public class UserDAOImpl implements UserDAO {
         namedParameters.addValue("userId", user.getUserNb());
 
         namedParameterJdbcTemplate.update(UPDATE_USER,namedParameters);
+    }
+
+    @Override
+    public void updatePassword(User user) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("password", user.getPassword());
+        namedParameters.addValue("userId", user.getUserNb());
+
+        namedParameterJdbcTemplate.update(UPDATE_USER_PASSWORD,namedParameters);
     }
 
     @Override

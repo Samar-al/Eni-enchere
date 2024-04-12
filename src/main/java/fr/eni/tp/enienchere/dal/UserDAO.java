@@ -14,4 +14,6 @@ public interface UserDAO {
     User read(String username);
     void update(User user);
 
+    void updatePassword(User user);
+
 }

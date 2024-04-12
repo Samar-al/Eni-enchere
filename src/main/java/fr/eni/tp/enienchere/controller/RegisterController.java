@@ -5,6 +5,8 @@ import fr.eni.tp.enienchere.bo.User;
 import fr.eni.tp.enienchere.exception.BusinessException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,7 +32,6 @@ public class RegisterController {
     }
 
     @PostMapping(value = "/inscription")
-
     public String register(@Valid @ModelAttribute User user,
                            BindingResult bindingResult,
                            @RequestParam(name = "confirmPassword") String confirmPassword,
@@ -45,15 +46,18 @@ public class RegisterController {
             try {
                 userService.addUser(user);
                 return "redirect:/login";
-            } catch (BusinessException businessException) {
-                businessException.getKeys().forEach(message -> {
-                    ObjectError error = new ObjectError("globalError", message);
-                    bindingResult.addError(error);
-                });
+            } catch (DuplicateKeyException e) {
+                String errorMessage;
+                if (e.getMessage().contains("username_UNIQUE")) {
+                    errorMessage = "error.usernameExists";
+                } else if (e.getMessage().contains("email_UNIQUE")) {
+                    errorMessage = "error.emailExists";
+                } else {
+                    errorMessage = "error.registration";
+                }
+                model.addAttribute("errorMessage", errorMessage);
                 return "register";
             }
-
         }
-
     }
 }
