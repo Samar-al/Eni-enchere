@@ -42,7 +42,7 @@ public class BidDAOImpl implements BidDAO {
     }
 
 
-    @Override
+ /*   @Override
     public Bid findByItemId(int itemId) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("itemId", itemId);
@@ -63,7 +63,7 @@ public class BidDAOImpl implements BidDAO {
 //        }
 
         return bid;
-    }
+    }*/
 
     @Override
     public Bid getBidByItemNumber(int itemNumber) {
@@ -75,7 +75,7 @@ public class BidDAOImpl implements BidDAO {
                 namedParameters,
                 new BeanPropertyRowMapper<>(Bid.class)
         );
-        return null;
+        return bid;
     }
 
     @Override

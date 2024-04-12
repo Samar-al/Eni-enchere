@@ -120,27 +120,17 @@ public class SoldItemController {
         }
     }
 
-    @GetMapping(value = ("/detail"))
-    public String displaySoldItem(@RequestParam(value="id", required = false) String id,
+    @GetMapping(value = ("/detail-item/{item_id}"))
+    public String displaySoldItem(@PathVariable(name = "item_id") String item_id,
                                   @ModelAttribute("categorySession") Category categorySession,
-//                                  @ModelAttribute("userSession") User userSession,
                                   Model model
     ) {
-            int idItem = Integer.parseInt(id);
+            int idItem = Integer.parseInt(item_id);
             SoldItem soldItem = soldItemService.getSoldItemById(idItem);
-            soldItem.setCategory(categorySession);
-
-                Bid bid = bidService.getBidByItemId(idItem);
-                if(bid != null){
-                    model.addAttribute("bidItem", bid);
-                }else {
-                    Bid bidEmpty = new Bid();
-                    bidEmpty.setBidAmount(BigDecimal.valueOf(0));
-                    model.addAttribute("bidItem", bidEmpty);
-                }
-            System.out.println(bid);
+            Bid bid = bidService.getBidByItemId(idItem);
+        System.out.println(bid);
+            model.addAttribute("bidItem", bid);
             model.addAttribute("soldItem", soldItem);
-
             return "soldItem/details.html";
     }
 
@@ -163,16 +153,6 @@ public class SoldItemController {
         Files.write(filePath, file.getBytes());
     }
 
-    public Long getCurrentUserId() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            Object principal = authentication.getPrincipal();
-            if (principal instanceof User) {
-                return ((User) principal).getUserNb();
-            }
-        }
-        return null; // No connected user or user is not authenticated
-    }
 
     @ModelAttribute("categorySession")
     public List<Category> leadSessionCategory() {

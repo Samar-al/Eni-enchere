@@ -44,7 +44,14 @@ public class BidServiceImpl implements BidService {
 
     @Override
     public Bid getBidByItemId(int itemId) {
-        return bidDAO.findByItemId(itemId);
+        Bid bid = bidDAO.getBidByItemNumber(itemId);
+        if(bid == null) {
+            Bid emptyBid = new Bid();
+            emptyBid.setBidAmount(BigDecimal.valueOf(0));
+            return emptyBid;
+        }
+
+        return bid;
     }
 
     @Override

@@ -40,9 +40,9 @@
                 <br>
                 <div th:replace="~{fragments/fragment-error :: frag-error('description')}"></div>
                <label class="form-label mt-4" for="category" th:text="#{frag-form-bid.category}"></label>
-                <div th:if="${#strings.isEmpty(action)}">
+              <!--  <div th:if="${#strings.isEmpty(action)}">
                     <label for="category-label" id="category-label" name="category" th:text="${soldItem.category.wording}"></label>
-                </div>
+                </div>-->
                 <div th:unless="${#strings.isEmpty(action)}">
                     <select class="form-select" name="category" id="category" th:field="*{category.categoryNb}" >
                         <option
