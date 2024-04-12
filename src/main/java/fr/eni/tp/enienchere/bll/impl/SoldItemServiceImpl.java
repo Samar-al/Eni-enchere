@@ -29,7 +29,8 @@ public class SoldItemServiceImpl implements SoldItemService {
 
     @Override
     public SoldItem getSoldItemById(int item_nb) {
-        return soldItemDAO.findById(item_nb);
+        SoldItem soldItem = soldItemDAO.findById(item_nb);
+        return soldItem;
     }
 
     @Override

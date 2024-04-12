@@ -1,7 +1,9 @@
 <div class="container-fluid d-flex flex-wrap gap-4 justify-content-center"
      xmlns:th="http://www.thymeleaf.org"
      th:fragment="frag-list-bids">
+
 <!--    <div class="bg-dark rounded d-flex flex-row gap-4" th:each="soldItem : ${soldItems}">-->
+   <a class="soldItem-button" th:href="@{/encheres/detail(id=${soldItem.itemNb})}">
     <div class="listBids" th:each="soldItem : ${soldItems}">
         <div>
             <img th:src="@{'/images/' + ${soldItem.soldUser.username} + '/image' + ${soldItem.itemNb} + '.png'}" width="200" alt="Image de l'article">
@@ -12,6 +14,7 @@
             <p><span th:text="'Fin de l\'enchere : '+ ${soldItem.dateEndBid}"></span></p>
             <p th:if="${soldItem.soldUser.username != 'Utilisateur supprimé'}">
                 <a th:href="@{/encheres/informations/vendeur(userId=${soldItem.soldUser.userNb})}" class="usernameDeco">
+
                     <span th:text="'Vendeur : ' + ${soldItem.soldUser.username}"></span>
                 </a>
             </p>
@@ -19,7 +22,8 @@
             <p class="usernameItalic" th:unless="${soldItem.soldUser.username != 'Utilisateur supprimé'}">
                     <span th:text="'Vendeur : ' + ${soldItem.soldUser.username}"></span>
             </p>
-        </div>
+            </div>
+        </a>
     </div>
 </div>
 

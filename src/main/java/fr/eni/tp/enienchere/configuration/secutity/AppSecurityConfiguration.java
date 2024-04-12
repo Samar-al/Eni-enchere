@@ -27,7 +27,11 @@ public class AppSecurityConfiguration {
                     "/encheres",
                     "/css/**",
 
-                    "/inscription"
+                    "/inscription",
+
+                   // "/filtres/*",
+
+                    "/encheres/produit/details"
 
             ).permitAll();
 
@@ -36,10 +40,12 @@ public class AppSecurityConfiguration {
                     "/encheres/creer-vente",
                     "/encheres/informations",
 
+                    "/encheres/produit/vendeur",
+
                     "/login/details"
             ).authenticated();
 
-//            auth.anyRequest().denyAll();
+
             auth.anyRequest().permitAll();
 
 

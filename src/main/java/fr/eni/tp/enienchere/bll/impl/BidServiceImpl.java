@@ -3,20 +3,22 @@ package fr.eni.tp.enienchere.bll.impl;
 import fr.eni.tp.enienchere.bll.BidService;
 import fr.eni.tp.enienchere.bo.Bid;
 
+
+
 import fr.eni.tp.enienchere.bo.User;
+
 import fr.eni.tp.enienchere.dal.BidDAO;
 import fr.eni.tp.enienchere.dal.CollectParcelDAO;
 import fr.eni.tp.enienchere.dal.SoldItemDAO;
 import fr.eni.tp.enienchere.dal.UserDAO;
+import org.springframework.beans.factory.annotation.Autowired;
 import fr.eni.tp.enienchere.exception.BusinessCode;
 import fr.eni.tp.enienchere.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 @Service
 public class BidServiceImpl implements BidService {
@@ -39,6 +41,12 @@ public class BidServiceImpl implements BidService {
     }
 
 
+    @Override
+    public Bid getBidByItemId(int itemId) {
+        return bidDAO.findByItemId(itemId);
+    }
+
+    @Override
     public void placeBid(Bid newBid, String loggedUser, String itemNb) {
         BusinessException businessException = new BusinessException();
         User user = userDAO.findByUsername(loggedUser);
