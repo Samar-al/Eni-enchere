@@ -8,7 +8,7 @@
         th:object=""
 >
 <title th:text="#{profil.title}"></title>
-<main class="main-content">
+<main class="main-content p-4">
     <h1 class="text-center" th:text="#{profil.title}"></h1>
     <form th:action="${'/encheres/profil'}" th:method="post">
         <div class="d-flex flex-row gap-2 justify-content-center">
@@ -45,25 +45,22 @@
 
             </div>
         </div>
-        <div class="d-flex justify-content-center gap-4 flex-column align-items-center my-2">
+        <div class="d-flex justify-content-center gap-4 flex-column align-items-center my-2 p-4">
             <div>
                 <!-- Button to change password -->
-                <a th:href="@{/encheres/profil/password}" th:if="${user.userNb == userSession.userNb}">
-                    <button type="button" class="btn btn-primary" th:text="#{profil.details.changePassword}"></button>
+                <a th:href="@{/encheres/profil/password}" th:if="${user.userNb == userSession.userNb}" class="text-decoration-none">
+                    <button type="button" class="buttonChangePassword" th:text="#{profil.details.changePassword}"></button>
                 </a>
-                <button type="submit" class="btn btn-primary" th:text="#{profil.save}"></button>
+                <a th:href="@{/encheres/supprimerCompte}">
+                    <button type="button" class="buttonDeleteAccount" th:text="#{profil.delete}"></button>
+                </a>
             </div>
 
            <div>
+               <button type="submit" class="buttonSave" th:text="#{profil.save}"></button>
                <!-- Button to quit editing and go back to profile page -->
-               <button type="button" class="btn btn-secondary" onclick="window.history.back()" th:text="#{profil.details.cancel}"></button>
-
-               <button type="button" class="btn btn-primary" th:text="#{profil.delete}"></button>
+               <button type="button" class="buttonCancel" onclick="window.history.back()" th:text="#{profil.details.cancel}"></button>
            </div>
-            <a th:href="@{/encheres/supprimerCompte}">
-                <button type="button" class="btn btn-primary" th:text="#{profil.delete}"></button>
-            </a>
-
         </div>
     </form>
 </main>

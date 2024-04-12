@@ -1,24 +1,25 @@
-<div class="container-fluid d-flex flex-wrap flex-row gap-4"
+<div class="container-fluid d-flex flex-wrap gap-4 justify-content-center"
      xmlns:th="http://www.thymeleaf.org"
      th:fragment="frag-list-bids">
-    <div class="bg-dark rounded d-flex flex-row gap-4" th:each="soldItem : ${soldItems}">
-        <div th:if="${#authorization.expression('isAuthenticated')}">
-        <a class="soldItem-button" th:href="@{/encheres/detail(id=${soldItem.itemNb})}">
-            <div>
-                <img th:src="@{'/images/' + ${soldItem.soldUser.username} + '/image' + ${soldItem.itemNb} + '.png'}" width="200" alt="Image de l'article">
 
-            </div>
-            <div class="p-4">
-                <p class="lead text-light text-decoration-underline fw-normal" th:text="${soldItem.itemName}"></p>
-                <p class="lead text-light"><span th:text="'Prix : ' + ${soldItem.initialPrice}"></span></p>
-                <p class="lead text-light"><span th:text="'Fin de l\'enchere : '+ ${soldItem.dateEndBid}"></span></p>
-                 <p class="lead text-light" th:if="${soldItem.soldUser.username != 'Utilisateur supprimé'}">
-                <a th:href="@{/encheres/informations/vendeur(userId=${soldItem.soldUser.userNb})}" class="text-decoration-none text-light">
+<!--    <div class="bg-dark rounded d-flex flex-row gap-4" th:each="soldItem : ${soldItems}">-->
+   <a class="soldItem-button" th:href="@{/encheres/detail(id=${soldItem.itemNb})}">
+    <div class="listBids" th:each="soldItem : ${soldItems}">
+        <div>
+            <img th:src="@{'/images/' + ${soldItem.soldUser.username} + '/image' + ${soldItem.itemNb} + '.png'}" width="200" alt="Image de l'article">
+        </div>
+        <div class="p-4">
+            <p><span class="itemName" th:text="${soldItem.itemName}"></span></p>
+            <p><span th:text="'Prix : ' + ${soldItem.initialPrice}"></span></p>
+            <p><span th:text="'Fin de l\'enchere : '+ ${soldItem.dateEndBid}"></span></p>
+            <p th:if="${soldItem.soldUser.username != 'Utilisateur supprimé'}">
+                <a th:href="@{/encheres/informations/vendeur(userId=${soldItem.soldUser.userNb})}" class="usernameDeco">
+
                     <span th:text="'Vendeur : ' + ${soldItem.soldUser.username}"></span>
                 </a>
             </p>
 
-            <p class="lead text-light fst-italic" th:unless="${soldItem.soldUser.username != 'Utilisateur supprimé'}">
+            <p class="usernameItalic" th:unless="${soldItem.soldUser.username != 'Utilisateur supprimé'}">
                     <span th:text="'Vendeur : ' + ${soldItem.soldUser.username}"></span>
             </p>
             </div>
