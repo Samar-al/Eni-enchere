@@ -1,0 +1,69 @@
+* {
+    font-family: Arial;
+}
+
+.listBids {
+    border-radius: 0.5rem;
+    /*border: solid;*/
+    /*border-color: #e2e8f0;*/
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    border-width: 2px;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: #C9A9E9;
+    color: #481878;
+}
+
+.itemName {
+    text-decoration-line: underline;
+}
+
+.usernameItalic {
+    font-style: italic;
+}
+
+.usernameDeco {
+    text-decoration-line: none;
+    color: #481878;
+}
+
+.navBar {
+    background-color: #6020A0;
+}
+
+.buttonSearch {
+    background-color: #6020A0;
+    color: #ffffff;
+    border-radius:  0.5rem;
+    border: none;
+    width: 150px;
+    height: 55px;
+}
+
+.buttonModif,
+.buttonSave,
+.buttonCancel{
+
+    background-color: #C9A9E9;
+    color: #481878;
+
+    border-radius:  0.5rem;
+    border: none;
+    width: 125px;
+    height: 50px;
+}
+
+.buttonChangePassword,
+.buttonDeleteAccount,
+.buttonCreate,
+.buttonCancelCreate{
+    background-color: #C9A9E9;
+    color: #481878;
+
+    border-radius:  0.5rem;
+    border: none;
+    width: 200px;
+    height: 55px;
+}

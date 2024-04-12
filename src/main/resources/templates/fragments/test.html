@@ -56,28 +56,28 @@
             <br>
             <div th:replace="~{fragments/fragment-error :: frag-error('dateEndBid')}"></div>
 
-            <legend th:text="#{frag-form-bid.legend.title}"></legend>
-            <label for="street" class="form-label mt-4" th:text="#{frag-form-bid.street}"></label>
-            <input type="text" class="form-control" name="street" id="street" th:field="*{collectParcel.street}">
-            <br>
-            <div th:replace="~{fragments/fragment-error :: frag-error('collectParcel.street')}"></div>
+                <legend th:text="#{frag-form-bid.legend.title}"></legend>
+                <label for="street" class="form-label mt-4" th:text="#{frag-form-bid.street}"></label>
+                <input type="text" class="form-control" name="street" id="street" th:field="*{collectParcel.street}">
+                <br>
+                <div th:replace="~{fragments/fragment-error :: frag-error('collectParcel.street')}"></div>
 
-            <label for="zipCode" class="form-label mt-4" th:text="#{frag-form-bid.zipcode}"></label>
-            <input type="text" class="form-control" name="zipCode" id="zipCode" th:field="*{collectParcel.zipCode}">
-            <br>
-            <div th:replace="~{fragments/fragment-error :: frag-error('collectParcel.zipCode')}"></div>
+                <label for="zipCode" class="form-label mt-4" th:text="#{frag-form-bid.zipcode}"></label>
+                <input type="text" class="form-control" name="zipCode" id="zipCode" th:field="*{collectParcel.zipCode}">
+                <br>
+                <div th:replace="~{fragments/fragment-error :: frag-error('collectParcel.zipCode')}"></div>
 
-            <label for="city" class="form-label mt-4" th:text="#{frag-form-bid.city}"></label>
-            <input type="text" class="form-control" name="city" id="city" th:field="*{collectParcel.city}">
-            <br>
-            <div th:replace="~{fragments/fragment-error :: frag-error('collectParcel.street')}"></div>
+                <label for="city" class="form-label mt-4" th:text="#{frag-form-bid.city}"></label>
+                <input type="text" class="form-control" name="city" id="city" th:field="*{collectParcel.city}">
+                <br>
+                <div th:replace="~{fragments/fragment-error :: frag-error('collectParcel.street')}"></div>
         </div>
     </div>
 
     <div class="d-flex justify-content-center gap-4">
-        <button type="submit" class="buttonCreate" th:text="#{frag-form-bid.create}"></button>
+        <button type="submit" class="btn btn-primary" th:text="#{frag-form-bid.create}"></button>
         <a th:href="@{/encheres/}">
-            <button type="button" class="buttonCancelCreate" th:text="#{frag-form-bid.cancel}"></button>
+            <button type="button" class="btn btn-primary" th:text="#{frag-form-bid.cancel}"></button>
         </a>
     </div>
 
