@@ -28,7 +28,7 @@ public class UserController {
             @ModelAttribute("userSession") User userSession,
             Model model
     ) {
-        System.out.println(userSession.getUserNb());
+
         model.addAttribute("user", userService.getUserById(userSession.getUserNb()));
         return "user/details.html";
     }

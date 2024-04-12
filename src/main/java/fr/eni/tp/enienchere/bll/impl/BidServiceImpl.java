@@ -38,19 +38,25 @@ public class BidServiceImpl implements BidService {
         return bidDAO.findAll();
     }
 
-    @Override
-    public void createBid(Bid bid, String loggedUser) {
 
-      //  bidDAO.create(bid, user, newItemId);
+    public void placeBid(Bid newBid, String loggedUser, String itemNb) {
+        User user = userDAO.findByUsername(loggedUser);
+        int itemNumber = Integer.parseInt(itemNb);
+        // Retrieve existing bid for the user and item
+        Bid existingBid = bidDAO.getBidByItemNumber(itemNumber);
 
-
-
+        if (existingBid == null || newBid.getBidAmount().compareTo(existingBid.getBidAmount()) > 0) {
+            // New bid is higher or there's no existing bid, so update or insert
+            if (existingBid == null) {
+                // No existing bid, insert the new bid
+                bidDAO.insertBid(newBid, user.getUserNb(), itemNumber);
+            } else {
+                // Existing bid found, update with new bid amount and date
+                existingBid.setBidAmount(newBid.getBidAmount());
+                existingBid.setBidDate(newBid.getBidDate());
+                bidDAO.updateBid(existingBid, user.getUserNb());
+            }
+        }
     }
-
-   /* @Override
-    public void updateBid(Bid bid, Long loggedUser) {
-        return bidDAO.update(bid);
-    }
-*/
 
 }
