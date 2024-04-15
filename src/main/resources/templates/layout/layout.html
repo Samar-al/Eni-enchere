@@ -18,6 +18,11 @@
     <main th:replace="${pageContent} ?: ~{}"></main>
 
     <script>
+
+        function filtersSearch(filtres) {
+            document.getElementById('filtres').value;
+        }
+
         function achatsRadio(event) {
             if (event.checked == true) {
                 document.getElementById("ventesEnCours").disabled = true;
