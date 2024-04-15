@@ -11,5 +11,5 @@ public interface SoldItemDAO {
     public Long create(SoldItem soldItem);
     public void update(SoldItem soldItem);
     public List<SoldItem> findAll();
-
+    List<SoldItem>search(String filter, Integer category);
 }

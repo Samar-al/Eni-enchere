@@ -68,4 +68,9 @@ public class SoldItemServiceImpl implements SoldItemService {
     public List<SoldItem> getAllSoldItems() {
         return soldItemDAO.findAll();
     }
+
+    @Override
+    public List<SoldItem> search(String filter, Integer category) {
+        return soldItemDAO.search(filter, category);
+    }
 }

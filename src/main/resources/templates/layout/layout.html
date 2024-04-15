@@ -10,6 +10,7 @@
     <link th:href="@{/css/bootstrap.min-2.css}" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script th:src="@{/js/filters.js}" defer></script>
 </head>
 <body>
     <header th:replace="~{fragments/fragment-header :: frag-header}"></header>
@@ -17,6 +18,10 @@
     <main th:replace="${pageContent} ?: ~{}"></main>
 
     <script>
+
+        function filtersSearch(filtres) {
+            document.getElementById('filtres').value;
+        }
 
         function achatsRadio(event) {
             if (event.checked == true) {
