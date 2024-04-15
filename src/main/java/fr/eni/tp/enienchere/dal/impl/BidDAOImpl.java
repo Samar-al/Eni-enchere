@@ -5,6 +5,7 @@ import fr.eni.tp.enienchere.bo.Category;
 import fr.eni.tp.enienchere.bo.SoldItem;
 import fr.eni.tp.enienchere.bo.User;
 import fr.eni.tp.enienchere.dal.BidDAO;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -24,9 +25,8 @@ import java.util.List;
 public class BidDAOImpl implements BidDAO {
 
     private static final String SELECT_ALL = "SELECT b.bid_date, b.bid_amount, s.user_nb, s.item_nb, s.item_name, s.description, s.start_bid_date, s.end_bid_date, s.initial_price, s.sales_status, c.wording, u.user_nb, u.username FROM BIDS as b LEFT JOIN SOLD_ITEMS as s ON b.item_nb = s.item_nb LEFT JOIN  CATEGORY AS c ON s.category_nb = c.category_nb LEFT JOIN USERS as u ON s.user_nb = u.user_nb";
-    private static final String SELECT_BY_ITEM_ID = "SELECT b.bid_date, b.bid_amount, s.user_nb, s.item_nb, s.item_name, s.description, s.start_bid_date, s.end_bid_date, s.initial_price, s.sales_status, c.wording, u.user_nb, u.username, u.lastname, MAX(b.bid_amount) bidAmount FROM BIDS as b LEFT JOIN SOLD_ITEMS as s ON b.item_nb = s.item_nb LEFT JOIN  CATEGORY AS c ON s.category_nb = c.category_nb LEFT JOIN USERS as u ON s.user_nb = u.user_nb WHERE s.item_nb=:itemId";
+    private static final String SELECT_BY_ITEM_ID = "SELECT b.bid_date, b.bid_amount, s.user_nb, s.item_nb, s.item_name, s.description, s.start_bid_date, s.end_bid_date, s.initial_price, s.sales_status, c.wording, u.user_nb, u.username, u.lastname FROM BIDS as b LEFT JOIN SOLD_ITEMS as s ON b.item_nb = s.item_nb LEFT JOIN  CATEGORY AS c ON s.category_nb = c.category_nb LEFT JOIN USERS as u ON s.user_nb = u.user_nb WHERE s.item_nb=:item_nb";
     private static final String INSERT_INTO = "INSERT INTO BIDS (user_nb, item_nb, bid_date, bid_amount) VALUES (:user_nb, :item_nb, :bid_date, :bid_amount)";
-    private static final String SELECT_BY_ITEMID = "SELECT * FROM BIDS WHERE item_nb= :item_nb";
     private static final String UPDATE_BID = "UPDATE BIDS SET user_nb = :user_nb, bid_date = :bid_date, bid_amount= :bid_amount WHERE item_nb = :item_nb";
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -42,41 +42,24 @@ public class BidDAOImpl implements BidDAO {
     }
 
 
- /*   @Override
-    public Bid findByItemId(int itemId) {
-        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-        namedParameters.addValue("itemId", itemId);
-        Bid bid = namedParameterJdbcTemplate.queryForObject(
-                SELECT_BY_ITEM_ID,
-                namedParameters,
-//                new BeanPropertyRowMapper<>(Bid.class)
-                new BidRowMapper()
-        );
-
-
-
-//        if(bid == null){
-//            Bid bidEmpty = new Bid();
-//            bidEmpty.setBidAmount(BigDecimal.valueOf(0));
-//           return bidEmpty;
-//
-//        }
-
-        return bid;
-    }*/
-
     @Override
     public Bid getBidByItemNumber(int itemNumber) {
-
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("item_nb", itemNumber);
-        Bid bid = namedParameterJdbcTemplate.queryForObject(
-                SELECT_BY_ITEMID,
-                namedParameters,
-                new BeanPropertyRowMapper<>(Bid.class)
-        );
-        return bid;
+        try {
+            return namedParameterJdbcTemplate.queryForObject(
+                    SELECT_BY_ITEM_ID,
+                    namedParameters,
+                    new BidDAOImpl.BidRowMapper()
+            );
+        } catch (EmptyResultDataAccessException ex) {
+            // If no bid is found, return a default Bid object with bid amount of zero
+            Bid bidEmpty = new Bid();
+            bidEmpty.setBidAmount(BigDecimal.ZERO);
+            return bidEmpty;
+        }
     }
+
 
     @Override
     public void insertBid(Bid newBid, Long userNb, int itemNumber) {
@@ -87,6 +70,7 @@ public class BidDAOImpl implements BidDAO {
         namedParameters.addValue("bid_amount", newBid.getBidAmount());
 
         namedParameterJdbcTemplate.update(INSERT_INTO, namedParameters);
+
     }
 
     @Override
@@ -97,6 +81,7 @@ public class BidDAOImpl implements BidDAO {
         namedParameters.addValue("bid_date", newBid.getBidDate());
         namedParameters.addValue("bid_amount", newBid.getBidAmount());
         namedParameterJdbcTemplate.update(UPDATE_BID, namedParameters);
+
     }
 
     public class BidRowMapper implements RowMapper<Bid> {
@@ -108,7 +93,7 @@ public class BidDAOImpl implements BidDAO {
             bid.setBidDate(toLocalDateTime(rs.getTimestamp("b.bid_date")));
             bid.setBidAmount(rs.getBigDecimal("b.bid_amount"));
 
-            bid.setBidAmount(rs.getBigDecimal("bidAmount"));
+          //  bid.setBidAmount(rs.getBigDecimal("bidAmount"));
 
             SoldItem soldItem = new SoldItem();
             soldItem.setItemNb(rs.getInt("s.item_nb"));

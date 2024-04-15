@@ -14,12 +14,14 @@ import fr.eni.tp.enienchere.dal.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import fr.eni.tp.enienchere.exception.BusinessCode;
 import fr.eni.tp.enienchere.exception.BusinessException;
-import org.springframework.beans.factory.annotation.Autowired;
+
 
 
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 @Service
 public class BidServiceImpl implements BidService {
@@ -60,37 +62,50 @@ public class BidServiceImpl implements BidService {
         User user = userDAO.findByUsername(loggedUser);
         BigDecimal userCredit = BigDecimal.valueOf(user.getCredit());
         int itemNumber = Integer.parseInt(itemNb);
+        newBid.setBidDate(LocalDateTime.now());
+
         // Retrieve existing bid for the user and item
         Bid existingBid = bidDAO.getBidByItemNumber(itemNumber);
-        boolean isCreditValid = isCreditEnough(userCredit, newBid.getBidAmount(), businessException);
-            // New bid is higher or there's no existing bid, so update or insert
-        if (existingBid == null ) {
-            if(isCreditValid) {
-                // No existing bid, insert the new bid
-                BigDecimal newUserCredit = userCredit.subtract(newBid.getBidAmount());
-                Long newUserCreditLong = newUserCredit.longValue();
-                user.setCredit(newUserCreditLong);
-                bidDAO.insertBid(newBid, user.getUserNb(), itemNumber);
-            }
 
+        // Check if the user has enough credit
+        if (!isCreditEnough(userCredit, newBid.getBidAmount(), businessException)) {
+            throw businessException;
+        }
+
+        // Check if the new bid amount is greater than the existing bid amount
+        if (existingBid != null && !isBidAmountEnough(newBid.getBidAmount(), existingBid.getBidAmount(), businessException)) {
+            throw businessException;
+        }
+
+        // Update the user's credit and the bid
+        if (existingBid == null) {
+            // No existing bid, insert the new bid
+            BigDecimal newUserCredit = userCredit.subtract(newBid.getBidAmount());
+            user.setCredit(newUserCredit.longValue());
+            userDAO.update(user);
+            bidDAO.insertBid(newBid, user.getUserNb(), itemNumber);
         } else {
-
-            if(newBid.getBidAmount().compareTo(existingBid.getBidAmount()) > 0 && isCreditValid) {
-                // Existing bid found, update with new bid amount and date
-                User previousUser = userDAO.findByUsername(existingBid.getUser().getUsername());
-                BigDecimal previousUserCurrentCreditDecimal = BigDecimal.valueOf(previousUser.getCredit());
-                BigDecimal previousUserNewCreditDecimal = previousUserCurrentCreditDecimal.add(existingBid.getBidAmount());
-                Long previousUserNewCreditLong = previousUserNewCreditDecimal.longValue();
-                previousUser.setCredit(previousUserNewCreditLong);
-                userDAO.update(previousUser);
-                existingBid.setBidAmount(newBid.getBidAmount());
-                existingBid.setBidDate(newBid.getBidDate());
-                bidDAO.updateBid(existingBid, user.getUserNb());
+            // Existing bid found, update with new bid amount and date
+            User previousUser = userDAO.findByUsername(existingBid.getUser().getUsername());
+            if (previousUser.equals(user)) {
+                // The new bid is made by the same user as the previous bid
+                userCredit = userCredit.add(existingBid.getBidAmount());
             }
+            BigDecimal previousUserCurrentCreditDecimal = BigDecimal.valueOf(previousUser.getCredit());
+            BigDecimal previousUserNewCreditDecimal = previousUserCurrentCreditDecimal.add(existingBid.getBidAmount());
+            previousUser.setCredit(previousUserNewCreditDecimal.longValue());
+            userDAO.update(previousUser);
+
+            BigDecimal newUserCredit = userCredit.subtract(newBid.getBidAmount());
+            user.setCredit(newUserCredit.longValue());
+            userDAO.update(user);
+
+            existingBid.setBidAmount(newBid.getBidAmount());
+            existingBid.setBidDate(newBid.getBidDate());
+            bidDAO.updateBid(existingBid, user.getUserNb());
         }
 
     }
-
     private boolean isCreditEnough(
             BigDecimal userCredit,
             BigDecimal bidAmount,
@@ -98,6 +113,18 @@ public class BidServiceImpl implements BidService {
     ) {
         if (userCredit.compareTo(bidAmount) < 0) {
             businessException.add(BusinessCode.NOT_ENOUGH_CREDIT);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isBidAmountEnough(
+            BigDecimal newBidAmount,
+            BigDecimal bidAmount,
+            BusinessException businessException
+    ) {
+        if(newBidAmount.compareTo(bidAmount) <= 0){
+            businessException.add(BusinessCode.NOT_ENOUGH_BID_AMOUNT);
             return false;
         }
         return true;

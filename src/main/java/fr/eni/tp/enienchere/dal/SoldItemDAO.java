@@ -11,4 +11,5 @@ public interface SoldItemDAO {
     public Long create(SoldItem soldItem);
 
     public List<SoldItem> findAll();
+
 }

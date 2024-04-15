@@ -21,7 +21,7 @@ public class UserDAOImpl implements UserDAO {
 
     private static final String SELECT_BY_ID = "SELECT user_nb, username, lastname, firstname, email, phone, street, zip_code, city, credit, admin FROM USERS WHERE user_nb = :userId;";
     private static final String SELECT_BY_USERNAME = "SELECT user_nb, username, lastname, firstname, email, phone, street, zip_code, city, credit, admin FROM USERS WHERE username = :username;";
-    private static final String UPDATE_USER = "UPDATE USERS SET username = :username, lastname = :lastname, email = :email, phone = :phone, street = :street, zip_code = :zip_code, city = :city WHERE user_nb = :userId;";
+    private static final String UPDATE_USER = "UPDATE USERS SET username = :username, lastname = :lastname, email = :email, phone = :phone, street = :street, zip_code = :zip_code, city = :city, credit = :credit, admin = :admin WHERE user_nb = :userId;";
     private static final String UPDATE_USER_PASSWORD = "UPDATE USERS SET password = :password WHERE user_nb = :userId;";
 
     private static final String UPDATE_BIDS_FOR_DELETE = "UPDATE bids SET user_nb = 4 WHERE user_nb = :userId;";
@@ -82,6 +82,8 @@ public class UserDAOImpl implements UserDAO {
         namedParameters.addValue("street", user.getStreet());
         namedParameters.addValue("zip_code", user.getZipCode());
         namedParameters.addValue("city", user.getCity());
+        namedParameters.addValue("credit", user.getCredit());
+        namedParameters.addValue("admin", user.isAdmin());
         namedParameters.addValue("userId", user.getUserNb());
 
         namedParameterJdbcTemplate.update(UPDATE_USER,namedParameters);

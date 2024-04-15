@@ -56,6 +56,7 @@ public class SoldItemController {
     @GetMapping(value = "/")
     public String displayAllSoldItem(@ModelAttribute("categorySession") Category categorySession, Model model) {
         List<SoldItem> soldItems = soldItemService.getAllSoldItems();
+        System.out.println(soldItems);
         model.addAttribute("soldItems", soldItems);
         return "home/index.html";
     }
@@ -128,8 +129,7 @@ public class SoldItemController {
             int idItem = Integer.parseInt(item_id);
             SoldItem soldItem = soldItemService.getSoldItemById(idItem);
             Bid bid = bidService.getBidByItemId(idItem);
-        System.out.println(bid);
-            model.addAttribute("bidItem", bid);
+            model.addAttribute("bid", bid);
             model.addAttribute("soldItem", soldItem);
             return "soldItem/details.html";
     }

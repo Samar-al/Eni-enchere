@@ -12,7 +12,7 @@
 <main class="main-content">
     <h1 class="text-center" th:text="#{detail.bid.title}"></h1>
 
-    <form th:replace="~{fragments/fragment-soldItem-Creation :: frag-form-soldItem-Creation('')}"></form>
+    <form th:replace="~{fragments/fragment-detail-item :: frag-detail-item('/encheres/detail-item/'+ ${soldItem.itemNb})}"></form>
 
 </main>
 
