@@ -101,7 +101,7 @@ public class SoldItemController {
             String currentUserName = principal.getName();
             if (file.isEmpty()) {
                 // Handle empty file
-                redirectAttributes.addFlashAttribute("errorMessage", "Please select a picture");
+                redirectAttributes.addFlashAttribute("errorMessage", "Please select a picturegit");
                 return "redirect:/encheres/creer-vente";
             }
 
