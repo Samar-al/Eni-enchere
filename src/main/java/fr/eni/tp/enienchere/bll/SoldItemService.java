@@ -11,4 +11,6 @@ public interface SoldItemService {
     public Long create(SoldItem soldItem, String loggedUser);
 
     List<SoldItem>getAllSoldItems();
+
+    List<SoldItem>search(String filter, Integer category);
 }
