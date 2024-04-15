@@ -39,18 +39,20 @@ public class SoldItemServiceImpl implements SoldItemService {
         User user = userDAO.findByUsername(loggedUser);
         soldItem.setSoldUser(user);
         Date today = new Date();
-        if(soldItem.getDateStartBid().before(today)) {
+        if (today.before(soldItem.getDateStartBid()))
+        {
             soldItem.setSaleStatus(0);
-        }
-        if((soldItem.getDateStartBid().equals(today) || soldItem.getDateStartBid().after(today)) &&
+        } else if ((soldItem.getDateStartBid().equals(today) || soldItem.getDateStartBid().after(today)) &&
                 soldItem.getDateEndBid().equals(today) || soldItem.getDateEndBid().after(today)
         ) {
             soldItem.setSaleStatus(1);
-        }
-        if(soldItem.getDateEndBid().before(today)){
+        } else if (soldItem.getDateEndBid().before(today))
+        {
             soldItem.setSaleStatus(2);
         }
-        if((soldItem.getCollectParcel().getStreet() == null || soldItem.getCollectParcel().getStreet().isEmpty()) ||
+
+
+        if ((soldItem.getCollectParcel().getStreet() == null || soldItem.getCollectParcel().getStreet().isEmpty()) ||
                 (soldItem.getCollectParcel().getZipCode() == null || soldItem.getCollectParcel().getZipCode().isEmpty()) ||
                 (soldItem.getCollectParcel().getCity() == null || soldItem.getCollectParcel().getCity().isEmpty())
         ) {

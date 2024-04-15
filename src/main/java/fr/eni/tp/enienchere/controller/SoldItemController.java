@@ -32,6 +32,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping(value = "/encheres")
@@ -55,7 +57,10 @@ public class SoldItemController {
 
 
     @GetMapping(value = "/")
-    public String displayAllSoldItem(@ModelAttribute("categorySession") Category categorySession, Model model) {
+    public String displayAllSoldItem(
+            @ModelAttribute("categorySession") Category categorySession,
+            Model model
+    ) {
         List<SoldItem> soldItems = soldItemService.getAllSoldItems();
         System.out.println(soldItems);
         model.addAttribute("soldItems", soldItems);
