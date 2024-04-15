@@ -9,7 +9,7 @@ import java.util.List;
 public interface SoldItemDAO {
     public SoldItem findById(int id);
     public Long create(SoldItem soldItem);
-
+    public void update(SoldItem soldItem);
     public List<SoldItem> findAll();
 
 }
