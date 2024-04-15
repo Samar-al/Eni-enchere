@@ -1,7 +1,8 @@
+<!--
 <header xmlns:th="http://www.thymeleaf.org" th:fragment="frag-header">
     <nav class="navbar navbar-expand-lg d-flex justify-content-between navBar" data-bs-theme="dark">
         <div>
-            <a th:href="@{/}" class="navbar-brand" th:text="#{header.nav.name}"></a>
+            <a th:href="@{/}" class="navbar-brand" ><img th:src="@{/images/logo.png}" width="100"></a>
         </div>
         <div>
             <a class="navbar-brand" th:if="${#authorization.expression('isAuthenticated')}" th:href="@{/encheres/}" th:text="#{header.nav.bid}"></a>
@@ -13,3 +14,38 @@
         </div>
     </nav>
 </header>
+-->
+
+<header xmlns:th="http://www.thymeleaf.org" th:fragment="frag-header">
+    <nav class="navbar navbar-expand-lg d-flex justify-content-between" id="navBar">
+        <div class="container-fluid">
+            <a th:href="@{/}" class="navbar-brand" ><img th:src="@{/images/logo.png}" width="100"></a>
+            <button class="navbar-toggler border-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon text-white"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center text-white">
+                    <li class="nav-item" th:if="${#authorization.expression('isAuthenticated')}">
+                        <a class="nav-link navbar-brand" th:href="@{/encheres/}" th:text="#{header.nav.bid}"></a>
+                    </li>
+                    <li class="nav-item" th:if="${#authorization.expression('isAuthenticated')}">
+                        <a class="nav-link navbar-brand" th:href="@{/encheres/creer-vente}" th:text="#{header.nav.soldItem}"></a>
+                    </li>
+                    <li class="nav-item" th:if="${!#authorization.expression('isAuthenticated')}">
+                        <a class="nav-link navbar-brand" th:href="@{/inscription}" th:text="#{header.nav.register}"></a>
+                    </li>
+                    <li class="nav-item" th:if="${#authorization.expression('isAuthenticated')}">
+                        <a class="nav-link memberConnect navbar-brand" th:href="@{/encheres/informations}" th:text="#{register.h1}"></a>
+                    </li>
+                    <li class="nav-item" th:if="${!#authorization.expression('isAuthenticated')}">
+                        <a class="nav-link navbar-brand" th:href="@{/login}" th:text="#{header.nav.login}"></a>
+                    </li>
+                    <li class="nav-item" th:if="${#authorization.expression('isAuthenticated')}">
+                        <a class="nav-link navbar-brand" th:href="@{/logout}" th:text="#{header.nav.logout}"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+

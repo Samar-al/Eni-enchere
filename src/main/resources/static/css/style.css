@@ -28,8 +28,12 @@
     color: #481878;
     text-decoration: none;
 }
+.usernameDeco>span {
+    color: #7c24c6;
+    font-size: 700;
+}
 
-.navBar {
+#navBar {
     background-color: #6020A0;
 }
 
@@ -66,4 +70,23 @@
     border: none;
     width: 200px;
     height: 55px;
+}
+.navbar-brand>img {
+    border-radius: 20px;
+    border: 3px solid white;
+    transition: box-shadow 0.5s, filter 0.5s;
+}
+.navbar-brand > img:hover {
+    box-shadow: 0 0 10px 5px white; /* Add a white box-shadow that spreads outward */
+    filter: brightness(120%);
+}
+.navbar-brand, .nav-item {
+    border-radius: 30%;
+    font-size: 1.2rem;
+    color: white;
+}
+.navbar-brand:hover {
+    box-shadow: 0 0 10px 5px white; /* Add a white box-shadow that spreads outward */
+    filter: brightness(120%);
+    color: white;
 }
