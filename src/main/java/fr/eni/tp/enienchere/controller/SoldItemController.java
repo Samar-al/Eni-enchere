@@ -167,7 +167,8 @@ public class SoldItemController {
         model.addAttribute("soldItems", soldItems);
 
         // Renvoie la liste d'enchères filtrée au format HTML
-        return "home/index";
+        System.out.println(soldItems);
+        return "fragments/fragment-list-bids";
     }
 
 
