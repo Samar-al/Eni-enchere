@@ -71,6 +71,15 @@ public class SoldItemServiceImpl implements SoldItemService {
 
     @Override
     public List<SoldItem> search(String filter, Integer category) {
+        if (filter != null) {
+            filter = filter.toLowerCase();
+        }
+
+        // If category is -1, set it to null to indicate no category filter
+        if (category != null && category == -1) {
+            category = null;
+        }
+
         return soldItemDAO.search(filter, category);
     }
 }
