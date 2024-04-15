@@ -18,6 +18,7 @@ public class taskSchedulingConfiguration {
     SoldItemDAO soldItemDAO;
 
     @Scheduled(cron = "0 1 0 * * ?")
+   // @Scheduled(fixedRate = 10000)
     public void scheduledTask() {
 
         List<SoldItem> soldItems = soldItemDAO.findAll();

@@ -10,7 +10,7 @@
             <div>
                 <label for="categories" class="form-label mt-4" th:text="#{search.div.label}"></label>
                 <select class="form-select" id="categories">
-                    <option>Toutes</option>
+                    <option value=-1>Toutes</option>
                     <option th:each="categorie : ${categorySession}" th:value="${categorie.categoryNb}" th:text="${categorie.wording}"></option>
                 </select>
             </div>
@@ -77,9 +77,12 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex align-items-center">
+            <div class="d-flex align-items-center justify-content-evenly">
                 <div>
                     <button class="buttonSearch" type="submit" th:text="#{search.div.button}"></button>
+                </div>
+                <div>
+                    <a th:href="@{/}"><button class="buttonSearch" type="button" th:text="#{search.div.reset}"></button></a>
                 </div>
             </div>
         </form>

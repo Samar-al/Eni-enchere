@@ -165,6 +165,9 @@ public class SoldItemController {
     public String search(@RequestParam(name = "filters", required = false) String filters,
                          @RequestParam(name = "category", required = false) Integer category,
                          Model model) {
+        if (category == null) {
+            category = -1;
+        }
         // Récupère la liste d'enchères filtrée en fonction des critères de recherche
         List<SoldItem> soldItems = soldItemService.search(filters, category);
 
