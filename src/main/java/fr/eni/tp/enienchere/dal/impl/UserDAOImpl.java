@@ -1,14 +1,11 @@
 package fr.eni.tp.enienchere.dal.impl;
 
-import fr.eni.tp.enienchere.bo.Category;
 import fr.eni.tp.enienchere.bo.User;
 import fr.eni.tp.enienchere.dal.UserDAO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,6 +18,7 @@ public class UserDAOImpl implements UserDAO {
 
     private static final String SELECT_BY_ID = "SELECT user_nb, username, lastname, firstname, email, phone, street, zip_code, city, credit, admin FROM USERS WHERE user_nb = :userId;";
     private static final String SELECT_BY_USERNAME = "SELECT user_nb, username, lastname, firstname, email, phone, street, zip_code, city, credit, admin FROM USERS WHERE username = :username;";
+    private static final String SELECT_BY_EMAIL = "SELECT user_nb, username, lastname, firstname, email, phone, street, zip_code, city, credit, admin FROM USERS WHERE email = :email;";
     private static final String UPDATE_USER = "UPDATE USERS SET username = :username, lastname = :lastname, email = :email, phone = :phone, street = :street, zip_code = :zip_code, city = :city, credit = :credit, admin = :admin WHERE user_nb = :userId;";
     private static final String UPDATE_USER_PASSWORD = "UPDATE USERS SET password = :password WHERE user_nb = :userId;";
 
@@ -69,6 +67,19 @@ public class UserDAOImpl implements UserDAO {
                 namedParameters,
                 new BeanPropertyRowMapper<>(User.class)
         );
+        return user;
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("email", email);
+        User user = namedParameterJdbcTemplate.queryForObject(
+                SELECT_BY_EMAIL,
+                namedParameters,
+                new BeanPropertyRowMapper<>(User.class)
+        );
+
         return user;
     }
 

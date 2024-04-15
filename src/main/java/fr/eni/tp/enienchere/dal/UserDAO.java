@@ -9,6 +9,7 @@ public interface UserDAO {
     public void create(User user);
 
     public User findByUsername(String username);
+    public User findByEmail(String email);
 
     public User read(long userId);
     User read(String username);

@@ -9,8 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
@@ -28,7 +26,9 @@ public class AppSecurityConfiguration {
             auth.requestMatchers("/css/**").permitAll();
             auth.requestMatchers("/images/**").permitAll();
             auth.requestMatchers("/inscription").permitAll();
-            auth.anyRequest().authenticated();
+            auth.requestMatchers("/encheres/reset-password").permitAll();
+            auth.requestMatchers("/encheres/forgot-password").permitAll();
+            auth.anyRequest().permitAll();
 
 
         });

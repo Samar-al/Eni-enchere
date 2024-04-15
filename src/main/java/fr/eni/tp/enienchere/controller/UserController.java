@@ -4,7 +4,6 @@ import fr.eni.tp.enienchere.bll.UserService;
 import fr.eni.tp.enienchere.bo.User;
 import fr.eni.tp.enienchere.exception.BusinessException;
 import jakarta.validation.Valid;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,7 +11,6 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 @RequestMapping(value = "/encheres")
@@ -114,5 +112,40 @@ public class UserController {
             userService.updatepassword(user);
             return "redirect:/encheres/profil";
         }
+    }
+
+    @GetMapping(value = "/reset-password")
+    public String getResetPasswordForm() {
+        return "user/reset-password.html";
+    }
+
+    @PostMapping(value = "/reset-password")
+    public String resetPassword(Model model){
+        model.addAttribute("resetError", true);
+
+        return "redirect:/encheres";
+    }
+
+    @GetMapping(value = "/forgot-password")
+    public String getForgotPasswordForm(){
+        return "user/forgot-password.html";
+    }
+
+    @PostMapping(value = "/forgot-password")
+    public String forgotPassword(@RequestParam("email") String email,
+                                 Model model){
+
+        System.out.println(email);
+        User user = userService.getUserByEmail(email);
+        System.out.println(user);
+
+        if(user == null ){
+            model.addAttribute("forgotError", true);
+            return "user/forgot-password";
+        }
+
+
+
+        return "redirect:/encheres/reset-password";
     }
 }
