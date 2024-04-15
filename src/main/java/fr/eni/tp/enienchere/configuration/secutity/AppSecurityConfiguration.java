@@ -22,31 +22,38 @@ public class AppSecurityConfiguration {
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(auth-> {
 
-            auth.requestMatchers(
-                    "/",
-                    "/encheres",
-                    "/css/**",
+//            auth.requestMatchers(
+//                    "/",
+//                    "/encheres",
+//                    "/css/**",
+//
+//                    "/inscription",
+//
+//                   // "/filtres/*",
+//
+//                    "/encheres/produit/details"
+//
+//            ).permitAll();
+//
+//            auth.requestMatchers(
+//                    "/encheres/profil",
+//                    "/encheres/creer-vente",
+//                    "/encheres/informations",
+//
+//                    "/encheres/produit/vendeur",
+//
+//                    "/login/details"
+//            ).authenticated();
+//
+//
+//            auth.anyRequest().permitAll();
 
-                    "/inscription",
-
-                   // "/filtres/*",
-
-                    "/encheres/produit/details"
-
-            ).permitAll();
-
-            auth.requestMatchers(
-                    "/encheres/profil",
-                    "/encheres/creer-vente",
-                    "/encheres/informations",
-
-                    "/encheres/produit/vendeur",
-
-                    "/login/details"
-            ).authenticated();
-
-
-            auth.anyRequest().permitAll();
+            auth.requestMatchers("/").permitAll();
+            auth.requestMatchers("/encheres/").permitAll();
+            auth.requestMatchers("/css/*").permitAll();
+            auth.requestMatchers("/images/*").permitAll();
+            auth.requestMatchers("/inscription").permitAll();
+            auth.anyRequest().authenticated();
 
 
         });
