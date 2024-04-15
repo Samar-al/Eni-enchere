@@ -18,25 +18,6 @@
 
     <script>
 
-        function filtersSearch(filtres) {
-            console.log(document.getElementById('filtres').value)
-            document.getElementById('filtres').value;
-        }
-
-        $(document).ready(function() {
-            $("#buttonSearch").click(function () {
-                let valeur = $('#filtres').val();
-
-                $.ajax({
-                    url: "/encheres/",
-                    type: "GET",
-                    success: function(response) {
-                        console.log("success")
-                    }
-                })
-            })
-        })
-
         function achatsRadio(event) {
             if (event.checked == true) {
                 document.getElementById("ventesEnCours").disabled = true;

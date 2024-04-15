@@ -2,6 +2,8 @@ package fr.eni.tp.enienchere.configuration.secutity;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,12 +34,15 @@ public class AppSecurityConfiguration {
 
 
         });
+        httpSecurity.csrf(Customizer.withDefaults());
 
         httpSecurity.formLogin(form-> {
             form.loginPage("/login").permitAll();
             form.defaultSuccessUrl("/login/details", true);
             form.failureUrl("/login-error");
         });
+
+
 
         httpSecurity.logout(logout -> logout
                 .invalidateHttpSession(true)

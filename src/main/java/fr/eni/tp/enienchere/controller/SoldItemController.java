@@ -32,6 +32,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -58,10 +59,8 @@ public class SoldItemController {
     @GetMapping(value = "/")
     public String displayAllSoldItem(
             @ModelAttribute("categorySession") Category categorySession,
-            @RequestBody(required = false) String value,
             Model model
     ) {
-        System.out.println(value);
         List<SoldItem> soldItems = soldItemService.getAllSoldItems();
         System.out.println(soldItems);
         model.addAttribute("soldItems", soldItems);
