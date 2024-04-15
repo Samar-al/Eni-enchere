@@ -156,6 +156,21 @@ public class SoldItemController {
         Files.write(filePath, file.getBytes());
     }
 
+    @GetMapping("/search")
+    public String search(@RequestParam(name = "filters", required = false) String filters,
+                         @RequestParam(name = "category", required = false) Integer category,
+                         Model model) {
+        // Récupère la liste d'enchères filtrée en fonction des critères de recherche
+        List<SoldItem> soldItems = soldItemService.search(filters, category);
+
+        // Ajoute la liste d'enchères filtrée au modèle
+        model.addAttribute("soldItems", soldItems);
+
+        // Renvoie la liste d'enchères filtrée au format HTML
+        return "home/index";
+    }
+
+
 
     @ModelAttribute("categorySession")
     public List<Category> leadSessionCategory() {

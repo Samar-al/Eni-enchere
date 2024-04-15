@@ -23,6 +23,7 @@ public class SoldItemDAOImpl implements SoldItemDAO {
     private static final String SELECT_BY_ID= "SELECT s.item_nb, s.item_name, s.description, s.start_bid_date, s.end_bid_date, s.initial_price, s.sale_price,s.category_nb, s.user_nb, s.sales_status, u.user_nb, u.username, pc.street, pc.zip_code, pc.city, c.wording FROM SOLD_ITEMS s LEFT JOIN USERS as u ON s.user_nb = u.user_nb LEFT JOIN PARCEL_COLLECTIONS as pc ON s.item_nb = pc.item_nb LEFT JOIN CATEGORY as c ON s.category_nb = c.category_nb WHERE s.item_nb=:id";
     private static final String INSERT_INTO = "INSERT INTO SOLD_ITEMS (item_name, description, start_bid_date, end_bid_date, initial_price, sale_price, user_nb, category_nb, sales_status) VALUES (:item_name, :description, :start_bid_date, :end_bid_date, :initial_price, :sale_price, :user_nb, :category_nb, :sales_status)";
     private static final String SELECT_ALL = "SELECT s.user_nb, s.item_nb, s.item_name, s.description, s.start_bid_date, s.category_nb, s.end_bid_date, s.initial_price, s.sales_status, s.sale_price, u.user_nb, u.username, pc.street, pc.zip_code, pc.city, c.wording FROM SOLD_ITEMS s LEFT JOIN USERS as u ON s.user_nb = u.user_nb LEFT JOIN PARCEL_COLLECTIONS as pc ON s.item_nb = pc.item_nb LEFT JOIN CATEGORY as c ON s.category_nb = c.category_nb";
+    private static final String SELECT_ALL_FOR_FILTER = "SELECT s.user_nb, s.item_nb, s.item_name, s.description, s.start_bid_date, s.category_nb, s.end_bid_date, s.initial_price, s.sales_status, s.sale_price, u.user_nb, u.username, pc.street, pc.zip_code, pc.city, c.wording FROM SOLD_ITEMS s LEFT JOIN USERS as u ON s.user_nb = u.user_nb LEFT JOIN PARCEL_COLLECTIONS as pc ON s.item_nb = pc.item_nb LEFT JOIN CATEGORY as c ON s.category_nb = c.category_nb WHERE s.item_name LIKE :filter";
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -68,6 +69,20 @@ public class SoldItemDAOImpl implements SoldItemDAO {
     @Override
     public List<SoldItem> findAll() {
         List<SoldItem>soldItems = jdbcTemplate.query(SELECT_ALL, new SoldItemDAOImpl.SoldItemRowMapper());
+        return soldItems;
+    }
+
+    @Override
+    public List<SoldItem> search(String filter, Integer category) {
+        StringBuilder sql = new StringBuilder(SELECT_ALL_FOR_FILTER);
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("filter", filter);
+
+        if (category != null) {
+            sql.append(" AND s.category_nb = :category");
+            namedParameters.addValue("category", category);
+        }
+        List<SoldItem>soldItems = namedParameterJdbcTemplate.query(sql.toString(), namedParameters,new SoldItemDAOImpl.SoldItemRowMapper());
         return soldItems;
     }
 
