@@ -50,8 +50,8 @@ public class AppSecurityConfiguration {
 
             auth.requestMatchers("/").permitAll();
             auth.requestMatchers("/encheres/").permitAll();
-            auth.requestMatchers("/css/*").permitAll();
-            auth.requestMatchers("/images/*").permitAll();
+            auth.requestMatchers("/css/**").permitAll();
+            auth.requestMatchers("/images/**").permitAll();
             auth.requestMatchers("/inscription").permitAll();
             auth.anyRequest().authenticated();
 
