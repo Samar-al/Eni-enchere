@@ -37,7 +37,6 @@ public class LoginController {
             @ModelAttribute("userSession") User userSession,
             Principal principal
     ) {
-        System.out.println(userSession);
         User user = userService.getUserByUsername(principal.getName());
 
         if (user != null) {

@@ -10,6 +10,7 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
@@ -22,32 +23,6 @@ public class AppSecurityConfiguration {
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(auth-> {
 
-//            auth.requestMatchers(
-//                    "/",
-//                    "/encheres",
-//                    "/css/**",
-//
-//                    "/inscription",
-//
-//                   // "/filtres/*",
-//
-//                    "/encheres/produit/details"
-//
-//            ).permitAll();
-//
-//            auth.requestMatchers(
-//                    "/encheres/profil",
-//                    "/encheres/creer-vente",
-//                    "/encheres/informations",
-//
-//                    "/encheres/produit/vendeur",
-//
-//                    "/login/details"
-//            ).authenticated();
-//
-//
-//            auth.anyRequest().permitAll();
-
             auth.requestMatchers("/").permitAll();
             auth.requestMatchers("/encheres/").permitAll();
             auth.requestMatchers("/css/**").permitAll();
@@ -57,11 +32,10 @@ public class AppSecurityConfiguration {
 
 
         });
-      //  httpSecurity.formLogin(Customizer.withDefaults());
 
         httpSecurity.formLogin(form-> {
             form.loginPage("/login").permitAll();
-            form.defaultSuccessUrl("/login/details");
+            form.defaultSuccessUrl("/login/details", true);
             form.failureUrl("/login-error");
         });
 
