@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.IOException;
@@ -91,7 +92,8 @@ public class SoldItemController {
     public String createOrUpdateSoldItem(@Valid @ModelAttribute("soldItem") SoldItem soldItem,
                                     BindingResult bindingResult,
                                     Principal principal,
-                                    @RequestParam("picture") MultipartFile file) {
+                                    @RequestParam("picture") MultipartFile file,
+                                         RedirectAttributes redirectAttributes) {
 
         if (principal == null) {
             return "redirect:/encheres/";
@@ -99,7 +101,8 @@ public class SoldItemController {
             String currentUserName = principal.getName();
             if (file.isEmpty()) {
                 // Handle empty file
-                return "redirect:/error";
+                redirectAttributes.addFlashAttribute("errorMessage", "Please select a picture");
+                return "redirect:/encheres/creer-vente";
             }
 
             if (bindingResult.hasErrors()) {

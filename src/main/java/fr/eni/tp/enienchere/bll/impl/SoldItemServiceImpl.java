@@ -33,7 +33,6 @@ public class SoldItemServiceImpl implements SoldItemService {
         return soldItem;
     }
 
-
     @Override
     public Long create(SoldItem soldItem, String loggedUser) {
         BusinessException businessException = new BusinessException();

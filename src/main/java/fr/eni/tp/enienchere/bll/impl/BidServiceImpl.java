@@ -67,6 +67,10 @@ public class BidServiceImpl implements BidService {
         // Retrieve existing bid for the user and item
         Bid existingBid = bidDAO.getBidByItemNumber(itemNumber);
 
+        if(!isBidClosed(soldItemDAO.findById(itemNumber).getSaleStatus(), businessException)) {
+            throw businessException;
+        }
+
         // Check if the user has enough credit
         if (!isCreditEnough(userCredit, newBid.getBidAmount(), businessException)) {
             throw businessException;
@@ -118,6 +122,16 @@ public class BidServiceImpl implements BidService {
         return true;
     }
 
+    private boolean isBidClosed(
+            int salesStatus,
+            BusinessException businessException
+    ) {
+        if(salesStatus == 2){
+            businessException.add(BusinessCode.BID_HAS_ENDED);
+            return false;
+        }
+        return true;
+    }
     private boolean isBidAmountEnough(
             BigDecimal newBidAmount,
             BigDecimal bidAmount,

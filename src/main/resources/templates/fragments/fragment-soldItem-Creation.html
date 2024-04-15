@@ -11,6 +11,9 @@
     <div th:if="${loginError}" class="alert alert-danger">
         <span th:text="#{error.register}"></span>
     </div>
+    <div th:if="${errorMessage}" class="alert alert-danger">
+        <p th:text="${errorMessage}"></p>
+    </div>
     <div class="flex-content p-2">
         <div class="flex-content p-2" style="margin: 0 auto; width: 80%">
             <div>
