@@ -76,7 +76,7 @@ public class SoldItemDAOImpl implements SoldItemDAO {
     public List<SoldItem> search(String filter, Integer category) {
         StringBuilder sql = new StringBuilder(SELECT_ALL_FOR_FILTER);
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-        namedParameters.addValue("filter", filter);
+        namedParameters.addValue("filter", "%" + filter + "%");
 
         if (category != null) {
             sql.append(" AND s.category_nb = :category");
