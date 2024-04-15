@@ -50,8 +50,20 @@
 
         </div>
     </div>
-    <div class="d-flex justify-content-center gap-4">
-        <button type="submit" class="btn btn-primary" th:text="#{frag-form-detail.bid}"></button>
+    <div class="d-flex justify-content-center gap-4" th:if="${soldItem != null}">
+        <!-- Check if the salesStatus is greater than 2 -->
+        <!-- Display button only if salesStatus < 2 -->
+      <!--  <button type="submit" class="btn btn-primary" th:text="#{frag-form-detail.bid}" th:if="${soldItem.saleStatus < 2}"></button>-->
+
+        <!-- Display button only if loggedUser is the soldUser and salesStatus is 1 -->
+        <button type="submit" class="btn btn-primary"
+                th:text="#{frag-form-detail.bid}"
+                th:if="${!(loggedUser == soldItem.soldUser && soldItem.saleStatus > 2)}"
+                th:disabled="${soldItem.saleStatus == 2}">
+        </button>
+
+
+        <!-- Cancel button -->
         <a th:href="@{/encheres/}">
             <button type="button" class="btn btn-primary" th:text="#{frag-form-bid.cancel}"></button>
         </a>

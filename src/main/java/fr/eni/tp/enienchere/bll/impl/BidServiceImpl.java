@@ -71,18 +71,22 @@ public class BidServiceImpl implements BidService {
             throw businessException;
         }
 
+        if(!isBidderSeller(user, soldItemDAO.findById(itemNumber).getSoldUser(), businessException )) {
+            throw businessException;
+        }
+
         // Check if the user has enough credit
         if (!isCreditEnough(userCredit, newBid.getBidAmount(), businessException)) {
             throw businessException;
         }
 
         // Check if the new bid amount is greater than the existing bid amount
-        if (existingBid != null && !isBidAmountEnough(newBid.getBidAmount(), existingBid.getBidAmount(), businessException)) {
+        if (existingBid.getUser() != null && !isBidAmountEnough(newBid.getBidAmount(), existingBid.getBidAmount(), businessException)) {
             throw businessException;
         }
 
         // Update the user's credit and the bid
-        if (existingBid == null) {
+        if (existingBid.getUser() == null) {
             // No existing bid, insert the new bid
             BigDecimal newUserCredit = userCredit.subtract(newBid.getBidAmount());
             user.setCredit(newUserCredit.longValue());
@@ -90,6 +94,7 @@ public class BidServiceImpl implements BidService {
             bidDAO.insertBid(newBid, user.getUserNb(), itemNumber);
         } else {
             // Existing bid found, update with new bid amount and date
+            System.out.println(existingBid);
             User previousUser = userDAO.findByUsername(existingBid.getUser().getUsername());
             if (previousUser.equals(user)) {
                 // The new bid is made by the same user as the previous bid
@@ -139,6 +144,18 @@ public class BidServiceImpl implements BidService {
     ) {
         if(newBidAmount.compareTo(bidAmount) <= 0){
             businessException.add(BusinessCode.NOT_ENOUGH_BID_AMOUNT);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isBidderSeller(
+            User bidder,
+            User seller,
+            BusinessException businessException
+    ) {
+        if(bidder == seller){
+            businessException.add(BusinessCode.NOT_AUTORISED_BID);
             return false;
         }
         return true;
