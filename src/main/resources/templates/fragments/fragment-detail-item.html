@@ -15,9 +15,9 @@
             <div>
                 <img alt="" th:src="@{'/images/' + ${soldItem.soldUser.username} + '/image' + ${soldItem.itemNb} + '.png'}" width="200rem">
             </div>
-           <p th:text="#{frag-form-bid.itemName(${soldItem.itemName})}"></p>
-            <p th:text="#{frag-form-bid.description(${soldItem.description})}"></p>
-            <p th:text="#{frag-form-bid.category(${soldItem.category.wording})}"></p>
+           <p th:text="#{frag-form-detail.itemName(${soldItem.itemName})}"></p>
+            <p th:text="#{frag-form-detail.description(${soldItem.description})}"></p>
+            <p th:text="#{frag-form-detail.category(${soldItem.category.wording})}"></p>
 
             <p class="best-offer" th:if="${bid != null and bid.user != null}">
                 <span th:text="#{best.offer(${bid.bidAmount}, ${bid.user.username})}"></span>
@@ -26,16 +26,16 @@
                 <span th:text="#{no.offer.made.yet}"></span>
             </p>
             <br>
-                <p th:text="#{frag-form-bid.amount(${soldItem.initialPrice})}"></p>
-                <p th:text="#{frag-form-bid.endBId(${soldItem.dateEndBid})}"></p>
+                <p th:text="#{frag-form-detail.amount(${soldItem.initialPrice})}"></p>
+                <p th:text="#{frag-form-detail.endBId(${soldItem.dateEndBid})}"></p>
             </div>
             <div class="flex-content p-2" style="margin: 0 auto; width: 80%">
                 <fieldset>
                     <legend th:text="#{frag-form-bid.legend.title}"></legend>
 
-                    <p th:text="#{frag-form-bid.street(${soldItem.collectParcel.street})}"></p>
-                    <p th:text="#{frag-form-bid.zipcode(${soldItem.collectParcel.zipCode})}"></p>
-                    <p th:text="#{frag-form-bid.city(${soldItem.collectParcel.city})}"></p>
+                    <p th:text="#{frag-form-detail.street(${soldItem.collectParcel.street})}"></p>
+                    <p th:text="#{frag-form-detail.zipcode(${soldItem.collectParcel.zipCode})}"></p>
+                    <p th:text="#{frag-form-detail.city(${soldItem.collectParcel.city})}"></p>
 
                 </fieldset>
                 <div>
