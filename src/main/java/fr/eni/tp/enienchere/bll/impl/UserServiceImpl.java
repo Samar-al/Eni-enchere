@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
+    final static int USER_CREDIT_AT_START = 0;
     @Override
     public List<User> getAllUsers() {
         return userDAO.findAll();
@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setCredit(0);
+        user.setCredit(USER_CREDIT_AT_START);
         user.setAdmin(false);
         userDAO.create(user);
     }
