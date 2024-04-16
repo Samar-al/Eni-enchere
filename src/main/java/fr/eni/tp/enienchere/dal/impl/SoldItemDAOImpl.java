@@ -26,7 +26,7 @@ public class SoldItemDAOImpl implements SoldItemDAO {
 
     private static final String SELECT_ALL_FOR_FILTER = "SELECT s.user_nb, s.item_nb, s.item_name, s.description, s.start_bid_date, s.category_nb, s.end_bid_date, s.initial_price, s.sales_status, s.sale_price, u.user_nb, u.username, pc.street, pc.zip_code, pc.city, c.wording FROM SOLD_ITEMS s LEFT JOIN USERS as u ON s.user_nb = u.user_nb LEFT JOIN PARCEL_COLLECTIONS as pc ON s.item_nb = pc.item_nb LEFT JOIN CATEGORY as c ON s.category_nb = c.category_nb WHERE s.item_name LIKE :filter";
 
-    private static final String UPDATE_SALE_STATUS = "UPDATE SOLD_ITEMS SET sales_status= :sales_status WHERE item_nb = :item_nb";
+    private static final String UPDATE_SALE_STATUS = "UPDATE SOLD_ITEMS SET item_name= :item_name, description= :description, start_bid_date= :start_bid_date, end_bid_date= :end_bid_date, initial_price= :initial_price, sale_price= :sale_price, category_nb= :category_nb ,sales_status= :sales_status WHERE item_nb = :item_nb";
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -73,8 +73,14 @@ public class SoldItemDAOImpl implements SoldItemDAO {
     @Override
     public void update(SoldItem soldItem) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-
+        namedParameters.addValue("item_name", soldItem.getItemName());
+        namedParameters.addValue("description", soldItem.getDescription());
+        namedParameters.addValue("start_bid_date", soldItem.getDateStartBid());
+        namedParameters.addValue("end_bid_date", soldItem.getDateEndBid());
+        namedParameters.addValue("initial_price", soldItem.getInitialPrice());
+        namedParameters.addValue("sale_price", soldItem.getSalePrice());
         namedParameters.addValue("sales_status", soldItem.getSaleStatus());
+        namedParameters.addValue("category_nb", soldItem.getCategory().getCategoryNb());
         namedParameters.addValue("item_nb", soldItem.getItemNb());
         namedParameterJdbcTemplate.update(UPDATE_SALE_STATUS, namedParameters);
 

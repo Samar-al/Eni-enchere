@@ -54,8 +54,14 @@
         <button type="submit" class="buttonModif"
                 th:text="#{frag-form-detail.bid}"
                 th:if="${!(userSession.getUsername == soldItem.soldUser.getUsername || soldItem.saleStatus == 2)}">
-                <!--th:disabled="${soldItem.saleStatus == 2}"-->
+
         </button>
+        <a th:href="@{/encheres/detail-item/{item_id}/modifier(item_id=${soldItem.itemNb})}"  th:if="${(userSession.getUsername == soldItem.soldUser.getUsername && soldItem.saleStatus == 0)}">
+            <button type="button" class="buttonModif"
+                    th:text="#{profil.details.edit}">
+            </button>
+        </a>
+
 
 
         <!-- Cancel button -->
