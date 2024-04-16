@@ -28,6 +28,9 @@
                     <label for="password" class="form-label mt-4" th:text="#{login.password}"></label>
                     <input type="password" class="form-control" id="password" placeholder="Mot de passe" name="password" autocomplete="off">
                 </div>
+                <div>
+                    <a class="form-a mt-4" th:href="@{/encheres/forgot-password}" th:text="#{profil.forgotPassword.title}"></a>
+                </div>
                 <div class="d-flex justify-content-center">
                     <button type="submit" class="buttonConnect" th:text="#{login.legend}"></button>
                 </div>
