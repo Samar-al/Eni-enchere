@@ -109,7 +109,7 @@ public class SoldItemController {
             } else {
                 try {
                     Long itemNb = soldItem != null ? soldItem.getItemNb() : null;
-                    if (itemNb == null) {
+                    if (itemNb == 0) {
                         if (file.isEmpty()) {
                             // Handle empty file
                             redirectAttributes.addFlashAttribute("errorMessage", "Please select a picturegit");
