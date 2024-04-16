@@ -1,7 +1,15 @@
 <header xmlns:th="http://www.thymeleaf.org" th:fragment="frag-header">
     <nav class="navbar navbar-expand-lg d-flex justify-content-between" id="navBar">
         <div class="container-fluid">
-            <a th:href="@{/}" class="navbar-brand" ><img th:src="@{/images/logo.png}" width="100"></a>
+            <th:block th:if="${#authorization.expression('isAuthenticated')}">
+                <!-- If the user is authenticated, make the logo clickable -->
+                <a th:href="@{/}" class="navbar-brand"><img th:src="@{/images/logo.png}" width="100"></a>
+            </th:block>
+            <th:block th:unless="${#authorization.expression('isAuthenticated')}">
+                <!-- If the user is not authenticated, render the logo without a clickable link -->
+                <div class="navbar-brand"><img th:src="@{/images/logo.png}" width="100"></div>
+            </th:block>
+
             <button class="navbar-toggler border-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon text-white"></span>
             </button>

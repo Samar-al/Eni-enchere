@@ -4,6 +4,7 @@ import fr.eni.tp.enienchere.bo.Category;
 import fr.eni.tp.enienchere.bo.SoldItem;
 import fr.eni.tp.enienchere.bo.User;
 
+import java.security.Principal;
 import java.util.List;
 
 public interface SoldItemService {
@@ -13,5 +14,8 @@ public interface SoldItemService {
 
     List<SoldItem>getAllSoldItems();
 
+    public void update(SoldItem soldItem);
+
     List<SoldItem>search(String filter, Integer category, long userNb, Integer openBids, Integer myCurrentBids, Integer wonBids, Integer currentSale, Integer salesNotStarted, Integer completedSales);
+
 }

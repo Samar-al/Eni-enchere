@@ -19,6 +19,7 @@
             <div>
                 <img alt="" th:src="@{/images/add-item_25362.png}" width="200rem">
             </div>
+            <input type="number" class="form-control" name="itemNb" id="itemNb" th:if="${soldItem.itemNb != null}" th:field="*{itemNb}" hidden>
             <label for="itemName" class="form-label mt-4"  th:text="#{frag-form-bid.itemName}"></label>
             <input type="text" class="form-control" name="itemName" id="itemName" th:field="*{itemName}" required>
             <br>
