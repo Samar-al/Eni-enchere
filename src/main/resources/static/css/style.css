@@ -72,6 +72,16 @@
     width: 200px;
     height: 55px;
 }
+
+.buttonRetrait{
+    background-color: #C9A9E9;
+    color: #481878;
+    border-radius:  0.5rem;
+    border: none;
+    width: 210px;
+    height: 55px;
+}
+
 .navbar-brand>img {
     border-radius: 20px;
     border: 3px solid white;
