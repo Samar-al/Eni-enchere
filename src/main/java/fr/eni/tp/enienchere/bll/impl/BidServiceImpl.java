@@ -80,6 +80,9 @@ public class BidServiceImpl implements BidService {
         if (!isCreditEnough(userCredit, newBid.getBidAmount(), businessException)) {
             throw businessException;
         }
+        if(existingBid.getUser() == null && !isBidAmountEnough(newBid.getBidAmount(), BigDecimal.valueOf(soldItemDAO.findById(itemNumber).getInitialPrice()), businessException)) {
+            throw businessException;
+        }
 
         // Check if the new bid amount is greater than the existing bid amount
         if (existingBid.getUser() != null && !isBidAmountEnough(newBid.getBidAmount(), existingBid.getBidAmount(), businessException)) {

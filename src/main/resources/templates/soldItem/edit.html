@@ -1,0 +1,19 @@
+
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        th:replace="~{layout/layout :: layout(
+            pageContent=~{:: .main-content},
+            pageTitle=~{:: title}
+        )}"
+>
+
+<title th:text="#{edit.bid.title}"></title>
+
+<main class="main-content">
+    <h1 class="text-center" th:text="#{edit.bid.title}"></h1>
+
+    <form th:replace="~{fragments/fragment-soldItem-Creation :: frag-form-soldItem-Creation('/encheres/creer-vente')}"></form>
+
+</main>
+
+</html>
