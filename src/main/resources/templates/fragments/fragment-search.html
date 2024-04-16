@@ -2,84 +2,89 @@
      xmlns:th="http://www.thymeleaf.org"
      th:fragment="frag-search">
     <div>
-        <form>
-            <label for="filtres" class="form-label mt-4" th:text="#{search.form.label}"></label>
-            <input id="filtres" class="form-control me-sm-2" name="filtres" type="search" placeholder="Rechercher">
+        <form id="filtersForm">
+            <div>
+                <label for="filtres" class="form-label mt-4" th:text="#{search.form.label}"></label>
+                <input id="filtres" class="form-control me-sm-2" name="filtres" type="search" placeholder="Rechercher">
+            </div>
+            <div>
+                <label for="categories" class="form-label mt-4" th:text="#{search.div.label}"></label>
+                <select class="form-select" id="categories">
+                    <option value=-1>Toutes</option>
+                    <option th:each="categorie : ${categorySession}" th:value="${categorie.categoryNb}" th:text="${categorie.wording}"></option>
+                </select>
+            </div>
+            <div class="d-flex flex-row gap-4 p-4" th:if="${#authorization.expression('isAuthenticated')}">
+                <div class="d-flex flex-column">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" onchange="achatsRadio(this);" checked>
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            Achats
+                        </label>
+                    </div>
+                    <div class="d-flex flex-column p-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="1" id="encheresOuvertes">
+                            <label class="form-check-label" for="encheresOuvertes">
+                                Enchères ouvertes
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="0" id="enchetesEnCours">
+                            <label class="form-check-label" for="enchetesEnCours">
+                                Mes enchères en cours
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="2" id="encheresRemportees">
+                            <label class="form-check-label" for="encheresRemportees">
+                                Mes enchères remportées
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex flex-column">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" onchange="ventesRadio(this)">
+                        <label class="form-check-label" for="flexRadioDefault2">
+                            Mes ventes
+                        </label>
+                    </div>
+
+                    <div class="d-flex flex-column p-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="1" id="ventesEnCours" disabled>
+                            <label class="form-check-label" for="ventesEnCours">
+                                Mes ventes en cours
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="0" id="ventesNonDebutees" disabled>
+                            <label class="form-check-label" for="ventesNonDebutees">
+                                Ventes non débutées
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="2" id="ventesTerminees" disabled>
+                            <label class="form-check-label" for="ventesTerminees">
+                                Ventes terminées
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-evenly">
+                <div>
+                    <button class="buttonSearch" type="submit" th:text="#{search.div.button}"></button>
+                </div>
+                <div>
+                    <a th:href="@{/}"><button class="buttonSearch" type="button" th:text="#{search.div.reset}"></button></a>
+                </div>
+            </div>
         </form>
-        <div>
-            <label for="categories" class="form-label mt-4" th:text="#{search.div.label}"></label>
-            <select class="form-select" id="categories">
-                <option>Toutes</option>
-                <option th:each="categorie : ${categorySession}" th:value="${categorie.categoryNb}" th:text="${categorie.wording}"></option>
-            </select>
         </div>
-        <div class="d-flex flex-row gap-4 p-4" th:if="${#authorization.expression('isAuthenticated')}">
-            <div class="d-flex flex-column">
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" onchange="achatsRadio(this);">
-                    <label class="form-check-label" for="flexRadioDefault1">
-                        Achats
-                    </label>
-                </div>
-                <div class="d-flex flex-column p-3">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="encheresOuvertes">
-                        <label class="form-check-label" for="encheresOuvertes">
-                            Enchères ouvertes
-                        </label>
-                    </div>
-
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="enchetesEnCours">
-                        <label class="form-check-label" for="enchetesEnCours">
-                            Mes enchères en cours
-                        </label>
-                    </div>
-
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="encheresRemportees">
-                        <label class="form-check-label" for="encheresRemportees">
-                            Mes enchères remportées
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex flex-column">
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" onchange="ventesRadio(this)">
-                    <label class="form-check-label" for="flexRadioDefault2">
-                        Mes ventes
-                    </label>
-                </div>
-
-                <div class="d-flex flex-column p-3">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="ventesEnCours">
-                        <label class="form-check-label" for="ventesEnCours">
-                            Mes ventes en cours
-                        </label>
-                    </div>
-
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="ventesNonDebutees">
-                        <label class="form-check-label" for="ventesNonDebutees">
-                            Ventes non débutées
-                        </label>
-                    </div>
-
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="ventesTerminees">
-                        <label class="form-check-label" for="ventesTerminees">
-                            Ventes terminées
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="d-flex align-items-center">
-        <div>
-            <button class="buttonSearch" type="submit" th:text="#{search.div.button}" onclick="filtersSearch('filtres');"></button>
-        </div>
-    </div>
 </div>

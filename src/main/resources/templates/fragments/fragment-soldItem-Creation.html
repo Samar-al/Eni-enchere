@@ -19,6 +19,7 @@
             <div>
                 <img alt="" th:src="@{/images/add-item_25362.png}" width="200rem">
             </div>
+            <input type="number" class="form-control" name="itemNb" id="itemNb" th:if="${soldItem.itemNb != null}" th:field="*{itemNb}" hidden>
             <label for="itemName" class="form-label mt-4"  th:text="#{frag-form-bid.itemName}"></label>
             <input type="text" class="form-control" name="itemName" id="itemName" th:field="*{itemName}" required>
             <br>
@@ -79,9 +80,9 @@
         </div>
     </div>
     <div class="d-flex justify-content-center gap-4">
-        <button type="submit" class="btn btn-primary" th:text="#{frag-form-bid.create}"></button>
+        <button type="submit" class="buttonCreate" th:text="#{frag-form-bid.create}"></button>
         <a th:href="@{/encheres/}">
-            <button type="button" class="btn btn-primary" th:text="#{frag-form-bid.cancel}"></button>
+            <button type="button" class="buttonCancelCreate" th:text="#{frag-form-bid.cancel}"></button>
         </a>
     </div>
 

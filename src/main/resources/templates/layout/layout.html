@@ -9,49 +9,14 @@
     <title th:replace="${pageTitle} ?: ~{}"></title>
     <link th:href="@{/css/bootstrap.min-2.css}" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+    <script th:src="@{/js/filters.js}" defer></script>
 </head>
 <body>
     <header th:replace="~{fragments/fragment-header :: frag-header}"></header>
 
     <main th:replace="${pageContent} ?: ~{}"></main>
 
-    <script>
-
-        function filtersSearch(filtres) {
-            document.getElementById('filtres').value;
-        }
-
-        function achatsRadio(event) {
-            if (event.checked == true) {
-                document.getElementById("ventesEnCours").disabled = true;
-                document.getElementById("ventesNonDebutees").disabled = true;
-                document.getElementById("ventesTerminees").disabled = true;
-
-                document.getElementById("ventesEnCours").checked = false;
-                document.getElementById("ventesNonDebutees").checked = false;
-                document.getElementById("ventesTerminees").checked = false;
-
-                document.getElementById("encheresOuvertes").disabled = false;
-                document.getElementById("enchetesEnCours").disabled = false;
-                document.getElementById("encheresRemportees").disabled = false;
-            }
-        }
-
-        function ventesRadio(event) {
-            if (event.checked == true) {
-                document.getElementById("ventesEnCours").disabled = false;
-                document.getElementById("ventesNonDebutees").disabled = false;
-                document.getElementById("ventesTerminees").disabled = false;
-
-                document.getElementById("encheresOuvertes").disabled = true;
-                document.getElementById("enchetesEnCours").disabled = true;
-                document.getElementById("encheresRemportees").disabled = true;
-
-                document.getElementById("encheresOuvertes").checked = false;
-                document.getElementById("enchetesEnCours").checked = false;
-                document.getElementById("encheresRemportees").checked = false;
-            }
-        }
-    </script>
 </body>
 </html>

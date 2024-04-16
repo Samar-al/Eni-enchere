@@ -1,13 +1,19 @@
 package fr.eni.tp.enienchere.configuration;
 
+import fr.eni.tp.enienchere.bo.Bid;
 import fr.eni.tp.enienchere.bo.SoldItem;
+
 import fr.eni.tp.enienchere.bo.Token;
+
+import fr.eni.tp.enienchere.dal.BidDAO;
+
 import fr.eni.tp.enienchere.dal.SoldItemDAO;
 import fr.eni.tp.enienchere.dal.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -23,8 +29,12 @@ public class taskSchedulingConfiguration {
 
     @Autowired
     UserDAO userDAO;
+    @Autowired
+    BidDAO bidDAO;
+
 
     @Scheduled(cron = "0 1 0 * * ?")
+   // @Scheduled(fixedRate = 10000)
     public void scheduledTask() {
 
         List<SoldItem> soldItems = soldItemDAO.findAll();
@@ -42,6 +52,12 @@ public class taskSchedulingConfiguration {
                 check += " ,après : "+ soldItem.getSaleStatus();
             } else if (todayD.after(soldItem.getDateEndBid())) {
                 soldItem.setSaleStatus(2);
+                Bid lastBid = bidDAO.getBidByItemNumber((int)soldItem.getItemNb());
+                soldItem.setBoughtUser(lastBid.getUser());
+                soldItem.setSalePrice((lastBid.getBidAmount()).intValue());
+                BigDecimal creditSeller = BigDecimal.valueOf(soldItem.getSoldUser().getCredit());
+                BigDecimal newCreditSeller = creditSeller.add(lastBid.getBidAmount());
+                soldItem.getSoldUser().setCredit(newCreditSeller.intValue());
                 check += " ,après : "+ soldItem.getSaleStatus();
             } else {
                 soldItem.setSaleStatus(1);

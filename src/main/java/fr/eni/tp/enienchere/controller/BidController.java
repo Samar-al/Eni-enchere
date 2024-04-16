@@ -6,6 +6,7 @@ import fr.eni.tp.enienchere.bll.UserService;
 import fr.eni.tp.enienchere.bo.Bid;
 import fr.eni.tp.enienchere.bo.Category;
 import fr.eni.tp.enienchere.bo.SoldItem;
+import fr.eni.tp.enienchere.bo.User;
 import fr.eni.tp.enienchere.exception.BusinessException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import static java.sql.Types.NULL;
 
 @Controller
 @RequestMapping(value = "/encheres")
+@SessionAttributes({"categorySession", "userSession"})
 public class BidController {
 
     @Autowired
@@ -41,6 +43,7 @@ public class BidController {
                             BindingResult bindingResult,
                             Principal principal,
                             @PathVariable(name = "item_id") String item_id,
+                            @ModelAttribute("userSession") User userSession,
                             Model model,
                             RedirectAttributes redirectAttributes
     ) {
@@ -60,7 +63,7 @@ public class BidController {
                 bindingResult.addError(error);
             });
             model.addAttribute("soldItem", soldItem);
-            //model.addAttribute("bid", bid);
+
             return "soldItem/details";
         }
     }

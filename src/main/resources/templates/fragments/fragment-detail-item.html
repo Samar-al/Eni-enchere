@@ -4,14 +4,14 @@
         th:action="${action}"
         th:object="${bid}"
         th:method="POST"
-        class="d-flex flex-column gap-4">
+        class="d-flex flex-column gap-4 align-items-center">
 
-    <div th:replace="~{fragments/fragment-errors :: frag-errors}"></div>
-    <p class="alert alert-error" th:each="error : ${#fields.errors('global')}" th:text="#{${error}}"></p>
+   <!-- <div th:replace="~{fragments/fragment-errors :: frag-errors}"></div>-->
+    <p class="alert alert-danger" th:each="error : ${#fields.errors('global')}" th:text="#{${error}}"></p>
     <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
 
     <div class="flex-content p-2">
-        <div class="flex-content p-2" style="margin: 0 auto; width: 80%">
+        <div class="flex-content p-2" style="margin: 0 auto;">
             <div>
                 <img alt="" th:src="@{'/images/' + ${soldItem.soldUser.username} + '/image' + ${soldItem.itemNb} + '.png'}" width="200rem">
             </div>
@@ -28,33 +28,45 @@
             <br>
                 <p th:text="#{frag-form-detail.amount(${soldItem.initialPrice})}"></p>
                 <p th:text="#{frag-form-detail.endBId(${soldItem.dateEndBid})}"></p>
+        </div>
+        <div class="flex-content p-2" style="margin: 0 auto;">
+            <fieldset>
+                <legend th:text="#{frag-form-bid.legend.title}"></legend>
+
+                <p th:text="${soldItem.collectParcel.street}"></p>
+                <p th:text="${soldItem.collectParcel.zipCode} + ' ' + ${soldItem.collectParcel.city}"></p>
+
+            </fieldset>
+            <div>
+                <p th:text="#{frag.list.bids.seller(${soldItem.soldUser.username})}"></p>
+                <p th:if="${userSession.getUserNb() == bid.user.userNb}" th:text="#{frag-from-detail.phone(${soldItem.soldUser.phone})}"></p>
             </div>
-            <div class="flex-content p-2" style="margin: 0 auto; width: 80%">
-                <fieldset>
-                    <legend th:text="#{frag-form-bid.legend.title}"></legend>
+        </div>
+       <div class="flex-content p-2" style="margin: 0 auto;" th:if="!${soldItem.saleStatus == 2}">
+            <label for="bidAmount" class="form-label mt-4"  th:text="#{frag.list.bids.bid.amount}"></label>
+            <input type="number" class="form-control" name="bidAmount" id="bidAmount" th:field="*{bidAmount}">
+           <br>
+           <div th:replace="~{fragments/fragment-error :: frag-error('bidAmount')}"></div>
+       </div>
 
-                    <p th:text="#{frag-form-detail.street(${soldItem.collectParcel.street})}"></p>
-                    <p th:text="#{frag-form-detail.zipcode(${soldItem.collectParcel.zipCode})}"></p>
-                    <p th:text="#{frag-form-detail.city(${soldItem.collectParcel.city})}"></p>
-
-                </fieldset>
-                <div>
-                    <p th:text="#{frag.list.bids.seller(${soldItem.soldUser.username})}"></p>
-                </div>
-            </div>
-           <div class="flex-content p-2" style="margin: 0 auto; width: 40%">
-                <label for="bidAmount" class="form-label mt-4"  th:text="#{frag.list.bids.bid.amount}"></label>
-                <input type="number" class="form-control" name="bidAmount" id="bidAmount" th:field="*{bidAmount}">
-               <br>
-               <div th:replace="~{fragments/fragment-error :: frag-error('bidAmount')}"></div>
-
+        <div class="flex-content p-2" style="margin: 0 auto;" th:unless="!${soldItem.saleStatus == 2}">
+            <button class="buttonRetrait" th:text="#{details.button.retrait}"></button>
         </div>
     </div>
-    <div class="d-flex justify-content-center gap-4">
-        <button type="submit" class="btn btn-primary" th:text="#{frag-form-detail.bid}"></button>
+    <div class="d-flex justify-content-center gap-4" th:if="${soldItem != null}">
+        <button type="submit" class="buttonModif"
+                th:text="#{frag-form-detail.bid}"
+                th:if="${!(userSession.getUsername == soldItem.soldUser.getUsername || soldItem.saleStatus == 2)}">
+        </button>
+        <a th:href="@{/encheres/detail-item/{item_id}/modifier(item_id=${soldItem.itemNb})}"  th:if="${(userSession.getUsername == soldItem.soldUser.getUsername && soldItem.saleStatus == 0)}">
+            <button type="button" class="buttonModif"
+                    th:text="#{profil.details.edit}">
+            </button>
+        </a>
+
+        <!-- Cancel button -->
         <a th:href="@{/encheres/}">
-            <button type="button" class="btn btn-primary" th:text="#{frag-form-bid.cancel}"></button>
+            <button type="button" class="buttonModif" th:text="#{frag-form-bid.cancel}"></button>
         </a>
     </div>
-
 </form>

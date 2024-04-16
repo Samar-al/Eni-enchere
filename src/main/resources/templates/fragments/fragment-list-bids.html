@@ -1,22 +1,25 @@
-<div class="container-fluid d-flex flex-wrap gap-4 justify-content-center"
+<div class="container-fluid d-flex flex-wrap gap-4 justify-content-center listBidsContainer"
      xmlns:th="http://www.thymeleaf.org"
      th:fragment="frag-list-bids">
 
     <div class="listBids" th:each="soldItem : ${soldItems}">
         <a class="soldItem-button usernameDeco" th:href="@{/encheres/detail-item/{item_id}(item_id=${soldItem.itemNb})}">
 
-            <div>
-                <img th:src="@{'/images/' + ${soldItem.soldUser.username} + '/image' + ${soldItem.itemNb} + '.png'}" width="200" alt="Image de l'article">
-            </div>
-            <div class="p-4">
-                <p><span class="itemName" th:text="${soldItem.itemName}"></span></p>
-                <p><span th:text="'Prix : ' + ${soldItem.initialPrice}"></span></p>
-                <p><span th:text="'Fin de l\'enchere : '+ ${soldItem.dateEndBid}"></span></p>
-                <p th:if="${soldItem.soldUser.username != 'Utilisateur supprimé'}">
-                    <a th:href="@{/encheres/informations/vendeur(userId=${soldItem.soldUser.userNb})}" class="usernameDeco">
-                        <span th:text="'Vendeur : ' + ${soldItem.soldUser.username}"></span>
-                    </a>
-                </p>
+
+    <div>
+        <img th:src="@{'/images/' + ${soldItem.soldUser.username} + '/image' + ${soldItem.itemNb} + '.png'}" width="200" alt="Image de l'article">
+    </div>
+    <div class="soldItemDisplay p-4">
+        <p><span th:data-item-name="${soldItem.itemName}" class="itemName" th:text="${soldItem.itemName}"></span></p>
+        <p><span  th:text="#{frag.list.bids.price(${soldItem.initialPrice})}"></span></p>
+        <p><span th:text="'Fin de l\'enchère : ' +${soldItem.dateEndBid}"></span></p>
+        <p th:if="${soldItem.soldUser.username != 'Utilisateur supprimé'}">
+            <a th:href="@{/encheres/informations/vendeur(userId=${soldItem.soldUser.userNb})}" class="usernameDeco">
+                <span th:text="#{frag.list.bids.seller(${soldItem.soldUser.username})}"></span>
+            </a>
+        </p>
+
+
 
                 <p class="usernameItalic" th:unless="${soldItem.soldUser.username != 'Utilisateur supprimé'}">
                         <span th:text="'Vendeur : ' + ${soldItem.soldUser.username}"></span>

@@ -32,6 +32,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping(value = "/encheres")
@@ -55,9 +57,11 @@ public class SoldItemController {
 
 
     @GetMapping(value = "/")
-    public String displayAllSoldItem(@ModelAttribute("categorySession") Category categorySession, Model model) {
+    public String displayAllSoldItem(
+            @ModelAttribute("categorySession") Category categorySession,
+            Model model
+    ) {
         List<SoldItem> soldItems = soldItemService.getAllSoldItems();
-        System.out.println(soldItems);
         model.addAttribute("soldItems", soldItems);
         return "home/index.html";
     }
@@ -99,22 +103,31 @@ public class SoldItemController {
             return "redirect:/encheres/";
         } else {
             String currentUserName = principal.getName();
-            if (file.isEmpty()) {
-                // Handle empty file
-                redirectAttributes.addFlashAttribute("errorMessage", "Please select a picture");
-                return "redirect:/encheres/creer-vente";
-            }
 
             if (bindingResult.hasErrors()) {
                 return "soldItem/create.html";
             } else {
                 try {
+                    Long itemNb = soldItem != null ? soldItem.getItemNb() : null;
+                    if (itemNb == 0) {
+                        if (file.isEmpty()) {
+                            // Handle empty file
+                            redirectAttributes.addFlashAttribute("errorMessage", "Please select a picturegit");
+                            return "redirect:/encheres/creer-vente";
+                        }
+                        // Continue with your business logic
+                        Long newItemId = soldItemService.create(soldItem, currentUserName);
+                        savePicture(file, currentUserName, newItemId);
+                        return "redirect:/encheres/";
+                    }else{
+                        System.out.println(soldItem);
+                        if (!file.isEmpty()) {
 
-
-                    // Continue with your business logic
-                    Long newItemId = soldItemService.create(soldItem, currentUserName);
-                    savePicture(file, currentUserName, newItemId);
-                    return "redirect:/encheres/";
+                            savePicture(file, currentUserName, itemNb);
+                        }
+                        soldItemService.update(soldItem);
+                       return "redirect:/encheres/detail-item/" + itemNb;
+                    }
                 } catch (IOException e) {
                     // Handle file writing exception
                     e.printStackTrace();
@@ -127,6 +140,7 @@ public class SoldItemController {
     @GetMapping(value = ("/detail-item/{item_id}"))
     public String displaySoldItem(@PathVariable(name = "item_id") String item_id,
                                   @ModelAttribute("categorySession") Category categorySession,
+                                  @ModelAttribute("userSession") User userSession,
                                   Model model
     ) {
             int idItem = Integer.parseInt(item_id);
@@ -135,6 +149,20 @@ public class SoldItemController {
             model.addAttribute("bid", bid);
             model.addAttribute("soldItem", soldItem);
             return "soldItem/details.html";
+    }
+
+    @GetMapping(value = ("/detail-item/{item_id}/modifier"))
+    public String editSoldItem(@PathVariable(name = "item_id") String item_id,
+                                  @ModelAttribute("categorySession") Category categorySession,
+                                  @ModelAttribute("userSession") User userSession,
+                                  Model model
+    ) {
+        int idItem = Integer.parseInt(item_id);
+        SoldItem soldItem = soldItemService.getSoldItemById(idItem);
+        Bid bid = bidService.getBidByItemId(idItem);
+        model.addAttribute("bid", bid);
+        model.addAttribute("soldItem", soldItem);
+        return "soldItem/edit";
     }
 
     private void savePicture(MultipartFile file, String currentUserName, Long itemNb) throws IOException {
@@ -155,6 +183,33 @@ public class SoldItemController {
         Path filePath = Paths.get(uploadDir, newFilename);
         Files.write(filePath, file.getBytes());
     }
+
+    @GetMapping("/search")
+    public String search(
+        @ModelAttribute("userSession") User userSession,
+        @RequestParam(name = "filters", required = false) String filters,
+        @RequestParam(name = "category", required = false) Integer category,
+        @RequestParam(name = "openBids", required = false) Integer openBids,
+        @RequestParam(name = "myCurrentBids", required = false) Integer myCurrentBids,
+        @RequestParam(name = "wonBids", required = false) Integer wonBids,
+        @RequestParam(name = "currentSale", required = false) Integer currentSale,
+        @RequestParam(name = "salesNotStarted", required = false) Integer salesNotStarted,
+        @RequestParam(name = "completedSales", required = false) Integer completedSales,
+        Model model)
+    {
+        if (category == null) {
+            category = -1;
+        }
+
+        // Récupère la liste d'enchères filtrée en fonction des critères de recherche
+        List<SoldItem> soldItems = soldItemService.search(filters, category, userSession.getUserNb(), openBids, myCurrentBids, wonBids, currentSale, salesNotStarted, completedSales);
+
+        // Ajoute la liste d'enchères filtrée au modèle
+        model.addAttribute("soldItems", soldItems);
+
+        return "fragments/fragment-list-bids";
+    }
+
 
 
     @ModelAttribute("categorySession")
