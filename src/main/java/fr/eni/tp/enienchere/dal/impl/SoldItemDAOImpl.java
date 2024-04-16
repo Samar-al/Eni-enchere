@@ -28,6 +28,8 @@ public class SoldItemDAOImpl implements SoldItemDAO {
 
     private static final String UPDATE_SALE_STATUS = "UPDATE SOLD_ITEMS SET item_name= :item_name, description= :description, start_bid_date= :start_bid_date, end_bid_date= :end_bid_date, initial_price= :initial_price, sale_price= :sale_price, category_nb= :category_nb ,sales_status= :sales_status WHERE item_nb = :item_nb";
 
+    private static final String DELETE = "DELETE FROM SOLD_ITEMS WHERE item_nb = :item_nb";
+
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -84,6 +86,13 @@ public class SoldItemDAOImpl implements SoldItemDAO {
         namedParameters.addValue("item_nb", soldItem.getItemNb());
         namedParameterJdbcTemplate.update(UPDATE_SALE_STATUS, namedParameters);
 
+    }
+
+    @Override
+    public void delete(long itemId) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("item_nb", itemId);
+        namedParameterJdbcTemplate.update(DELETE, namedParameters);
     }
 
     @Override

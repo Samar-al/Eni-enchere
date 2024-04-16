@@ -61,6 +61,11 @@
                     th:text="#{profil.details.edit}">
             </button>
         </a>
+        <form th:action="@{/encheres/detail-item/{item_id}/supprimer(item_id=${soldItem.itemNb})}" th:method="POST"  th:if="${(userSession.getUsername == soldItem.soldUser.getUsername && soldItem.saleStatus == 0)}">
+            <button type="button" class="buttonModif"
+                    th:text="#{item.details.delete}">
+            </button>
+        </form>
 
 
 
