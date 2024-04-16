@@ -6,8 +6,8 @@
         th:method="POST"
         class="d-flex flex-column gap-4">
 
-    <div th:replace="~{fragments/fragment-errors :: frag-errors}"></div>
-    <p class="alert alert-error" th:each="error : ${#fields.errors('global')}" th:text="#{${error}}"></p>
+   <!-- <div th:replace="~{fragments/fragment-errors :: frag-errors}"></div>-->
+    <p class="alert alert-danger" th:each="error : ${#fields.errors('global')}" th:text="#{${error}}"></p>
     <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
 
     <div class="flex-content p-2">
@@ -50,10 +50,17 @@
 
         </div>
     </div>
-    <div class="d-flex justify-content-center gap-4">
-        <button type="submit" class="btn btn-primary" th:text="#{frag-form-detail.bid}"></button>
+    <div class="d-flex justify-content-center gap-4" th:if="${soldItem != null}">
+        <button type="submit" class="buttonModif"
+                th:text="#{frag-form-detail.bid}"
+                th:if="${!(userSession.getUsername == soldItem.soldUser.getUsername || soldItem.saleStatus == 2)}">
+                <!--th:disabled="${soldItem.saleStatus == 2}"-->
+        </button>
+
+
+        <!-- Cancel button -->
         <a th:href="@{/encheres/}">
-            <button type="button" class="btn btn-primary" th:text="#{frag-form-bid.cancel}"></button>
+            <button type="button" class="btn buttonModif" th:text="#{frag-form-bid.cancel}"></button>
         </a>
     </div>
 

@@ -3,5 +3,11 @@
         th:fragment="frag-errors"
         th:if="${#fields.hasErrors('*')}"
 >
-    <h2 class="error" th:text="#{frag-errors.h2}"></h2>
+    <ul>
+        <li
+                class="error"
+                th:each="error :${#fields.errors('*')}"
+                th:text="${error}"
+        ></li>
+    </ul>
 </div>

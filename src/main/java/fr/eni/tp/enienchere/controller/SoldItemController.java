@@ -132,6 +132,7 @@ public class SoldItemController {
     @GetMapping(value = ("/detail-item/{item_id}"))
     public String displaySoldItem(@PathVariable(name = "item_id") String item_id,
                                   @ModelAttribute("categorySession") Category categorySession,
+                                  @ModelAttribute("userSession") User userSession,
                                   Model model
     ) {
             int idItem = Integer.parseInt(item_id);

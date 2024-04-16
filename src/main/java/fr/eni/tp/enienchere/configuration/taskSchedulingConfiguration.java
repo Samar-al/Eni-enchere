@@ -1,6 +1,8 @@
 package fr.eni.tp.enienchere.configuration;
 
+import fr.eni.tp.enienchere.bo.Bid;
 import fr.eni.tp.enienchere.bo.SoldItem;
+import fr.eni.tp.enienchere.dal.BidDAO;
 import fr.eni.tp.enienchere.dal.SoldItemDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,6 +18,9 @@ public class taskSchedulingConfiguration {
 
     @Autowired
     SoldItemDAO soldItemDAO;
+
+    @Autowired
+    BidDAO bidDAO;
 
     @Scheduled(cron = "0 1 0 * * ?")
    // @Scheduled(fixedRate = 10000)
@@ -36,6 +41,8 @@ public class taskSchedulingConfiguration {
                 check += " ,après : "+ soldItem.getSaleStatus();
             } else if (todayD.after(soldItem.getDateEndBid())) {
                 soldItem.setSaleStatus(2);
+                Bid lastBid = bidDAO.getBidByItemNumber((int)soldItem.getItemNb());
+                soldItem.setBoughtUser(lastBid.getUser());
                 check += " ,après : "+ soldItem.getSaleStatus();
             } else {
                 soldItem.setSaleStatus(1);
