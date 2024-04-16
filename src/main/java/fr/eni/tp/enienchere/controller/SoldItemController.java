@@ -114,7 +114,7 @@ public class SoldItemController {
                     if (itemNb == 0) {
                         if (file.isEmpty()) {
                             // Handle empty file
-                            redirectAttributes.addFlashAttribute("errorMessage", "Please select a picturegit");
+                            redirectAttributes.addFlashAttribute("errorMessage", "Please select a picture");
                             return "redirect:/encheres/creer-vente";
                         }
                         // Continue with your business logic
@@ -167,10 +167,8 @@ public class SoldItemController {
         return "soldItem/edit";
     }
 
-    @PostMapping(value = "/detail-item/{item_id}/supprimer")
-    public String deleteItem(@Valid @ModelAttribute("bid") Bid newBid,
-                            BindingResult bindingResult,
-                            Principal principal,
+    @GetMapping(value = "/detail-item/{item_id}/supprimer")
+    public String deleteItem(Principal principal,
                             @PathVariable(name = "item_id") String item_id,
                             @ModelAttribute("userSession") User userSession,
                             Model model,
@@ -179,21 +177,10 @@ public class SoldItemController {
         String currentUserName = principal.getName();
         int idItem = Integer.parseInt(item_id);
         SoldItem soldItem = soldItemService.getSoldItemById(idItem);
-        try {
+        soldItemService.delete(soldItem);
+        redirectAttributes.addFlashAttribute("successMessage", "Your auction have been deleted");
+        return "redirect:/encheres/"; // Redirect to a page showing all bids
 
-            soldItemService.delete(soldItem);
-            redirectAttributes.addFlashAttribute("successMessage", "Your auction have been deleted");
-            return "redirect:/encheres/"; // Redirect to a page showing all bids
-
-        } catch (BusinessException businessException) {
-            businessException.getKeys().forEach(message -> {
-                ObjectError error = new ObjectError("globalError", message);
-                bindingResult.addError(error);
-            });
-            model.addAttribute("soldItem", soldItem);
-
-            return "soldItem/details";
-        }
     }
 
     private void savePicture(MultipartFile file, String currentUserName, Long itemNb) throws IOException {
