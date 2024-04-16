@@ -1,5 +1,6 @@
 package fr.eni.tp.enienchere.bll;
 
+import fr.eni.tp.enienchere.bo.Token;
 import fr.eni.tp.enienchere.bo.User;
 
 import java.util.List;
@@ -18,5 +19,8 @@ public interface UserService {
     void updateUser(User user);
     void updatepassword(User user);
     void deleteUser(User user);
+
+    void createTokenUser(Token token);
+    Token getTokenUser(String token);
 
 }

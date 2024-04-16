@@ -1,5 +1,6 @@
 package fr.eni.tp.enienchere.dal;
 
+import fr.eni.tp.enienchere.bo.Token;
 import fr.eni.tp.enienchere.bo.User;
 
 import java.util.List;
@@ -16,5 +17,8 @@ public interface UserDAO {
     void update(User user);
     void updatePassword(User user);
     void delete(User user);
+    void createTokenUser(Token token);
+
+    Token findToken(String token);
 
 }
