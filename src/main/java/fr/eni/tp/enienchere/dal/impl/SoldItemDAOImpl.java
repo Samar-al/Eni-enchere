@@ -24,7 +24,7 @@ public class SoldItemDAOImpl implements SoldItemDAO {
     private static final String INSERT_INTO = "INSERT INTO SOLD_ITEMS (item_name, description, start_bid_date, end_bid_date, initial_price, sale_price, user_nb, category_nb, sales_status) VALUES (:item_name, :description, :start_bid_date, :end_bid_date, :initial_price, :sale_price, :user_nb, :category_nb, :sales_status)";
     private static final String SELECT_ALL = "SELECT s.user_nb, s.item_nb, s.item_name, s.description, s.start_bid_date, s.category_nb, s.end_bid_date, s.initial_price, s.sales_status, s.sale_price, u.user_nb, u.username, pc.street, pc.zip_code, pc.city, c.wording FROM SOLD_ITEMS s LEFT JOIN USERS as u ON s.user_nb = u.user_nb LEFT JOIN PARCEL_COLLECTIONS as pc ON s.item_nb = pc.item_nb LEFT JOIN CATEGORY as c ON s.category_nb = c.category_nb";
 
-    private static final String SELECT_ALL_FOR_FILTER = "SELECT s.user_nb, s.item_nb, s.item_name, s.description, s.start_bid_date, s.category_nb, s.end_bid_date, s.initial_price, s.sales_status, s.sale_price, u.user_nb, u.username, pc.street, pc.zip_code, pc.city, c.wording FROM SOLD_ITEMS s LEFT JOIN USERS as u ON s.user_nb = u.user_nb LEFT JOIN PARCEL_COLLECTIONS as pc ON s.item_nb = pc.item_nb LEFT JOIN CATEGORY as c ON s.category_nb = c.category_nb WHERE s.item_name LIKE :filter";
+    private static final String SELECT_ALL_FOR_FILTER = "SELECT s.user_nb, s.item_nb, s.item_name, s.description, s.start_bid_date, s.category_nb, s.end_bid_date, s.initial_price, s.sales_status, s.sale_price, u.user_nb, u.username, pc.street, pc.zip_code, pc.city, c.wording FROM SOLD_ITEMS s LEFT JOIN USERS as u ON s.user_nb = u.user_nb LEFT JOIN PARCEL_COLLECTIONS as pc ON s.item_nb = pc.item_nb LEFT JOIN CATEGORY as c ON s.category_nb = c.category_nb LEFT JOIN bids as b ON s.item_nb = b.item_nb WHERE s.item_name LIKE :filter";
 
     private static final String UPDATE_SALE_STATUS = "UPDATE SOLD_ITEMS SET sales_status= :sales_status WHERE item_nb = :item_nb";
 
@@ -87,7 +87,7 @@ public class SoldItemDAOImpl implements SoldItemDAO {
     }
 
     @Override
-    public List<SoldItem> search(String filter, Integer category, long userNb, Integer currentSale, Integer salesNotStarted) {
+    public List<SoldItem> search(String filter, Integer category, long userNb, Integer openBids, Integer myCurrentBids, Integer wonBids, Integer currentSale, Integer salesNotStarted, Integer completedSales) {
         StringBuilder sql = new StringBuilder(SELECT_ALL_FOR_FILTER);
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("filter", "%" + filter + "%");
@@ -97,28 +97,115 @@ public class SoldItemDAOImpl implements SoldItemDAO {
             namedParameters.addValue("category", category);
         }
 
-        if (currentSale != null && salesNotStarted != null) {
-            sql.append(" AND u.user_nb = :userId");
-            namedParameters.addValue("userId", userNb);
-            sql.append(" AND sales_status IN (:currentSale, :salesNotStarted)");
-            namedParameters.addValue("currentSale", currentSale);
-            namedParameters.addValue("salesNotStarted", salesNotStarted);
-        } else {
-            if (currentSale != null) {
-                sql.append(" AND u.user_nb = :userId");
-                namedParameters.addValue("userId", userNb);
-                sql.append(" AND sales_status = :currentSale");
-                namedParameters.addValue("currentSale", currentSale);
-            }
+        // Si un des trois éléments sont sélectionnés
+        if (openBids != null || myCurrentBids != null || wonBids != null) {
 
-            if (salesNotStarted != null) {
-                sql.append(" AND u.user_nb = :userId");
+            // On sélectionne "Enchères ouvertes", "Mes enchères en cours", "Mes enchères remportées"
+            if (openBids != null && myCurrentBids != null && wonBids != null ) {
+                sql.append(" AND b.user_nb = :userId");
                 namedParameters.addValue("userId", userNb);
-                sql.append(" AND sales_status = :salesNotStarted");
-                namedParameters.addValue("salesNotStarted", salesNotStarted);
+                sql.append(" AND sales_status IN (:openBids, :myCurrentBids, :wonBids)");
+                namedParameters.addValue("openBids", openBids);
+                namedParameters.addValue("myCurrentBids", myCurrentBids);
+                namedParameters.addValue("wonBids", wonBids);
+
+            // On sélectionne "Enchères ouvertes", "Mes enchères en cours"
+            } else if (openBids != null && myCurrentBids != null) {
+                sql.append(" AND b.user_nb = :userId");
+                namedParameters.addValue("userId", userNb);
+                sql.append(" AND sales_status IN (:openBids, :myCurrentBids)");
+                namedParameters.addValue("openBids", openBids);
+                namedParameters.addValue("myCurrentBids", myCurrentBids);
+
+            // On sélectionne "Enchères ouvertes", "Mes enchères remportées"
+            } else if (openBids != null && wonBids != null) {
+                sql.append(" AND b.user_nb = :userId");
+                namedParameters.addValue("userId", userNb);
+                sql.append(" AND sales_status IN (:openBids, :wonBids)");
+                namedParameters.addValue("openBids", openBids);
+                namedParameters.addValue("wonBids", wonBids);
+
+            // On sélectionne "Mes enchères en cours", "Mes enchères remportées"
+            } else if (myCurrentBids != null && wonBids != null) {
+                sql.append(" AND b.user_nb = :userId");
+                namedParameters.addValue("userId", userNb);
+                sql.append(" AND sales_status IN (:myCurrentBids, :wonBids)");
+                namedParameters.addValue("myCurrentBids", myCurrentBids);
+                namedParameters.addValue("wonBids", wonBids);
+            } else {
+                // On sélectionne "Enchères ouvertes"
+                if (openBids != null) {
+                    sql.append(" AND sales_status = :openBids");
+                    namedParameters.addValue("openBids", openBids);
+                }
+
+                // On sélectionne "Mes enchères remportées
+                if (myCurrentBids != null) {
+                    sql.append(" AND b.user_nb = :userId");
+                    namedParameters.addValue("userId", userNb);
+                    sql.append(" AND sales_status = :myCurrentBids");
+                    namedParameters.addValue("myCurrentBids", myCurrentBids);
+                }
+
+                if (wonBids != null) {
+                    sql.append(" AND b.user_nb = :userId");
+                    namedParameters.addValue("userId", userNb);
+                    sql.append(" AND sales_status = :wonBids");
+                    namedParameters.addValue("wonBids", wonBids);
+                }
             }
         }
 
+        // Si un élément sur les trois est sélectionné
+        if (currentSale != null || salesNotStarted != null || completedSales != null) {
+            sql.append(" AND u.user_nb = :userId");
+            namedParameters.addValue("userId", userNb);
+
+            // On sélectionne "Mes ventes en cours", "Ventes non débutées", "Ventes terminées"
+            if (currentSale != null && salesNotStarted != null && completedSales != null) {
+                sql.append(" AND sales_status IN (:currentSale, :salesNotStarted, :completedSales);");
+                namedParameters.addValue("currentSale", currentSale);
+                namedParameters.addValue("salesNotStarted", salesNotStarted);
+                namedParameters.addValue("completedSales", completedSales);
+
+            // On sélectionne "Mes ventes en cours" et "Ventes non débutées"
+            } else if (currentSale!= null && salesNotStarted != null) {
+                sql.append(" AND sales_status IN (:currentSale, :salesNotStarted);");
+                namedParameters.addValue("currentSale", currentSale);
+                namedParameters.addValue("salesNotStarted", salesNotStarted);
+
+            // On sélectionne "Mes ventes en cours" et "Ventes terminées"
+            } else if (currentSale!= null && completedSales != null) {
+                sql.append(" AND sales_status IN (:currentSale, :completedSales);");
+                namedParameters.addValue("currentSale", currentSale);
+                namedParameters.addValue("completedSales", completedSales);
+
+            // On sélectionne "Ventes non débutées" et "Ventes terminées"
+            } else if (salesNotStarted != null && completedSales != null) {
+                sql.append(" AND sales_status IN (:salesNotStarted, :completedSales);");
+                namedParameters.addValue("salesNotStarted", salesNotStarted);
+                namedParameters.addValue("completedSales", completedSales);
+
+            } else {
+                //On sélectionne que "Mes ventes en cours"
+                if (currentSale != null) {
+                    sql.append(" AND sales_status = :currentSale");
+                    namedParameters.addValue("currentSale", currentSale);
+                }
+
+                //On sélectionne que "Ventes non débutées"
+                if (salesNotStarted != null) {
+                    sql.append(" AND sales_status = :salesNotStarted");
+                    namedParameters.addValue("salesNotStarted", salesNotStarted);
+                }
+
+                //On sélectionne que "Ventes terminées"
+                if (completedSales != null) {
+                    sql.append(" AND sales_status = :completedSales");
+                    namedParameters.addValue("completedSales", completedSales);
+                }
+            }
+        }
 
 
         List<SoldItem>soldItems = namedParameterJdbcTemplate.query(sql.toString(), namedParameters,new SoldItemDAOImpl.SoldItemRowMapper());

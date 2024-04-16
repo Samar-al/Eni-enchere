@@ -13,5 +13,5 @@ public interface SoldItemService {
 
     List<SoldItem>getAllSoldItems();
 
-    List<SoldItem>search(String filter, Integer category, long userNb, Integer currentSale, Integer salesNotStarted);
+    List<SoldItem>search(String filter, Integer category, long userNb, Integer openBids, Integer myCurrentBids, Integer wonBids, Integer currentSale, Integer salesNotStarted, Integer completedSales);
 }

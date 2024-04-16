@@ -166,17 +166,21 @@ public class SoldItemController {
     public String search(
         @ModelAttribute("userSession") User userSession,
         @RequestParam(name = "filters", required = false) String filters,
-         @RequestParam(name = "category", required = false) Integer category,
-         @RequestParam(name = "currentSale", required = false) Integer currentSale,
+        @RequestParam(name = "category", required = false) Integer category,
+        @RequestParam(name = "openBids", required = false) Integer openBids,
+        @RequestParam(name = "myCurrentBids", required = false) Integer myCurrentBids,
+        @RequestParam(name = "wonBids", required = false) Integer wonBids,
+        @RequestParam(name = "currentSale", required = false) Integer currentSale,
         @RequestParam(name = "salesNotStarted", required = false) Integer salesNotStarted,
-         Model model)
+        @RequestParam(name = "completedSales", required = false) Integer completedSales,
+        Model model)
     {
-        System.out.println(userSession.getUserNb());
         if (category == null) {
             category = -1;
         }
+
         // Récupère la liste d'enchères filtrée en fonction des critères de recherche
-        List<SoldItem> soldItems = soldItemService.search(filters, category, userSession.getUserNb(), currentSale, salesNotStarted);
+        List<SoldItem> soldItems = soldItemService.search(filters, category, userSession.getUserNb(), openBids, myCurrentBids, wonBids, currentSale, salesNotStarted, completedSales);
 
         // Ajoute la liste d'enchères filtrée au modèle
         model.addAttribute("soldItems", soldItems);

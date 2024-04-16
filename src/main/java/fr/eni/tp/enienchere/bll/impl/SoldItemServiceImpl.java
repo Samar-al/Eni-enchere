@@ -51,7 +51,6 @@ public class SoldItemServiceImpl implements SoldItemService {
             soldItem.setSaleStatus(2);
         }
 
-
         if ((soldItem.getCollectParcel().getStreet() == null || soldItem.getCollectParcel().getStreet().isEmpty()) ||
                 (soldItem.getCollectParcel().getZipCode() == null || soldItem.getCollectParcel().getZipCode().isEmpty()) ||
                 (soldItem.getCollectParcel().getCity() == null || soldItem.getCollectParcel().getCity().isEmpty())
@@ -72,7 +71,7 @@ public class SoldItemServiceImpl implements SoldItemService {
     }
 
     @Override
-    public List<SoldItem> search(String filter, Integer category, long userNb, Integer currentSale, Integer salesNotStarted) {
+    public List<SoldItem> search(String filter, Integer category, long userNb, Integer openBids, Integer myCurrentBids, Integer wonBids, Integer currentSale, Integer salesNotStarted, Integer completedSales) {
         if (filter != null) {
             filter = filter.toLowerCase();
         }
@@ -82,6 +81,6 @@ public class SoldItemServiceImpl implements SoldItemService {
             category = null;
         }
 
-        return soldItemDAO.search(filter, category, userNb, currentSale, salesNotStarted);
+        return soldItemDAO.search(filter, category, userNb, openBids, myCurrentBids, wonBids, currentSale, salesNotStarted, completedSales);
     }
 }

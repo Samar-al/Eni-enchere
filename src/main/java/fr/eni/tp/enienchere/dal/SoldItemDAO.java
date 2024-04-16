@@ -12,5 +12,5 @@ public interface SoldItemDAO {
     public Long create(SoldItem soldItem);
     public void update(SoldItem soldItem);
     public List<SoldItem> findAll();
-    List<SoldItem>search(String filter, Integer category, long userNb, Integer currentSale, Integer salesNotStarted);
+    List<SoldItem>search(String filter, Integer category, long userNb, Integer openBids, Integer myCurrentBids, Integer wonBids, Integer currentSale, Integer salesNotStarted, Integer completedSales);
 }
