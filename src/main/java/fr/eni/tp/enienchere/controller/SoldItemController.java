@@ -162,14 +162,20 @@ public class SoldItemController {
     }
 
     @GetMapping("/search")
-    public String search(@RequestParam(name = "filters", required = false) String filters,
-                         @RequestParam(name = "category", required = false) Integer category,
-                         Model model) {
+    public String search(
+        @ModelAttribute("userSession") User userSession,
+        @RequestParam(name = "filters", required = false) String filters,
+         @RequestParam(name = "category", required = false) Integer category,
+         @RequestParam(name = "currentSale", required = false) Integer currentSale,
+        @RequestParam(name = "salesNotStarted", required = false) Integer salesNotStarted,
+         Model model)
+    {
+        System.out.println(userSession.getUserNb());
         if (category == null) {
             category = -1;
         }
         // Récupère la liste d'enchères filtrée en fonction des critères de recherche
-        List<SoldItem> soldItems = soldItemService.search(filters, category);
+        List<SoldItem> soldItems = soldItemService.search(filters, category, userSession.getUserNb(), currentSale, salesNotStarted);
 
         // Ajoute la liste d'enchères filtrée au modèle
         model.addAttribute("soldItems", soldItems);

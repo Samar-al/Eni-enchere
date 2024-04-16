@@ -2,6 +2,7 @@ package fr.eni.tp.enienchere.bll;
 
 import fr.eni.tp.enienchere.bo.Category;
 import fr.eni.tp.enienchere.bo.SoldItem;
+import fr.eni.tp.enienchere.bo.User;
 
 import java.util.List;
 
@@ -12,5 +13,5 @@ public interface SoldItemService {
 
     List<SoldItem>getAllSoldItems();
 
-    List<SoldItem>search(String filter, Integer category);
+    List<SoldItem>search(String filter, Integer category, long userNb, Integer currentSale, Integer salesNotStarted);
 }

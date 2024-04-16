@@ -87,7 +87,7 @@ public class SoldItemDAOImpl implements SoldItemDAO {
     }
 
     @Override
-    public List<SoldItem> search(String filter, Integer category) {
+    public List<SoldItem> search(String filter, Integer category, long userNb, Integer currentSale, Integer salesNotStarted) {
         StringBuilder sql = new StringBuilder(SELECT_ALL_FOR_FILTER);
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("filter", "%" + filter + "%");
@@ -96,6 +96,31 @@ public class SoldItemDAOImpl implements SoldItemDAO {
             sql.append(" AND s.category_nb = :category");
             namedParameters.addValue("category", category);
         }
+
+        if (currentSale != null && salesNotStarted != null) {
+            sql.append(" AND u.user_nb = :userId");
+            namedParameters.addValue("userId", userNb);
+            sql.append(" AND sales_status IN (:currentSale, :salesNotStarted)");
+            namedParameters.addValue("currentSale", currentSale);
+            namedParameters.addValue("salesNotStarted", salesNotStarted);
+        } else {
+            if (currentSale != null) {
+                sql.append(" AND u.user_nb = :userId");
+                namedParameters.addValue("userId", userNb);
+                sql.append(" AND sales_status = :currentSale");
+                namedParameters.addValue("currentSale", currentSale);
+            }
+
+            if (salesNotStarted != null) {
+                sql.append(" AND u.user_nb = :userId");
+                namedParameters.addValue("userId", userNb);
+                sql.append(" AND sales_status = :salesNotStarted");
+                namedParameters.addValue("salesNotStarted", salesNotStarted);
+            }
+        }
+
+
+
         List<SoldItem>soldItems = namedParameterJdbcTemplate.query(sql.toString(), namedParameters,new SoldItemDAOImpl.SoldItemRowMapper());
         return soldItems;
     }
