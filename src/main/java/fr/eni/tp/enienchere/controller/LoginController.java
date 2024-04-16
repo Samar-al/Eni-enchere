@@ -2,6 +2,7 @@ package fr.eni.tp.enienchere.controller;
 
 import fr.eni.tp.enienchere.bll.UserService;
 import fr.eni.tp.enienchere.bo.User;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +36,8 @@ public class LoginController {
     @GetMapping("/login/details")
     public String login(
             @ModelAttribute("userSession") User userSession,
+            @RequestParam(required = false) boolean saveMe,
+            HttpServletResponse response,
             Principal principal
     ) {
         User user = userService.getUserByUsername(principal.getName());
@@ -50,6 +53,17 @@ public class LoginController {
             userSession.setZipCode(user.getZipCode());
             userSession.setCity(user.getCity());
             userSession.setAdmin(user.isAdmin());
+
+            if (saveMe) {
+                String jsScript = "localStorage.setItem('username', '" + userSession.getUsername() + "');";
+                jsScript += "localStorage.setItem('password', '" + userSession.getPassword() + "');";
+                response.setHeader("Set-Cookie", "saveMe=true; Max-Age=2592000; Path=/"); // Expire après 30 jours
+
+                System.out.println(jsScript);
+                System.out.println("passé dans l'éxecution");
+                return "redirect:/encheres?script=" + jsScript;
+            }
+
         } else {
             userSession.setUserNb(0);
             userSession.setUsername(null);
