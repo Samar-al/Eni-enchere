@@ -33,9 +33,8 @@
                 <fieldset>
                     <legend th:text="#{frag-form-bid.legend.title}"></legend>
 
-                    <p th:text="#{frag-form-detail.street(${soldItem.collectParcel.street})}"></p>
-                    <p th:text="#{frag-form-detail.zipcode(${soldItem.collectParcel.zipCode})}"></p>
-                    <p th:text="#{frag-form-detail.city(${soldItem.collectParcel.city})}"></p>
+                    <p th:text="${soldItem.collectParcel.street}"></p>
+                    <p th:text="${soldItem.collectParcel.zipCode} + ' ' + ${soldItem.collectParcel.city}"></p>
 
                 </fieldset>
                 <div>
