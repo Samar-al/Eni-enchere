@@ -28,7 +28,7 @@ public class AppSecurityConfiguration {
             auth.requestMatchers("/inscription").permitAll();
             auth.requestMatchers("/encheres/reset-password").permitAll();
             auth.requestMatchers("/encheres/forgot-password").permitAll();
-            auth.anyRequest().permitAll();
+            auth.anyRequest().authenticated();
 
 
         });

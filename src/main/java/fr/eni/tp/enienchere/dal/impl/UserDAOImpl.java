@@ -33,6 +33,8 @@ public class UserDAOImpl implements UserDAO {
 
     private static final String INSERT_TOKEN_USER = "INSERT INTO TOKEN (user_nb, token, expiryDate) VALUES (:user_nb, :token, :expiryDate);";
     private static final String SELECT_TOKEN_USER = "SELECT token_nb, user_nb, token, expiryDate FROM TOKEN WHERE token = :token;";
+    private static final String SELECT_ALL_TOKENS = "SELECT token_nb, user_nb, token, expiryDate FROM TOKEN;";
+    private static final String DELETE_TOKEN_USER = "DELETE FROM TOKEN WHERE token_nb = :tokenId;";
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -165,6 +167,19 @@ public class UserDAOImpl implements UserDAO {
         namedParameters.addValue("token", token);
         Token tokenUser = namedParameterJdbcTemplate.queryForObject(SELECT_TOKEN_USER, namedParameters, new UserDAOImpl.TokenRowMapper());
         return tokenUser;
+    }
+
+    @Override
+    public void deleteTokenUser(Token token) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("tokenId", token.getToken_nb());
+        namedParameterJdbcTemplate.update(DELETE_TOKEN_USER, namedParameters);
+    }
+
+    @Override
+    public List<Token> findAllTokens() {
+        List<Token> tokens = jdbcTemplate.query(SELECT_ALL_TOKENS, new TokenRowMapper());
+        return tokens;
     }
 
     public class TokenRowMapper implements RowMapper<Token> {

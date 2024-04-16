@@ -20,5 +20,7 @@ public interface UserDAO {
     void createTokenUser(Token token);
 
     Token findToken(String token);
+    void deleteTokenUser(Token token);
+    List<Token> findAllTokens();
 
 }
