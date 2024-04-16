@@ -185,8 +185,6 @@ public class SoldItemController {
         // Ajoute la liste d'enchères filtrée au modèle
         model.addAttribute("soldItems", soldItems);
 
-        // Renvoie la liste d'enchères filtrée au format HTML
-        System.out.println(soldItems);
         return "fragments/fragment-list-bids";
     }
 

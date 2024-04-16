@@ -16,6 +16,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -24,8 +25,8 @@ import java.util.List;
 
 public class BidDAOImpl implements BidDAO {
 
-    private static final String SELECT_ALL = "SELECT b.bid_date, b.bid_amount, s.user_nb, s.item_nb, s.item_name, s.description, s.start_bid_date, s.end_bid_date, s.initial_price, s.sales_status, c.wording, u.user_nb, u.username FROM BIDS as b LEFT JOIN SOLD_ITEMS as s ON b.item_nb = s.item_nb LEFT JOIN  CATEGORY AS c ON s.category_nb = c.category_nb LEFT JOIN USERS as u ON s.user_nb = u.user_nb";
-    private static final String SELECT_BY_ITEM_ID = "SELECT b.bid_date, b.bid_amount, s.user_nb, s.item_nb, s.item_name, s.description, s.start_bid_date, s.end_bid_date, s.initial_price, s.sales_status, c.wording, u.user_nb, u.username, u.lastname FROM BIDS as b LEFT JOIN SOLD_ITEMS as s ON b.item_nb = s.item_nb LEFT JOIN  CATEGORY AS c ON s.category_nb = c.category_nb LEFT JOIN USERS as u ON s.user_nb = u.user_nb WHERE s.item_nb=:item_nb";
+    private static final String SELECT_ALL = "SELECT b.bid_date, b.bid_amount, b.user_nb, s.item_nb, s.item_name, s.description, s.start_bid_date, s.end_bid_date, s.initial_price, s.sales_status, c.wording, u.user_nb, u.username FROM BIDS as b LEFT JOIN SOLD_ITEMS as s ON b.item_nb = s.item_nb LEFT JOIN  CATEGORY AS c ON s.category_nb = c.category_nb LEFT JOIN USERS as u ON b.user_nb = u.user_nb";
+    private static final String SELECT_BY_ITEM_ID = "SELECT b.bid_date, b.bid_amount, b.user_nb, s.user_nb, s.item_nb, s.item_name, s.description, s.start_bid_date, s.end_bid_date, s.initial_price, s.sales_status, c.wording, u.user_nb, u.username, u.lastname FROM BIDS as b LEFT JOIN SOLD_ITEMS as s ON b.item_nb = s.item_nb LEFT JOIN  CATEGORY AS c ON s.category_nb = c.category_nb LEFT JOIN USERS as u ON b.user_nb = u.user_nb WHERE s.item_nb=:item_nb";
     private static final String INSERT_INTO = "INSERT INTO BIDS (user_nb, item_nb, bid_date, bid_amount) VALUES (:user_nb, :item_nb, :bid_date, :bid_amount)";
     private static final String UPDATE_BID = "UPDATE BIDS SET user_nb = :user_nb, bid_date = :bid_date, bid_amount= :bid_amount WHERE item_nb = :item_nb";
     private JdbcTemplate jdbcTemplate;
@@ -93,6 +94,7 @@ public class BidDAOImpl implements BidDAO {
             bid.setBidDate(toLocalDateTime(rs.getTimestamp("b.bid_date")));
             bid.setBidAmount(rs.getBigDecimal("b.bid_amount"));
 
+
           //  bid.setBidAmount(rs.getBigDecimal("bidAmount"));
 
             SoldItem soldItem = new SoldItem();
@@ -111,7 +113,7 @@ public class BidDAOImpl implements BidDAO {
 
 
             User user = new User();
-            user.setUserNb(rs.getInt("s.user_nb"));
+            user.setUserNb(rs.getInt("b.user_nb"));
             user.setUsername(rs.getString("u.username"));
             user.setLastname(rs.getString("u.lastname"));
             soldItem.setSoldUser(user);

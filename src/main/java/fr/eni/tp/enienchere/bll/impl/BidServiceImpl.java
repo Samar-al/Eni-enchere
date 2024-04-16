@@ -60,6 +60,7 @@ public class BidServiceImpl implements BidService {
     public void placeBid(Bid newBid, String loggedUser, String itemNb) {
         BusinessException businessException = new BusinessException();
         User user = userDAO.findByUsername(loggedUser);
+        System.out.println("loggedUser" + user);
         BigDecimal userCredit = BigDecimal.valueOf(user.getCredit());
         int itemNumber = Integer.parseInt(itemNb);
         newBid.setBidDate(LocalDateTime.now());
@@ -71,7 +72,7 @@ public class BidServiceImpl implements BidService {
             throw businessException;
         }
 
-        if(!isBidderSeller(user, soldItemDAO.findById(itemNumber).getSoldUser(), businessException )) {
+        if(!isBidderSeller(user.getUsername(), soldItemDAO.findById(itemNumber).getSoldUser().getUsername(), businessException )) {
             throw businessException;
         }
 
@@ -94,9 +95,9 @@ public class BidServiceImpl implements BidService {
             bidDAO.insertBid(newBid, user.getUserNb(), itemNumber);
         } else {
             // Existing bid found, update with new bid amount and date
-            System.out.println(existingBid);
+
             User previousUser = userDAO.findByUsername(existingBid.getUser().getUsername());
-            if (previousUser.equals(user)) {
+            if (previousUser.getUsername().equals(user.getUsername())) {
                 // The new bid is made by the same user as the previous bid
                 userCredit = userCredit.add(existingBid.getBidAmount());
             }
@@ -150,11 +151,11 @@ public class BidServiceImpl implements BidService {
     }
 
     private boolean isBidderSeller(
-            User bidder,
-            User seller,
+            String bidder,
+            String seller,
             BusinessException businessException
     ) {
-        if(bidder == seller){
+        if(bidder.equals(seller)){
             businessException.add(BusinessCode.NOT_AUTORISED_BID);
             return false;
         }

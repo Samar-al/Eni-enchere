@@ -55,6 +55,7 @@ public class SoldItemServiceImpl implements SoldItemService {
                 (soldItem.getCollectParcel().getZipCode() == null || soldItem.getCollectParcel().getZipCode().isEmpty()) ||
                 (soldItem.getCollectParcel().getCity() == null || soldItem.getCollectParcel().getCity().isEmpty())
         ) {
+
             soldItem.getCollectParcel().setStreet(user.getStreet());
             soldItem.getCollectParcel().setZipCode(user.getZipCode());
             soldItem.getCollectParcel().setCity(user.getCity());
