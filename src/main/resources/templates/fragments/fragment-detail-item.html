@@ -52,8 +52,8 @@
     </div>
     <div class="d-flex justify-content-center gap-4" th:if="${soldItem != null}">
         <button type="submit" class="buttonModif"
-                th:text="#{frag-form-detail.bid}"
-                th:if="${!(userSession.getUsername == soldItem.soldUser.getUsername || soldItem.saleStatus == 2)}">
+                th:text="#{frag-form-detail.bid}">
+               <!-- th:if="${!(userSession.getUsername == soldItem.soldUser.getUsername || soldItem.saleStatus == 2)}"-->
                 <!--th:disabled="${soldItem.saleStatus == 2}"-->
         </button>
 
