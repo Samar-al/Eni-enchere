@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -43,6 +44,10 @@ public class taskSchedulingConfiguration {
                 soldItem.setSaleStatus(2);
                 Bid lastBid = bidDAO.getBidByItemNumber((int)soldItem.getItemNb());
                 soldItem.setBoughtUser(lastBid.getUser());
+                soldItem.setSalePrice((lastBid.getBidAmount()).intValue());
+                BigDecimal creditSeller = BigDecimal.valueOf(soldItem.getSoldUser().getCredit());
+                BigDecimal newCreditSeller = creditSeller.add(lastBid.getBidAmount());
+                soldItem.getSoldUser().setCredit(newCreditSeller.intValue());
                 check += " ,après : "+ soldItem.getSaleStatus();
             } else {
                 soldItem.setSaleStatus(1);
