@@ -27,6 +27,7 @@ public class BidDAOImpl implements BidDAO {
 
     private static final String SELECT_ALL = "SELECT b.bid_date, b.bid_amount, b.user_nb, s.item_nb, s.item_name, s.description, s.start_bid_date, s.end_bid_date, s.initial_price, s.sales_status, c.wording, u.user_nb, u.username FROM BIDS as b LEFT JOIN SOLD_ITEMS as s ON b.item_nb = s.item_nb LEFT JOIN  CATEGORY AS c ON s.category_nb = c.category_nb LEFT JOIN USERS as u ON b.user_nb = u.user_nb";
     private static final String SELECT_BY_ITEM_ID = "SELECT b.bid_date, b.bid_amount, b.user_nb, s.user_nb, s.item_nb, s.item_name, s.description, s.start_bid_date, s.end_bid_date, s.initial_price, s.sales_status, c.wording, u.user_nb, u.username, u.lastname FROM BIDS as b LEFT JOIN SOLD_ITEMS as s ON b.item_nb = s.item_nb LEFT JOIN  CATEGORY AS c ON s.category_nb = c.category_nb LEFT JOIN USERS as u ON b.user_nb = u.user_nb WHERE s.item_nb=:item_nb";
+    private static final String SELECT_ALL_BY_USER_ID = "SELECT b.bid_date, b.bid_amount, b.user_nb, s.user_nb, s.item_nb, s.item_name, s.description, s.start_bid_date, s.end_bid_date, s.initial_price, s.sales_status, c.wording, u.user_nb, u.username, u.lastname FROM BIDS as b LEFT JOIN SOLD_ITEMS as s ON b.item_nb = s.item_nb LEFT JOIN  CATEGORY AS c ON s.category_nb = c.category_nb LEFT JOIN USERS as u ON b.user_nb = u.user_nb WHERE b.user_nb = :user_nb";
     private static final String INSERT_INTO = "INSERT INTO BIDS (user_nb, item_nb, bid_date, bid_amount) VALUES (:user_nb, :item_nb, :bid_date, :bid_amount)";
     private static final String UPDATE_BID = "UPDATE BIDS SET user_nb = :user_nb, bid_date = :bid_date, bid_amount= :bid_amount WHERE item_nb = :item_nb";
     private JdbcTemplate jdbcTemplate;
@@ -82,6 +83,15 @@ public class BidDAOImpl implements BidDAO {
         namedParameters.addValue("bid_date", newBid.getBidDate());
         namedParameters.addValue("bid_amount", newBid.getBidAmount());
         namedParameterJdbcTemplate.update(UPDATE_BID, namedParameters);
+
+    }
+
+    @Override
+    public List<Bid> findAllBidsByUserId(int userId) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("user_nb", userId);
+        List<Bid> bids = namedParameterJdbcTemplate.query(SELECT_ALL_BY_USER_ID, namedParameters, new BidRowMapper());
+        return bids;
 
     }
 

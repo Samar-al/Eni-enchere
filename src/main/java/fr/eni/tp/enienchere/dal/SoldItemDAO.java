@@ -13,4 +13,6 @@ public interface SoldItemDAO {
     public void update(SoldItem soldItem);
     public List<SoldItem> findAll();
     List<SoldItem>search(String filter, Integer category, long userNb, Integer openBids, Integer myCurrentBids, Integer wonBids, Integer currentSale, Integer salesNotStarted, Integer completedSales);
+
+    List<SoldItem>findAllByUserId(int userId);
 }

@@ -1,8 +1,13 @@
 package fr.eni.tp.enienchere.bll.impl;
 
 import fr.eni.tp.enienchere.bll.UserService;
+import fr.eni.tp.enienchere.bo.Bid;
+import fr.eni.tp.enienchere.bo.SoldItem;
 import fr.eni.tp.enienchere.bo.Token;
 import fr.eni.tp.enienchere.bo.User;
+import fr.eni.tp.enienchere.dal.BidDAO;
+import fr.eni.tp.enienchere.dal.SoldItemDAO;
+import fr.eni.tp.enienchere.dal.TokenDAO;
 import fr.eni.tp.enienchere.dal.UserDAO;
 import fr.eni.tp.enienchere.exception.BusinessCode;
 import fr.eni.tp.enienchere.exception.BusinessException;
@@ -15,6 +20,15 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     @Autowired
     UserDAO userDAO;
+
+    @Autowired
+    BidDAO bidDAO;
+
+    @Autowired
+    SoldItemDAO soldItemDAO;
+
+    @Autowired
+    TokenDAO tokenDAO;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -71,6 +85,31 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(User user) {
+        List<Bid> bidsOfUser = bidDAO.findAllBidsByUserId((int) user.getUserNb());
+        User userSupprime = userDAO.findByUsername("Utilisateur supprimé");
+        for (Bid bid : bidsOfUser) {
+            bidDAO.updateBid(bid, userSupprime.getUserNb());
+        }
+        List<SoldItem>soldItemsofUser = soldItemDAO.findAllByUserId((int)user.getUserNb());
+        for (SoldItem soldItem : soldItemsofUser) {
+
+            if(soldItem.getSoldUser().getUserNb() == user.getUserNb()) {
+                soldItem.setSoldUser(userSupprime);
+            }
+            if(soldItem.getBoughtUser() != null && soldItem.getBoughtUser().getUserNb() == user.getUserNb()) {
+                soldItem.setBoughtUser(userSupprime);
+            }
+
+            soldItemDAO.update(soldItem);
+        }
+
+        List<Token>tokens = tokenDAO.findTokenByUserId((int)user.getUserNb());
+
+        for (Token token : tokens) {
+
+            tokenDAO.delete(user.getUserNb());
+        }
+
         userDAO.delete(user);
     }
 

@@ -19,5 +19,7 @@ public interface BidDAO {
 
     public void updateBid(Bid newBid, Long userNb);
 
+    List<Bid>findAllBidsByUserId(int userId);
+
 
 }
