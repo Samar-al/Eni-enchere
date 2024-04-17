@@ -20,13 +20,16 @@ import java.util.List;
 @Repository
 public class SoldItemDAOImpl implements SoldItemDAO {
 
-    private static final String SELECT_BY_ID= "SELECT s.item_nb, s.item_name, s.description, s.start_bid_date, s.end_bid_date, s.initial_price, s.sale_price,s.category_nb, s.user_nb, s.sales_status, u.user_nb, u.username, pc.street, pc.zip_code, pc.city, c.wording FROM SOLD_ITEMS s LEFT JOIN USERS as u ON s.user_nb = u.user_nb LEFT JOIN PARCEL_COLLECTIONS as pc ON s.item_nb = pc.item_nb LEFT JOIN CATEGORY as c ON s.category_nb = c.category_nb WHERE s.item_nb=:id";
+    private static final String SELECT_BY_ID= "SELECT s.item_nb, s.item_name, s.description, s.start_bid_date, s.end_bid_date, s.initial_price, s.sale_price,s.category_nb, s.user_nb, s.sales_status, u.user_nb, u.username, u.phone, pc.street, pc.zip_code, pc.city, c.wording FROM SOLD_ITEMS s LEFT JOIN USERS as u ON s.user_nb = u.user_nb LEFT JOIN PARCEL_COLLECTIONS as pc ON s.item_nb = pc.item_nb LEFT JOIN CATEGORY as c ON s.category_nb = c.category_nb WHERE s.item_nb=:id";
     private static final String INSERT_INTO = "INSERT INTO SOLD_ITEMS (item_name, description, start_bid_date, end_bid_date, initial_price, sale_price, user_nb, category_nb, sales_status) VALUES (:item_name, :description, :start_bid_date, :end_bid_date, :initial_price, :sale_price, :user_nb, :category_nb, :sales_status)";
-    private static final String SELECT_ALL = "SELECT s.user_nb, s.item_nb, s.item_name, s.description, s.start_bid_date, s.category_nb, s.end_bid_date, s.initial_price, s.sales_status, s.sale_price, u.user_nb, u.username, pc.street, pc.zip_code, pc.city, c.wording FROM SOLD_ITEMS s LEFT JOIN USERS as u ON s.user_nb = u.user_nb LEFT JOIN PARCEL_COLLECTIONS as pc ON s.item_nb = pc.item_nb LEFT JOIN CATEGORY as c ON s.category_nb = c.category_nb WHERE s.sales_status != 2";
+    private static final String SELECT_ALL = "SELECT s.user_nb, s.item_nb, s.item_name, s.description, s.start_bid_date, s.category_nb, s.end_bid_date, s.initial_price, s.sales_status, s.sale_price, u.user_nb, u.username, u.phone, pc.street, pc.zip_code, pc.city, c.wording FROM SOLD_ITEMS s LEFT JOIN USERS as u ON s.user_nb = u.user_nb LEFT JOIN PARCEL_COLLECTIONS as pc ON s.item_nb = pc.item_nb LEFT JOIN CATEGORY as c ON s.category_nb = c.category_nb WHERE s.sales_status != 2";
 
-    private static final String SELECT_ALL_FOR_FILTER = "SELECT s.user_nb, s.item_nb, s.item_name, s.description, s.start_bid_date, s.category_nb, s.end_bid_date, s.initial_price, s.sales_status, s.sale_price, u.user_nb, u.username, pc.street, pc.zip_code, pc.city, c.wording FROM SOLD_ITEMS s LEFT JOIN USERS as u ON s.user_nb = u.user_nb LEFT JOIN PARCEL_COLLECTIONS as pc ON s.item_nb = pc.item_nb LEFT JOIN CATEGORY as c ON s.category_nb = c.category_nb LEFT JOIN bids as b ON s.item_nb = b.item_nb WHERE s.item_name LIKE :filter";
+    private static final String SELECT_ALL_FOR_FILTER = "SELECT s.user_nb, s.item_nb, s.item_name, s.description, s.start_bid_date, s.category_nb, s.end_bid_date, s.initial_price, s.sales_status, s.sale_price, u.user_nb, u.username, u.phone, pc.street, pc.zip_code, pc.city, c.wording FROM SOLD_ITEMS s LEFT JOIN USERS as u ON s.user_nb = u.user_nb LEFT JOIN PARCEL_COLLECTIONS as pc ON s.item_nb = pc.item_nb LEFT JOIN CATEGORY as c ON s.category_nb = c.category_nb LEFT JOIN bids as b ON s.item_nb = b.item_nb WHERE s.item_name LIKE :filter";
 
-    private static final String UPDATE_SALE_STATUS = "UPDATE SOLD_ITEMS SET item_name= :item_name, description= :description, start_bid_date= :start_bid_date, end_bid_date= :end_bid_date, initial_price= :initial_price, sale_price= :sale_price, category_nb= :category_nb ,sales_status= :sales_status WHERE item_nb = :item_nb";
+    private static final String UPDATE = "UPDATE SOLD_ITEMS SET item_name= :item_name, description= :description, start_bid_date= :start_bid_date, end_bid_date= :end_bid_date, initial_price= :initial_price, sale_price= :sale_price, user_nb = :user_nb, category_nb= :category_nb ,sales_status= :sales_status WHERE item_nb = :item_nb";
+    private static final String SELECT_ALL_BY_USER_ID= "SELECT s.item_nb, s.item_name, s.description, s.start_bid_date, s.end_bid_date, s.initial_price, s.sale_price,s.category_nb, s.user_nb, s.sales_status, u.user_nb, u.username, u.phone, pc.street, pc.zip_code, pc.city, c.wording FROM SOLD_ITEMS s LEFT JOIN USERS as u ON s.user_nb = u.user_nb LEFT JOIN PARCEL_COLLECTIONS as pc ON s.item_nb = pc.item_nb LEFT JOIN CATEGORY as c ON s.category_nb = c.category_nb WHERE s.user_nb = :userId";
+
+    private static final String DELETE = "DELETE FROM SOLD_ITEMS WHERE item_nb = :item_nb";
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -81,9 +84,17 @@ public class SoldItemDAOImpl implements SoldItemDAO {
         namedParameters.addValue("sale_price", soldItem.getSalePrice());
         namedParameters.addValue("sales_status", soldItem.getSaleStatus());
         namedParameters.addValue("category_nb", soldItem.getCategory().getCategoryNb());
+        namedParameters.addValue("user_nb", soldItem.getSoldUser().getUserNb());
         namedParameters.addValue("item_nb", soldItem.getItemNb());
-        namedParameterJdbcTemplate.update(UPDATE_SALE_STATUS, namedParameters);
+        namedParameterJdbcTemplate.update(UPDATE, namedParameters);
 
+    }
+
+    @Override
+    public void delete(long itemId) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("item_nb", itemId);
+        namedParameterJdbcTemplate.update(DELETE, namedParameters);
     }
 
     @Override
@@ -218,6 +229,14 @@ public class SoldItemDAOImpl implements SoldItemDAO {
         return soldItems;
     }
 
+    @Override
+    public List<SoldItem> findAllByUserId(int userId) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("userId", userId);
+        List<SoldItem>soldItems = namedParameterJdbcTemplate.query(SELECT_ALL_BY_USER_ID, namedParameters, new SoldItemDAOImpl.SoldItemRowMapper());
+        return soldItems;
+    }
+
     public class SoldItemRowMapper implements RowMapper<SoldItem> {
 
         @Override
@@ -247,6 +266,7 @@ public class SoldItemDAOImpl implements SoldItemDAO {
             User user = new User();
             user.setUserNb(rs.getInt("s.user_nb"));
             user.setUsername(rs.getString("u.username"));
+            user.setPhone(rs.getString("u.phone"));
 
             user.setStreet(rs.getString("pc.street"));
             user.setZipCode(rs.getString("pc.zip_code"));

@@ -54,7 +54,7 @@ public class BidController {
         try {
 
             bidService.placeBid(newBid, currentUserName, item_id);
-            redirectAttributes.addFlashAttribute("successMessage", "Your bid was placed successfully.");
+            redirectAttributes.addFlashAttribute("successMessage", "Votre enchère a été placée avec succès.");
             return "redirect:/encheres/detail-item/{item_id}"; // Redirect to a page showing all bids
 
         } catch (BusinessException businessException) {

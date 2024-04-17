@@ -3,7 +3,7 @@
         th:fragment="frag-error(inputName)"
         th:if="${#fields.hasErrors(inputName)}"
 >
-    <ul>
+    <ul class="alert alert-danger p-4">
         <li
                 class="error"
                 th:each="error :${#fields.errors(inputName)}"

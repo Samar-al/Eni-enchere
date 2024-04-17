@@ -11,8 +11,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
@@ -32,7 +34,11 @@ public class AppSecurityConfiguration {
             auth.requestMatchers("/encheres/").permitAll();
             auth.requestMatchers("/css/**").permitAll();
             auth.requestMatchers("/images/**").permitAll();
+            auth.requestMatchers("/js/*").permitAll();
             auth.requestMatchers("/inscription").permitAll();
+            auth.requestMatchers("/encheres/search").permitAll();
+            auth.requestMatchers("/encheres/reset-password").permitAll();
+            auth.requestMatchers("/encheres/forgot-password").permitAll();
             auth.anyRequest().authenticated();
 
 
@@ -91,4 +97,6 @@ public class AppSecurityConfiguration {
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+
 }

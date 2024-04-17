@@ -14,6 +14,13 @@
 
             <label for="phone" class="form-label mt-4" th:text="#{frag-form-register.phone}"></label>
             <input type="text" class="form-control" name="phone" id="phone" th:value="${user.phone}" disabled>
+
+            <div class="d-flex justify-content-center my-3" th:if="${#authorization.expression('isAuthenticated')}">
+                <div th:if="${user.userNb == userSession.userNb}">
+                    <label for="credit" class="form-label mt-4" th:text="#{profil.credit}"></label>
+                    <input type="text" class="form-control" name="credit" id="credit" th:value="${user.credit}" disabled>
+                </div>
+            </div>
         </div>
         <div>
             <label for="email" class="form-label mt-4" th:text="#{frag-form-register.email}"></label>
