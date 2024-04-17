@@ -2,8 +2,10 @@ package fr.eni.tp.enienchere.bll.impl;
 
 import fr.eni.tp.enienchere.bll.SoldItemService;
 import fr.eni.tp.enienchere.bll.UserService;
+import fr.eni.tp.enienchere.bo.Bid;
 import fr.eni.tp.enienchere.bo.SoldItem;
 import fr.eni.tp.enienchere.bo.User;
+import fr.eni.tp.enienchere.dal.BidDAO;
 import fr.eni.tp.enienchere.dal.CollectParcelDAO;
 import fr.eni.tp.enienchere.dal.SoldItemDAO;
 import fr.eni.tp.enienchere.dal.UserDAO;
@@ -30,10 +32,14 @@ public class SoldItemServiceImpl implements SoldItemService {
     @Autowired
     CollectParcelDAO collectParcelDAO;
 
+    @Autowired
+    BidDAO bidDAO;
+
     final static int SALE_STATUS_NOT_STARTED = 0;
     final static int SALE_STATUS_IN_PROGRESS = 1;
     final static int SALE_STATUS_CLOSED = 2;
     final static int NO_CATEGORY = -1;
+
 
     @Override
     public SoldItem getSoldItemById(int item_nb) {
@@ -91,6 +97,18 @@ public class SoldItemServiceImpl implements SoldItemService {
         }
 
         return soldItemDAO.search(filter, category, userNb, openBids, myCurrentBids, wonBids, currentSale, salesNotStarted, completedSales);
+    }
+
+    @Override
+    public void delete(SoldItem soldItem) {
+        if(soldItem.getSaleStatus()==0) {
+            collectParcelDAO.delete(soldItem.getItemNb());
+            soldItemDAO.delete(soldItem.getItemNb());
+        }else{
+            BusinessException businessException = new BusinessException();
+            businessException.add(BusinessCode.BID_HAS_ALREADY_STARTED);
+            throw businessException;
+        }
     }
 
     @Override
