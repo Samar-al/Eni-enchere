@@ -82,7 +82,8 @@
     height: 55px;
 }
 
-.buttonRetrait{
+.buttonRetrait,
+.buttonForgotPassword{
     background-color: #C9A9E9;
     color: #481878;
     border-radius:  0.5rem;
