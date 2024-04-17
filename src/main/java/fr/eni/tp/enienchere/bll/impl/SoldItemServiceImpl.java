@@ -30,6 +30,11 @@ public class SoldItemServiceImpl implements SoldItemService {
     @Autowired
     CollectParcelDAO collectParcelDAO;
 
+    final static int SALE_STATUS_NOT_STARTED = 0;
+    final static int SALE_STATUS_IN_PROGRESS = 1;
+    final static int SALE_STATUS_CLOSED = 2;
+    final static int NO_CATEGORY = -1;
+
     @Override
     public SoldItem getSoldItemById(int item_nb) {
         SoldItem soldItem = soldItemDAO.findById(item_nb);
@@ -44,14 +49,14 @@ public class SoldItemServiceImpl implements SoldItemService {
         Date today = new Date();
         if (today.before(soldItem.getDateStartBid()))
         {
-            soldItem.setSaleStatus(0);
+            soldItem.setSaleStatus(SALE_STATUS_NOT_STARTED);
         } else if ((soldItem.getDateStartBid().equals(today) || soldItem.getDateStartBid().after(today)) &&
                 soldItem.getDateEndBid().equals(today) || soldItem.getDateEndBid().after(today)
         ) {
-            soldItem.setSaleStatus(1);
+            soldItem.setSaleStatus(SALE_STATUS_IN_PROGRESS);
         } else if (soldItem.getDateEndBid().before(today))
         {
-            soldItem.setSaleStatus(2);
+            soldItem.setSaleStatus(SALE_STATUS_CLOSED);
         }
 
         if ((soldItem.getCollectParcel().getStreet() == null || soldItem.getCollectParcel().getStreet().isEmpty()) ||
@@ -81,7 +86,7 @@ public class SoldItemServiceImpl implements SoldItemService {
         }
 
         // If category is -1, set it to null to indicate no category filter
-        if (category != null && category == -1) {
+        if (category != null && category == NO_CATEGORY) {
             category = null;
         }
 
@@ -90,7 +95,7 @@ public class SoldItemServiceImpl implements SoldItemService {
 
     @Override
     public void update(SoldItem soldItem) {
-        if(soldItem.getSaleStatus() == 0) {
+        if(soldItem.getSaleStatus() == SALE_STATUS_NOT_STARTED) {
             soldItemDAO.update(soldItem);
         }else {
             BusinessException businessException = new BusinessException();

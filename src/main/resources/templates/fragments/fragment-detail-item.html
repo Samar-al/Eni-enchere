@@ -27,7 +27,7 @@
             </p>
             <br>
                 <p th:text="#{frag-form-detail.amount(${soldItem.initialPrice})}"></p>
-                <p th:text="#{frag-form-detail.endBId(${soldItem.dateEndBid})}"></p>
+                <p th:text="#{frag-form-detail.endBId(${#dates.format(soldItem.dateEndBid, 'dd/MM/yyyy')})}"></p>
         </div>
         <div class="flex-content p-2" style="margin: 0 auto;">
             <fieldset>
@@ -37,9 +37,9 @@
                 <p th:text="${soldItem.collectParcel.zipCode} + ' ' + ${soldItem.collectParcel.city}"></p>
 
             </fieldset>
-            <div>
+          <div>
                 <p th:text="#{frag.list.bids.seller(${soldItem.soldUser.username})}"></p>
-                <p th:if="${userSession.getUserNb() == bid.user.userNb}" th:text="#{frag-from-detail.phone(${soldItem.soldUser.phone})}"></p>
+                <p th:if="${bid.bidAmount!=0 && userSession.getUserNb() == bid.user.userNb}" th:text="#{frag-from-detail.phone(${soldItem.soldUser.phone})}"></p>
             </div>
         </div>
        <div class="flex-content p-2" style="margin: 0 auto;" th:if="!${soldItem.saleStatus == 2}">

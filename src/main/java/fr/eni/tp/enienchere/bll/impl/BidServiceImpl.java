@@ -37,6 +37,7 @@ public class BidServiceImpl implements BidService {
 
     @Autowired
     CollectParcelDAO collectParcelDAO;
+    final static int SALE_STATUS_CLOSED = 2;
 
     @Override
     public List<Bid> getAllBids() {
@@ -135,7 +136,7 @@ public class BidServiceImpl implements BidService {
             int salesStatus,
             BusinessException businessException
     ) {
-        if(salesStatus == 2){
+        if(salesStatus == SALE_STATUS_CLOSED){
             businessException.add(BusinessCode.BID_HAS_ENDED);
             return false;
         }

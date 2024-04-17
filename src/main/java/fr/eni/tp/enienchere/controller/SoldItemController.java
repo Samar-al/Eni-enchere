@@ -72,12 +72,12 @@ public class SoldItemController {
         SoldItem soldItem = new SoldItem();
         soldItem.setItemName(" ");
         soldItem.setDescription(" ");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date dateStartBid = dateFormat.parse("2022-01-02 10:00:00");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date dateStartBid = dateFormat.parse("01/01/2000");
         soldItem.setDateStartBid(dateStartBid);
         soldItem.setDateEndBid(dateStartBid);
-        soldItem.setInitialPrice(30);
-        soldItem.setSalePrice(30);
+        soldItem.setInitialPrice(0);
+        soldItem.setSalePrice(0);
         if(principal != null) {
             String currentUser = principal.getName();
             soldItem.setSoldUser(userService.getUser(currentUser));
@@ -146,6 +146,7 @@ public class SoldItemController {
             int idItem = Integer.parseInt(item_id);
             SoldItem soldItem = soldItemService.getSoldItemById(idItem);
             Bid bid = bidService.getBidByItemId(idItem);
+        System.out.println(bid);
             model.addAttribute("bid", bid);
             model.addAttribute("soldItem", soldItem);
             return "soldItem/details.html";
@@ -166,22 +167,28 @@ public class SoldItemController {
     }
 
     private void savePicture(MultipartFile file, String currentUserName, Long itemNb) throws IOException {
-        // Define the directory where you want to save the file
-        String uploadDir = Paths.get("src/main/resources/static/images/", currentUserName).toString();
+        // Check if the file is not empty and its content type is PNG
+        if (!file.isEmpty() && file.getContentType().equals("image/png")) {
+            // Define the directory where you want to save the file
+            String uploadDir = Paths.get("src/main/resources/static/images/", currentUserName).toString();
 
-        // If the directory doesn't exist, create it
-        File uploadDirFile = new File(uploadDir);
-        if (!uploadDirFile.exists()) {
-            uploadDirFile.mkdirs();
+            // If the directory doesn't exist, create it
+            File uploadDirFile = new File(uploadDir);
+            if (!uploadDirFile.exists()) {
+                uploadDirFile.mkdirs();
+            }
+
+            // Construct the new filename with item number
+            String originalFilename = file.getOriginalFilename();
+            String newFilename = "image" + itemNb + ".png";
+
+            // Save the file to the defined directory
+            Path filePath = Paths.get(uploadDir, newFilename);
+            Files.write(filePath, file.getBytes());
+        } else {
+            // Handle the case where the file is empty or not a PNG
+            throw new IllegalArgumentException("Only PNG files are allowed.");
         }
-
-        // Construct the new filename with item number
-        String originalFilename = file.getOriginalFilename();
-        String newFilename = "image" + itemNb + originalFilename.substring(originalFilename.lastIndexOf('.'));
-
-        // Save the file to the defined directory
-        Path filePath = Paths.get(uploadDir, newFilename);
-        Files.write(filePath, file.getBytes());
     }
 
     @GetMapping("/search")
