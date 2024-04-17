@@ -1,8 +1,11 @@
 package fr.eni.tp.enienchere.bll.impl;
 
 import fr.eni.tp.enienchere.bll.UserService;
+import fr.eni.tp.enienchere.bo.Token;
 import fr.eni.tp.enienchere.bo.User;
 import fr.eni.tp.enienchere.dal.UserDAO;
+import fr.eni.tp.enienchere.exception.BusinessCode;
+import fr.eni.tp.enienchere.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,7 +18,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
+    final static int USER_CREDIT_AT_START = 0;
     @Override
     public List<User> getAllUsers() {
         return userDAO.findAll();
@@ -24,7 +27,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setCredit(0);
+        user.setCredit(USER_CREDIT_AT_START);
         user.setAdmin(false);
         userDAO.create(user);
     }
@@ -55,7 +58,40 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByEmail(String email) {
+        BusinessException businessException = new BusinessException();
+        User user = userDAO.findByEmail(email);
+        if (!isEmailExist(user.getEmail(), businessException)) {
+//            System.out.println("je passe dans la connexion");
+            throw businessException;
+        }
+
+        return user;
+    }
+
+    @Override
     public void deleteUser(User user) {
         userDAO.delete(user);
+    }
+
+    @Override
+    public void createTokenUser(Token token) {
+        userDAO.createTokenUser(token);
+    }
+
+    @Override
+    public Token getTokenUser(String token) {
+        return userDAO.findToken(token);
+    }
+
+    private boolean isEmailExist(
+            String email,
+            BusinessException businessException
+    ) {
+        if(email.equals("DONOTEXIST")) {
+            businessException.add(BusinessCode.EMAIL_NOT_EXIST);
+            return false;
+        }
+        return true;
     }
 }
