@@ -63,7 +63,9 @@
 .buttonDeleteAccount,
 .buttonCreate,
 .buttonCancelCreate,
-.buttonConnect{
+.buttonConnect,
+.buttonCreateRegister,
+.buttonCancelRegister{
     background-color: #C9A9E9;
     color: #481878;
 
