@@ -19,7 +19,7 @@
             </a>
         </p>
                 <p class="usernameItalic" th:unless="${soldItem.soldUser.username != 'Utilisateur supprimé'}">
-                        <span th:text="'Vendeur : ' + ${soldItem.soldUser.username}"></span>
+                        <span th:text="#{frag.list.bids.sales(${soldItem.soldUser.username})}"></span>
                 </p>
             </div>
         </a>
