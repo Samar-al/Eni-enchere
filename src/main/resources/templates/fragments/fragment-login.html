@@ -16,6 +16,11 @@
                     <input type="password" class="form-control" id="password" placeholder="Mot de passe" name="password" autocomplete="off">
                 </div>
                 <div>
+                    <input type="checkbox" id="saveMe" name="saveMe" value="true">
+                    <label for="saveMe" th:text="#{login.save.auto}"></label>
+                </div>
+
+                <div>
                     <a class="form-a mt-4" th:href="@{/encheres/forgot-password}" th:text="#{profil.forgotPassword.title}"></a>
                 </div>
                 <div class="d-flex justify-content-center">
