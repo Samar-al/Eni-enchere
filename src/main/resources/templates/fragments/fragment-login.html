@@ -3,8 +3,6 @@
     <div class="content d-flex justify-content-center">
         <div class="d-flex flex-column align-items-center w-50">
             <div th:if="${loginError}" class="alert alert-danger">
-
-
                 <span th:text="#{error.login}"></span>
             </div>
             <form th:action="@{/login}" method="POST" class="d-flex flex-column gap-2 justify-content-center w-75">
