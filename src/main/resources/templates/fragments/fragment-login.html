@@ -13,7 +13,7 @@
                 </div>
                 <div>
                     <label for="password" class="form-label mt-4" th:text="#{login.password}"></label>
-                    <input type="password" class="form-control" id="password" placeholder="Mot de passe" name="password" autocomplete="off">
+                    <input type="password" class="form-control" id="password" th:placeholder="#{login.password}" name="password" autocomplete="off">
                 </div>
                 <div>
                     <a class="form-a mt-4" th:href="@{/encheres/forgot-password}" th:text="#{profil.forgotPassword.title}"></a>
