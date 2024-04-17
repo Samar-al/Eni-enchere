@@ -53,14 +53,16 @@ public class LoginController {
             userSession.setZipCode(user.getZipCode());
             userSession.setCity(user.getCity());
             userSession.setAdmin(user.isAdmin());
-
+            System.out.println("passé dans l'éxecution");
+            System.out.println(saveMe);
             if (saveMe) {
                 String jsScript = "localStorage.setItem('username', '" + userSession.getUsername() + "');";
                 jsScript += "localStorage.setItem('password', '" + userSession.getPassword() + "');";
                 response.setHeader("Set-Cookie", "saveMe=true; Max-Age=2592000; Path=/"); // Expire après 30 jours
 
                 System.out.println(jsScript);
-                System.out.println("passé dans l'éxecution");
+
+
                 return "redirect:/encheres?script=" + jsScript;
             }
 
