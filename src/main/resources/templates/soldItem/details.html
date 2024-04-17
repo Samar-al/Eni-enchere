@@ -11,10 +11,10 @@
 
 <main class="main-content">
     <div th:if="${soldItem.saleStatus == 2}">
-        <div th:if="${userSession.getUserNb() == bid.user.userNb}">
+        <div th:if="${bid.bidAmount!=0 && userSession.getUserNb() == bid.user.userNb}">
             <h1 class="text-center" th:text="#{details.title.user}"></h1>
         </div>
-        <div th:if="${userSession.getUserNb() == soldItem.soldUser.userNb}">
+        <div th:if="${bid.bidAmount!=0 && userSession.getUserNb() == soldItem.soldUser.userNb}">
             <h1 class="text-center" th:text="#{details.title.vendeur(${bid.user.username})}"></h1>
         </div>
 

@@ -28,7 +28,6 @@ public class UserDAOImpl implements UserDAO {
     private static final String UPDATE_USER_PASSWORD = "UPDATE USERS SET password = :password WHERE user_nb = :userId;";
 
     private static final String UPDATE_BIDS_FOR_DELETE = "UPDATE bids SET user_nb = 4 WHERE user_nb = :userId;";
-    private static final String UPDATE_SOLD_ITEMS_FOR_DELETE = "UPDATE sold_items SET user_nb = 4 WHERE user_nb = :userId;";
     private static final String DELETE_USER = "DELETE FROM USERS WHERE user_nb = :userId;";
 
     private static final String INSERT_TOKEN_USER = "INSERT INTO TOKEN (user_nb, token, expiryDate) VALUES (:user_nb, :token, :expiryDate);";
@@ -147,8 +146,6 @@ public class UserDAOImpl implements UserDAO {
     public void delete(User user) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("userId", user.getUserNb());
-        namedParameterJdbcTemplate.update(UPDATE_BIDS_FOR_DELETE, namedParameters);
-        namedParameterJdbcTemplate.update(UPDATE_SOLD_ITEMS_FOR_DELETE, namedParameters);
         namedParameterJdbcTemplate.update(DELETE_USER, namedParameters);
     }
 
