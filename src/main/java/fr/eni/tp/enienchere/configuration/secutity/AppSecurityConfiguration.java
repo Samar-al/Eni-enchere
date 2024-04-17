@@ -1,5 +1,8 @@
 package fr.eni.tp.enienchere.configuration.secutity;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,13 +14,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-
+import org.springframework.security.web.session.SessionInformationExpiredEvent;
+import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
@@ -67,7 +71,37 @@ public class AppSecurityConfiguration {
                 .permitAll()
         );
 
+        httpSecurity
+                .sessionManagement(session -> session
+                        .sessionFixation(fixation -> fixation.none())
+                        .maximumSessions(1)
+                        .maxSessionsPreventsLogin(false)
+                        .expiredSessionStrategy(new SessionInformationExpiredStrategy() {
+                            @Override
+                            public void onExpiredSessionDetected(SessionInformationExpiredEvent event) throws IOException, ServletException {
+                                HttpServletRequest request = event.getRequest();
+                                if (!isRememberMeCookiePresent(request)) {
+                                    // Supprimez le userSession uniquement si le cookie "remember-me" n'est pas présent
+                                    request.getSession().removeAttribute("userSession");
+                                    // Redirigez l'utilisateur vers la page de connexion ou effectuez d'autres actions de déconnexion
+                                    event.getResponse().sendRedirect("/login");
+                                }
+                            }
+                        })
+                );
         return httpSecurity.build();
+    }
+
+    private boolean isRememberMeCookiePresent(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("SPRING_SECURITY_REMEMBER_ME_COOKIE")) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Bean
