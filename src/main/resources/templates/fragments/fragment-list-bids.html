@@ -12,15 +12,12 @@
     <div class="soldItemDisplay p-4">
         <p><span th:data-item-name="${soldItem.itemName}" class="itemName" th:text="${soldItem.itemName}"></span></p>
         <p><span  th:text="#{frag.list.bids.price(${soldItem.initialPrice})}"></span></p>
-        <p><span th:text="'Fin de l\'enchère : ' +${soldItem.dateEndBid}"></span></p>
+        <p><span th:text="#{frag.list.bids.bid(${#dates.format(soldItem.dateEndBid, 'dd/MM/yyyy')})}"></span></p>
         <p th:if="${soldItem.soldUser.username != 'Utilisateur supprimé'}">
             <a th:href="@{/encheres/informations/vendeur(userId=${soldItem.soldUser.userNb})}" class="usernameDeco">
                 <span th:text="#{frag.list.bids.seller(${soldItem.soldUser.username})}"></span>
             </a>
         </p>
-
-
-
                 <p class="usernameItalic" th:unless="${soldItem.soldUser.username != 'Utilisateur supprimé'}">
                         <span th:text="'Vendeur : ' + ${soldItem.soldUser.username}"></span>
                 </p>
