@@ -10,58 +10,6 @@
 <title th:text="#{profil.title}"></title>
 <main class="main-content p-4">
     <h1 class="text-center" th:text="#{profil.title}"></h1>
-    <form th:action="${'/encheres/profil'}" th:method="post">
-        <div class="d-flex flex-row gap-2 justify-content-center">
-            <div>
-                <input type="hidden" class="form-control" name="userNb" id="userNb" th:value="${user.userNb}">
-
-                <label for="username" class="form-label mt-4" th:text="#{frag-form-register.pseudo}"></label>
-                <input type="text" class="form-control" name="username" id="username" th:value="${user.username}">
-
-                <label for="firstname" class="form-label mt-4" th:text="#{frag-form-register.firstname}" ></label>
-                <input type="text" class="form-control" name="firstname" id="firstname" th:value="${user.firstname}">
-
-                <label for="phone" class="form-label mt-4" th:text="#{frag-form-register.phone}"></label>
-                <input type="text" class="form-control" name="phone" id="phone" th:value="${user.phone}">
-
-                <label for="zipCode" class="form-label mt-4" th:text="#{frag-form-register.zipcode}"></label>
-                <input type="text" class="form-control" name="zipCode" id="zipCode" th:value="${user.zipCode}">
-
-                <label for="credit" class="form-label mt-4" th:text="#{profil.credit}"></label>
-                <input type="text" class="form-control" name="credit" id="credit" th:value="${user.credit}" disabled>
-            </div>
-            <div>
-                <label for="lastname" class="form-label mt-4" th:text="#{frag-form-register.lastname}"></label>
-                <input type="text" class="form-control" name="lastname" id="lastname" th:value="${user.lastname}">
-
-                <label for="email" class="form-label mt-4" th:text="#{frag-form-register.email}"></label>
-                <input type="text" class="form-control" name="email" id="email" th:value="${user.email}">
-
-                <label for="street" class="form-label mt-4" th:text="#{frag-form-register.street}"></label>
-                <input type="text" class="form-control" name="street" id="street" th:value="${user.street}">
-
-                <label for="city" class="form-label mt-4" th:text="#{frag-form-register.city}"></label>
-                <input type="text" class="form-control" name="city" id="city" th:value="${user.city}">
-
-            </div>
-        </div>
-        <div class="d-flex justify-content-center gap-4 flex-column align-items-center my-2 p-4">
-            <div>
-                <!-- Button to change password -->
-                <a th:href="@{/encheres/profil/password}" th:if="${user.userNb == userSession.userNb}" class="text-decoration-none">
-                    <button type="button" class="buttonChangePassword" th:text="#{profil.details.changePassword}"></button>
-                </a>
-                <a th:href="@{/encheres/supprimerCompte}">
-                    <button type="button" class="buttonDeleteAccount" th:text="#{profil.delete}"></button>
-                </a>
-            </div>
-
-           <div>
-               <button type="submit" class="buttonSave" th:text="#{profil.save}"></button>
-               <!-- Button to quit editing and go back to profile page -->
-               <button type="button" class="buttonCancel" onclick="window.history.back()" th:text="#{profil.details.cancel}"></button>
-           </div>
-        </div>
-    </form>
+    <form th:replace="~{fragments/fragment-user-profil :: frag-user-profil('/encheres/profil')}"></form>
 </main>
 </html>

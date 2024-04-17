@@ -114,7 +114,7 @@ public class SoldItemController {
                     if (itemNb == 0) {
                         if (file.isEmpty()) {
                             // Handle empty file
-                            redirectAttributes.addFlashAttribute("errorMessage", "Please select a picture");
+                            redirectAttributes.addFlashAttribute("errorMessage", "Veuillez sélectionner une image, s'il vous plaît.");
                             return "redirect:/encheres/creer-vente";
                         }
                         // Continue with your business logic
@@ -148,7 +148,6 @@ public class SoldItemController {
             int idItem = Integer.parseInt(item_id);
             SoldItem soldItem = soldItemService.getSoldItemById(idItem);
             Bid bid = bidService.getBidByItemId(idItem);
-        System.out.println(bid);
             model.addAttribute("bid", bid);
             model.addAttribute("soldItem", soldItem);
             return "soldItem/details.html";
@@ -179,7 +178,7 @@ public class SoldItemController {
         int idItem = Integer.parseInt(item_id);
         SoldItem soldItem = soldItemService.getSoldItemById(idItem);
         soldItemService.delete(soldItem);
-        redirectAttributes.addFlashAttribute("successMessage", "Your auction have been deleted");
+        redirectAttributes.addFlashAttribute("successMessage", "Votre enchère a bien été supprimée.");
         return "redirect:/encheres/"; // Redirect to a page showing all bids
 
     }
@@ -205,7 +204,7 @@ public class SoldItemController {
             Files.write(filePath, file.getBytes());
         } else {
             // Handle the case where the file is empty or not a PNG
-            throw new IllegalArgumentException("Only PNG files are allowed.");
+            throw new IllegalArgumentException("Seuls les fichiers PNG sont autorisés.");
         }
     }
 

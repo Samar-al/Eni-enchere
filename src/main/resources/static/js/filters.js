@@ -45,32 +45,31 @@ $(document).ready(function() {
         let salesNotStarted = null;
         let completedSales = null;
 
-        if (document.getElementById("encheresOuvertes").checked) {
+        if (document.getElementById("encheresOuvertes") != null && document.getElementById("encheresOuvertes").checked) {
             openBids = $("#encheresOuvertes").val();
         }
 
-        if (document.getElementById("enchetesEnCours").checked) {
+        if (document.getElementById("enchetesEnCours") != null && document.getElementById("enchetesEnCours").checked) {
             //Mis à 1, pour éviter un conflit avec les encheres ouvertes au moment de la récupération de la valeur
             myCurrentBids = 1;
         }
 
-        if (document.getElementById("encheresRemportees").checked) {
+        if (document.getElementById("encheresRemportees") != null && document.getElementById("encheresRemportees").checked) {
             wonBids = $("#encheresRemportees").val();
         }
 
-        if (document.getElementById("ventesEnCours").checked) {
+        if (document.getElementById("ventesEnCours") != null && document.getElementById("ventesEnCours").checked) {
             currentSale = $("#ventesEnCours").val();
         }
 
-        if (document.getElementById("ventesNonDebutees").checked) {
+        if (document.getElementById("ventesNonDebutees") != null && document.getElementById("ventesNonDebutees").checked) {
             salesNotStarted = $("#ventesNonDebutees").val();
         }
 
-        if (document.getElementById("ventesTerminees").checked) {
+        if (document.getElementById("ventesTerminees") != null && document.getElementById("ventesTerminees").checked) {
             completedSales = $("#ventesTerminees").val();
         }
 
-        console.log(myCurrentBids)
         // Envoie une requête HTTP GET à votre contrôleur Spring
         $.get("/encheres/search", { filters: filters, category: category, openBids: openBids, myCurrentBids: myCurrentBids, wonBids: wonBids, currentSale: currentSale, salesNotStarted: salesNotStarted, completedSales: completedSales }, function(data) {
             // Met à jour la liste d'enchères avec les résultats de la recherche

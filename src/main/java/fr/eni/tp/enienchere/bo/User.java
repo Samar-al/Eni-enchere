@@ -16,13 +16,13 @@ public class User implements Serializable {
     @NotEmpty
     @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "{username.pattern}")
     private String username;
-    @NotEmpty
+    @NotEmpty(message = "{error.username}")
     private String lastname;
-    @NotBlank
+    @NotBlank(message = "{error.firstname}")
     private String firstname;
-    @NotBlank
+    @NotBlank(message = "{error.email}")
     private String email;
-    @NotBlank
+    @NotBlank(message = "{error.phone}")
     @Size(min=6, max=15, message="{Size.user.phone}")
     private String phone;
     private String street;

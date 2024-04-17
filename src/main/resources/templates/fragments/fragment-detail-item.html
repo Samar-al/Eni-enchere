@@ -39,7 +39,7 @@
             </fieldset>
           <div>
                 <p th:text="#{frag.list.bids.seller(${soldItem.soldUser.username})}"></p>
-                <p th:if="${bid.bidAmount!=0 && userSession.getUserNb() == bid.user.userNb}" th:text="#{frag-from-detail.phone(${soldItem.soldUser.phone})}"></p>
+                <p th:if="${bid.bidAmount!=0 && soldItem.saleStatus == 2 && userSession.getUserNb() == bid.user.userNb}" th:text="#{frag-from-detail.phone(${soldItem.soldUser.phone})}"></p>
             </div>
         </div>
        <div class="flex-content p-2" style="margin: 0 auto;" th:if="!${soldItem.saleStatus == 2}">

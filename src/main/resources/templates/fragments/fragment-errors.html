@@ -2,8 +2,9 @@
         xmlns:th="http://www.thymeleaf.org"
         th:fragment="frag-errors"
         th:if="${#fields.hasErrors('*')}"
+        class="d-flex justify-content-center"
 >
-    <ul>
+    <ul class="alert alert-danger p-4">
         <li
                 class="error"
                 th:each="error :${#fields.errors('*')}"
