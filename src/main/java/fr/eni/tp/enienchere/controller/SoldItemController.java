@@ -10,6 +10,7 @@ import fr.eni.tp.enienchere.bo.User;
 
 import fr.eni.tp.enienchere.bll.UserService;
 import fr.eni.tp.enienchere.bo.*;
+import fr.eni.tp.enienchere.exception.BusinessException;
 import jakarta.validation.Valid;
 
 import org.springframework.security.core.Authentication;
@@ -17,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -112,7 +114,7 @@ public class SoldItemController {
                     if (itemNb == 0) {
                         if (file.isEmpty()) {
                             // Handle empty file
-                            redirectAttributes.addFlashAttribute("errorMessage", "Please select a picturegit");
+                            redirectAttributes.addFlashAttribute("errorMessage", "Please select a picture");
                             return "redirect:/encheres/creer-vente";
                         }
                         // Continue with your business logic
@@ -164,6 +166,22 @@ public class SoldItemController {
         model.addAttribute("bid", bid);
         model.addAttribute("soldItem", soldItem);
         return "soldItem/edit";
+    }
+
+    @GetMapping(value = "/detail-item/{item_id}/supprimer")
+    public String deleteItem(Principal principal,
+                            @PathVariable(name = "item_id") String item_id,
+                            @ModelAttribute("userSession") User userSession,
+                            Model model,
+                            RedirectAttributes redirectAttributes
+    ) {
+        String currentUserName = principal.getName();
+        int idItem = Integer.parseInt(item_id);
+        SoldItem soldItem = soldItemService.getSoldItemById(idItem);
+        soldItemService.delete(soldItem);
+        redirectAttributes.addFlashAttribute("successMessage", "Your auction have been deleted");
+        return "redirect:/encheres/"; // Redirect to a page showing all bids
+
     }
 
     private void savePicture(MultipartFile file, String currentUserName, Long itemNb) throws IOException {

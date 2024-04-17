@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class CollectParcelDAOImpl implements CollectParcelDAO {
     private static final String INSERT_INTO = "INSERT INTO PARCEL_COLLECTIONS (item_nb, street, zip_code, city) VALUES (:item_nb, :street, :zip_code, :city)";
+    private static final String DELETE = "DELETE FROM PARCEL_COLLECTIONS WHERE item_nb = :item_nb";
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -27,5 +28,12 @@ public class CollectParcelDAOImpl implements CollectParcelDAO {
         namedParameters.addValue("zip_code", collectParcel.getZipCode());
         namedParameters.addValue("city", collectParcel.getCity());
         namedParameterJdbcTemplate.update(INSERT_INTO, namedParameters);
+    }
+
+    @Override
+    public void delete(long itemId) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("item_nb", itemId);
+        namedParameterJdbcTemplate.update(DELETE, namedParameters);
     }
 }

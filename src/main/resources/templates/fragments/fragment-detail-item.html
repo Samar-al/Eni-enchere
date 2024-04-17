@@ -63,9 +63,18 @@
                     th:text="#{profil.details.edit}">
             </button>
         </a>
+
+        <a th:href="@{/encheres/detail-item/{item_id}/supprimer(item_id=${soldItem.itemNb})}"  th:if="${(userSession.getUsername == soldItem.soldUser.getUsername && soldItem.saleStatus == 0)}">
+            <button type="button" class="buttonModif"
+                    th:text="#{item.details.delete}">
+            </button>
+        </a>
+
         <!-- Cancel button -->
         <a th:href="@{/encheres/}">
             <button type="button" class="buttonModif" th:text="#{frag-form-bid.cancel}"></button>
         </a>
     </div>
+
 </form>
+

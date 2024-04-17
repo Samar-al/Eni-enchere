@@ -11,6 +11,7 @@
 
 <main class="main-content p-4">
     <h1 th:text="#{index.h1}" class="text-center"></h1>
+    <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
 
     <div th:replace="~{fragments/fragment-search :: frag-search}"></div>
     <br>

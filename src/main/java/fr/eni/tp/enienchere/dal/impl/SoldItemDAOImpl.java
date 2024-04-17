@@ -29,6 +29,8 @@ public class SoldItemDAOImpl implements SoldItemDAO {
     private static final String UPDATE = "UPDATE SOLD_ITEMS SET item_name= :item_name, description= :description, start_bid_date= :start_bid_date, end_bid_date= :end_bid_date, initial_price= :initial_price, sale_price= :sale_price, user_nb = :user_nb, category_nb= :category_nb ,sales_status= :sales_status WHERE item_nb = :item_nb";
     private static final String SELECT_ALL_BY_USER_ID= "SELECT s.item_nb, s.item_name, s.description, s.start_bid_date, s.end_bid_date, s.initial_price, s.sale_price,s.category_nb, s.user_nb, s.sales_status, u.user_nb, u.username, u.phone, pc.street, pc.zip_code, pc.city, c.wording FROM SOLD_ITEMS s LEFT JOIN USERS as u ON s.user_nb = u.user_nb LEFT JOIN PARCEL_COLLECTIONS as pc ON s.item_nb = pc.item_nb LEFT JOIN CATEGORY as c ON s.category_nb = c.category_nb WHERE s.user_nb = :userId";
 
+    private static final String DELETE = "DELETE FROM SOLD_ITEMS WHERE item_nb = :item_nb";
+
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -86,6 +88,13 @@ public class SoldItemDAOImpl implements SoldItemDAO {
         namedParameters.addValue("item_nb", soldItem.getItemNb());
         namedParameterJdbcTemplate.update(UPDATE, namedParameters);
 
+    }
+
+    @Override
+    public void delete(long itemId) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("item_nb", itemId);
+        namedParameterJdbcTemplate.update(DELETE, namedParameters);
     }
 
     @Override
