@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import java.security.Principal;
@@ -50,6 +49,9 @@ public class LoginController {
             userSession.setZipCode(user.getZipCode());
             userSession.setCity(user.getCity());
             userSession.setAdmin(user.isAdmin());
+
+
+
         } else {
             userSession.setUserNb(0);
             userSession.setUsername(null);
