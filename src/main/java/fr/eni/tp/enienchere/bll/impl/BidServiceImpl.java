@@ -38,6 +38,7 @@ public class BidServiceImpl implements BidService {
     @Autowired
     CollectParcelDAO collectParcelDAO;
     final static int SALE_STATUS_CLOSED = 2;
+    final static int SALE_STATUS_NOT_OPEN = 0;
 
     @Override
     public List<Bid> getAllBids() {
@@ -70,6 +71,9 @@ public class BidServiceImpl implements BidService {
         Bid existingBid = bidDAO.getBidByItemNumber(itemNumber);
 
         if(!isBidClosed(soldItemDAO.findById(itemNumber).getSaleStatus(), businessException)) {
+            throw businessException;
+        }
+        if(!isBidOpen(soldItemDAO.findById(itemNumber).getSaleStatus(), businessException)) {
             throw businessException;
         }
 
@@ -137,6 +141,17 @@ public class BidServiceImpl implements BidService {
             BusinessException businessException
     ) {
         if(salesStatus == SALE_STATUS_CLOSED){
+            businessException.add(BusinessCode.BID_NOT_OPEN_YET);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isBidOpen(
+            int salesStatus,
+            BusinessException businessException
+    ) {
+        if(salesStatus == SALE_STATUS_NOT_OPEN){
             businessException.add(BusinessCode.BID_HAS_ENDED);
             return false;
         }

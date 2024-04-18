@@ -8,7 +8,7 @@ public class BusinessCode {
     public static final String EMAIL_NOT_EXIST = "email.not.exist";
     public static final String NOT_AUTORISED_BID = "not.autorised.bid";
     public static final String BID_HAS_ALREADY_STARTED = "bid.already.started";
-
+    public static final String BID_NOT_OPEN_YET = "bid.not.open.yet";
 
 
 
