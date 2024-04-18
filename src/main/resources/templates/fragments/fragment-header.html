@@ -28,7 +28,7 @@
                         <a class="nav-link navbar-brand" th:href="@{/inscription}" th:text="#{header.nav.register}"></a>
                     </li>
                     <li class="nav-item" th:if="${#authorization.expression('isAuthenticated')}">
-                        <a class="nav-link memberConnect navbar-brand" th:href="@{/encheres/informations}" th:text="#{register.h1}"></a>
+                        <a class="nav-link memberConnect navbar-brand" th:href="@{/encheres/informations}" th:text="#{header.profil}"></a>
                     </li>
                     <li class="nav-item" th:if="${!#authorization.expression('isAuthenticated')}">
                         <a class="nav-link navbar-brand" th:href="@{/login}" th:text="#{header.nav.login}"></a>
