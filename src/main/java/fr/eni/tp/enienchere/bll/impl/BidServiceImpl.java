@@ -141,7 +141,7 @@ public class BidServiceImpl implements BidService {
             BusinessException businessException
     ) {
         if(salesStatus == SALE_STATUS_CLOSED){
-            businessException.add(BusinessCode.BID_NOT_OPEN_YET);
+            businessException.add(BusinessCode.BID_HAS_ENDED);
             return false;
         }
         return true;
@@ -152,7 +152,7 @@ public class BidServiceImpl implements BidService {
             BusinessException businessException
     ) {
         if(salesStatus == SALE_STATUS_NOT_OPEN){
-            businessException.add(BusinessCode.BID_HAS_ENDED);
+            businessException.add(BusinessCode.BID_NOT_OPEN_YET);
             return false;
         }
         return true;
