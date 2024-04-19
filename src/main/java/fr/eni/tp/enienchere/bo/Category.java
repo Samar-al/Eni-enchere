@@ -1,15 +1,18 @@
 package fr.eni.tp.enienchere.bo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Category {
+public class Category implements Serializable {
 
     private long categoryNb;
     private String wording;
 
     List<SoldItem> soldItemsPerCategory = new ArrayList<>();
 
+    public Category() {
+    }
     public Category(String wording) {
         this.wording = wording;
     }
@@ -36,5 +39,14 @@ public class Category {
 
     public void addSoldItem(SoldItem soldItem) {
         this.soldItemsPerCategory.add(soldItem);
+    }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "categoryNb=" + categoryNb +
+                ", wording='" + wording + '\'' +
+                ", soldItemsPerCategory=" + soldItemsPerCategory +
+                '}';
     }
 }

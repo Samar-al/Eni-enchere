@@ -1,0 +1,45 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     th:fragment="frag-details">
+    <h1 class="text-center" th:text="#{informations.profil} + ' ' + ${user.username}"></h1>
+    <div class="d-flex flex-row gap-2 justify-content-center p-4">
+        <div>
+            <label for="username" class="form-label mt-4" th:text="#{frag-form-register.pseudo}"></label>
+            <input type="text" class="form-control" name="username" id="username" th:value="${user.username}" disabled>
+
+            <label for="lastname" class="form-label mt-4" th:text="#{frag-form-register.lastname}"></label>
+            <input type="text" class="form-control" name="lastname" id="lastname" th:value="${user.lastname}" disabled>
+
+            <label for="firstname" class="form-label mt-4" th:text="#{frag-form-register.firstname}"></label>
+            <input type="text" class="form-control" name="firstname" id="firstname" th:value="${user.firstname}" disabled>
+
+            <label for="phone" class="form-label mt-4" th:text="#{frag-form-register.phone}"></label>
+            <input type="text" class="form-control" name="phone" id="phone" th:value="${user.phone}" disabled>
+
+            <div class="d-flex justify-content-center my-3" th:if="${#authorization.expression('isAuthenticated')}">
+                <div th:if="${user.userNb == userSession.userNb}">
+                    <label for="credit" class="form-label mt-4" th:text="#{profil.credit}"></label>
+                    <input type="text" class="form-control" name="credit" id="credit" th:value="${user.credit}" disabled>
+                </div>
+            </div>
+        </div>
+        <div>
+            <label for="email" class="form-label mt-4" th:text="#{frag-form-register.email}"></label>
+            <input type="text" class="form-control" name="email" id="email" th:value="${user.email}" disabled>
+
+            <label for="street" class="form-label mt-4" th:text="#{frag-form-register.street}"></label>
+            <input type="text" class="form-control" name="street" id="street" th:value="${user.street}" disabled>
+
+            <label for="zipCode" class="form-label mt-4" th:text="#{frag-form-register.zipcode}"></label>
+            <input type="text" class="form-control" name="zipCode" id="zipCode" th:value="${user.zipCode}" disabled>
+
+            <label for="city" class="form-label mt-4" th:text="#{frag-form-register.city}"></label>
+            <input type="text" class="form-control" name="city" id="city" th:value="${user.city}" disabled>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center my-3" th:if="${#authorization.expression('isAuthenticated')}">
+        <a th:href="@{/encheres/profil}" th:if="${user.userNb == userSession.userNb}">
+            <button type="button" class="buttonModif" th:text="#{profil.details.edit}"></button>
+        </a>
+    </div>
+
+</div>

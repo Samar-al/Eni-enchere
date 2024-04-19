@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        th:replace="~{layout/layout :: layout(
+            pageContent=~{:: .main-content},
+            pageTitle=~{:: title}
+        )}"
+>
+
+<title th:text="#{index.title.h1}"></title>
+
+<main class="main-content p-4">
+    <h1 th:text="#{index.h1}" class="text-center"></h1>
+    <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
+
+    <div th:replace="~{fragments/fragment-search :: frag-search}"></div>
+    <br>
+
+    <div th:replace="~{fragments/fragment-list-bids :: frag-list-bids}"></div>
+</main>
+</html>

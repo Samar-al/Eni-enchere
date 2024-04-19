@@ -1,13 +1,53 @@
 <header xmlns:th="http://www.thymeleaf.org" th:fragment="frag-header">
-    <nav class="navbar navbar-expand-lg bg-dark d-flex justify-content-between" data-bs-theme="dark">
-        <div>
-            <a th:href="@{/}" class="navbar-brand" th:text="#{header.nav.name}"></a>
-        </div>
-        <div>
-            <a class="navbar-brand" th:href="@{/inscription}" th:text="#{header.nav.register}"></a>
-            <a class="navbar-brand" th:if="${!#authorization.expression('isAuthenticated')}" th:href="@{/login}" th:text="#{header.nav.login}"></a>
-            <a class="navbar-brand" th:if="${#authorization.expression('isAuthenticated')}" th:href="@{/logout}" th:text="#{header.nav.logout}"></a>
+    <nav class="navbar navbar-expand-lg d-flex justify-content-between" id="navBar">
+        <div class="container-fluid">
+            <th:block th:if="${#authorization.expression('isAuthenticated')}">
+                <!-- If the user is authenticated, make the logo clickable -->
+                <a th:href="@{/}" class="navbar-brand"><img th:src="@{/images/logo.png}" width="100"></a>
+            </th:block>
+            <th:block th:unless="${#authorization.expression('isAuthenticated')}">
+                <!-- If the user is not authenticated, render the logo without a clickable link -->
+                <div class="navbar-brand"><img th:src="@{/images/logo.png}" width="100"></div>
+            </th:block>
 
+            <button class="navbar-toggler border-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon text-white"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center text-white">
+                    <li class="nav-item" th:if="${#authorization.expression('isAuthenticated')}">
+                        <a class="nav-link navbar-brand" th:href="@{/encheres/}" th:text="#{header.bienvenue(${#authentication.name})}"></a>
+                    </li>
+                    <li class="nav-item" th:if="${#authorization.expression('isAuthenticated')}">
+                        <a class="nav-link navbar-brand" th:href="@{/encheres/}" th:text="#{header.nav.bid}"></a>
+                    </li>
+                    <li class="nav-item" th:if="${#authorization.expression('isAuthenticated')}">
+                        <a class="nav-link navbar-brand" th:href="@{/encheres/creer-vente}" th:text="#{header.nav.soldItem}"></a>
+                    </li>
+                    <li class="nav-item" th:if="${!#authorization.expression('isAuthenticated')}">
+                        <a class="nav-link navbar-brand" th:href="@{/inscription}" th:text="#{header.nav.register}"></a>
+                    </li>
+                    <li class="nav-item" th:if="${#authorization.expression('isAuthenticated')}">
+                        <a class="nav-link memberConnect navbar-brand" th:href="@{/encheres/informations}" th:text="#{header.profil}"></a>
+                    </li>
+                    <li class="nav-item" th:if="${!#authorization.expression('isAuthenticated')}">
+                        <a class="nav-link navbar-brand" th:href="@{/login}" th:text="#{header.nav.login}"></a>
+                    </li>
+                    <li class="nav-item" th:if="${#authorization.expression('isAuthenticated')}">
+                        <a class="nav-link navbar-brand" th:href="@{/logout}" th:text="#{header.nav.logout}"></a>
+                    </li>
+                    <li class="nav-item" id="language-dropdown" >
+                        <div role="presentation">
+                            <img src="/images/monde.png" width="30px" alt="globe">
+                        </div>
+                        <ul class="dropdown-content">
+                            <li><a hreflang="fr" th:href="@{''(language=fr)}"><img src="/images/French.webp" alt="" style="width: 10%;"></a></li>
+                            <li><a hreflang="EN" th:href="@{''(language=en)}"><img src="/images/English.webp" alt="" style="width: 10%; "></a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
 </header>
+

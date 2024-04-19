@@ -10,6 +10,9 @@
     <div th:if="${loginError}" class="alert alert-danger">
         <span th:text="#{error.register}"></span>
     </div>
+    <div th:if="${errorMessage != null}" class="alert alert-danger">
+        <span th:text="#{${errorMessage}}"></span>
+    </div>
     <div class="d-flex flex-row gap-2 justify-content-center">
         <div>
             <label for="username" class="form-label mt-4"  th:text="#{frag-form-register.pseudo}"></label>
@@ -63,9 +66,9 @@
         </div>
     </div>
     <div class="d-flex justify-content-center gap-4">
-        <button type="submit" class="btn btn-primary" th:text="#{frag-form-register.create}"></button>
+        <button type="submit" class="buttonCreateRegister" th:text="#{frag-form-register.create}"></button>
         <a th:href="@{/}">
-            <button type="button" class="btn btn-primary" th:text="#{frag-form-register.cancel}"></button>
+            <button type="button" class="buttonCancelRegister" th:text="#{frag-form-register.cancel}"></button>
         </a>
     </div>
 

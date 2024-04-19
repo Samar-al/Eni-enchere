@@ -1,0 +1,136 @@
+* {
+    font-family: Arial;
+}
+
+.listBids {
+    border-radius: 0.5rem;
+    /*border: solid;*/
+    /*border-color: #e2e8f0;*/
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    border-width: 2px;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: #C9A9E9;
+    color: #481878;
+}
+
+@media only screen and (max-width: 630px) {
+    .listBids {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+.itemName {
+    text-decoration-line: underline;
+}
+
+.usernameItalic {
+    font-style: italic;
+}
+
+.usernameDeco {
+    color: #481878;
+    text-decoration: none;
+}
+.usernameDeco>span {
+    color: #7c24c6;
+    font-width: 700;
+}
+
+#navBar {
+    background-color: #6020A0;
+}
+
+.buttonSearch {
+    background-color: #6020A0;
+    color: #ffffff;
+    border-radius:  0.5rem;
+    border: none;
+    width: 150px;
+    height: 55px;
+}
+
+.buttonModif,
+.buttonSave,
+.buttonCancel{
+
+    background-color: #C9A9E9;
+    color: #481878;
+
+    border-radius:  0.5rem;
+    border: none;
+    width: 125px;
+    height: 50px;
+}
+
+.buttonChangePassword,
+.buttonDeleteAccount,
+.buttonCreate,
+.buttonCancelCreate,
+.buttonConnect,
+.buttonCreateRegister,
+.buttonCancelRegister{
+    background-color: #C9A9E9;
+    color: #481878;
+
+    border-radius:  0.5rem;
+    border: none;
+    width: 200px;
+    height: 55px;
+}
+
+.buttonRetrait,
+.buttonForgotPassword{
+    background-color: #C9A9E9;
+    color: #481878;
+    border-radius:  0.5rem;
+    border: none;
+    width: 210px;
+    height: 55px;
+}
+
+.navbar-brand>img {
+    border-radius: 20px;
+    border: 3px solid white;
+    transition: box-shadow 0.5s, filter 0.5s;
+}
+.navbar-brand > img:hover {
+    box-shadow: 0 0 10px 5px white; /* Add a white box-shadow that spreads outward */
+    filter: brightness(120%);
+}
+.navbar-brand, .nav-item {
+    border-radius: 30%;
+    font-size: 1.2rem;
+    color: white;
+}
+.navbar-brand:hover {
+    box-shadow: 0 0 10px 5px white; /* Add a white box-shadow that spreads outward */
+    filter: brightness(120%);
+    color: white;
+}
+#language-dropdown {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    margin-left: .5rem;
+}
+#language-dropdown.nav-item>ul.dropdown-content {
+    text-align: end;
+    list-style: none;
+    margin-right: .5rem;
+}
+
+@media only screen and (max-width: 990px) {
+    #language-dropdown {
+        align-items: center;
+        margin-left: 0rem;
+    }
+    #language-dropdown.nav-item>ul.dropdown-content {
+        text-align: center;
+        margin-right: 2rem;
+    }
+}
+

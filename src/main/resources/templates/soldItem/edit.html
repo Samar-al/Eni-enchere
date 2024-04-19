@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html
         xmlns:th="http://www.thymeleaf.org"
         th:replace="~{layout/layout :: layout(
@@ -7,11 +7,13 @@
         )}"
 >
 
-<title th:text="#{index.title.h1}"></title>
+<title th:text="#{edit.bid.title}"></title>
 
 <main class="main-content">
-    <h1 th:text="#{index.h1}" class="text-center"></h1>
+    <h1 class="text-center" th:text="#{edit.bid.title}"></h1>
 
-    <div th:replace="~{fragments/fragment-search :: frag-search}"></div>
+    <form th:replace="~{fragments/fragment-soldItem-Creation :: frag-form-soldItem-Creation('/encheres/creer-vente')}"></form>
+
 </main>
+
 </html>

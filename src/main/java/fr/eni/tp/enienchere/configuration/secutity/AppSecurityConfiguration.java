@@ -1,7 +1,9 @@
 package fr.eni.tp.enienchere.configuration.secutity;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -9,7 +11,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import org.springframework.security.web.header.writers.XXssProtectionHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
@@ -18,21 +24,40 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class AppSecurityConfiguration {
 
+    @Autowired
+    private DataSource dataSource;
+
     @Bean
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(auth-> {
 
-            auth.anyRequest().permitAll();
+            auth.requestMatchers("/").permitAll();
+            auth.requestMatchers("/encheres/").permitAll();
+            auth.requestMatchers("/css/**").permitAll();
+            auth.requestMatchers("/images/**").permitAll();
+            auth.requestMatchers("/js/*").permitAll();
+            auth.requestMatchers("/inscription").permitAll();
+            auth.requestMatchers("/encheres/search").permitAll();
+            auth.requestMatchers("/encheres/reset-password").permitAll();
+            auth.requestMatchers("/encheres/forgot-password").permitAll();
+            auth.anyRequest().authenticated();
+
 
         });
-      //  httpSecurity.formLogin(Customizer.withDefaults());
+        httpSecurity.csrf(Customizer.withDefaults());
 
         httpSecurity.formLogin(form-> {
             form.loginPage("/login").permitAll();
-            form.defaultSuccessUrl("/encheres/");
+            form.defaultSuccessUrl("/login/details", true);
             form.failureUrl("/login-error");
-
         });
+
+        httpSecurity
+                .rememberMe(rememberMe -> rememberMe
+                        .tokenRepository(persistentTokenRepository())
+                        .tokenValiditySeconds(Integer.MAX_VALUE) // Lifetime environ 68 ans
+                        .rememberMeParameter("saveMe")
+                );
 
         httpSecurity.logout(logout -> logout
                 .invalidateHttpSession(true)
@@ -44,6 +69,16 @@ public class AppSecurityConfiguration {
         );
 
         return httpSecurity.build();
+    }
+
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+        tokenRepository.setDataSource(dataSource);
+        // Vous pouvez personnaliser le schéma de la table en définissant les propriétés suivantes :
+        // tokenRepository.setCreateTableOnStartup(false);
+        // tokenRepository.setTableName("persistent_logins");
+        return tokenRepository;
     }
 
     @Bean
@@ -63,4 +98,6 @@ public class AppSecurityConfiguration {
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+
 }

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        th:replace="~{layout/layout :: layout(
+            pageContent=~{:: .main-content},
+            pageTitle=~{:: title}
+        )}"
+        th:object=""
+>
+<title th:text="#{profil.title}"></title>
+<main class="main-content p-4">
+    <h1 class="text-center" th:text="#{profil.title}"></h1>
+    <form th:replace="~{fragments/fragment-user-profil :: frag-user-profil('/encheres/profil')}"></form>
+</main>
+</html>

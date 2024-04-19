@@ -1,14 +1,19 @@
 package fr.eni.tp.enienchere.bo;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class SoldItem {
+public class SoldItem implements Serializable {
     private long itemNb;
     private String itemName;
     private String description;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateStartBid;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateEndBid;
     private int initialPrice;
     private int salePrice;
@@ -164,6 +169,11 @@ public class SoldItem {
                 ", initialPrice=" + initialPrice +
                 ", salePrice=" + salePrice +
                 ", saleStatus=" + saleStatus +
+                ", soldUser=" + soldUser +
+                ", boughtUser=" + boughtUser +
+                ", bids=" + bids +
+                ", category=" + category +
+                ", collectParcel=" + collectParcel +
                 '}';
     }
 }
