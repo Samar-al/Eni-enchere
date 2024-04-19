@@ -42,7 +42,7 @@
                 <p th:if="${bid.bidAmount!=0 && soldItem.saleStatus == 2 && userSession.getUserNb() == bid.user.userNb}" th:text="#{frag-from-detail.phone(${soldItem.soldUser.phone})}"></p>
             </div>
         </div>
-       <div class="flex-content p-2" style="margin: 0 auto;" th:if="!${soldItem.saleStatus == 2}">
+       <div class="flex-content p-2" style="margin: 0 auto;" th:if="!${soldItem.saleStatus == 2 || soldItem.saleStatus == 0 || userSession.getUsername == soldItem.soldUser.getUsername}">
             <label for="bidAmount" class="form-label mt-4"  th:text="#{frag.list.bids.bid.amount}"></label>
             <input type="number" class="form-control" name="bidAmount" id="bidAmount" th:field="*{bidAmount}">
            <br>
@@ -56,7 +56,7 @@
     <div class="d-flex justify-content-center gap-4" th:if="${soldItem != null}">
         <button type="submit" class="buttonModif"
                 th:text="#{frag-form-detail.bid}"
-                th:if="${!(userSession.getUsername == soldItem.soldUser.getUsername || soldItem.saleStatus == 2)}">
+                th:if="${!(userSession.getUsername == soldItem.soldUser.getUsername || soldItem.saleStatus == 2 || soldItem.saleStatus == 0)}">
         </button>
         <a th:href="@{/encheres/detail-item/{item_id}/modifier(item_id=${soldItem.itemNb})}"  th:if="${(userSession.getUsername == soldItem.soldUser.getUsername && soldItem.saleStatus == 0)}">
             <button type="button" class="buttonModif"
