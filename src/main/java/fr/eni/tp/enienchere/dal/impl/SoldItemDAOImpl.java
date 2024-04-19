@@ -156,7 +156,7 @@ public class SoldItemDAOImpl implements SoldItemDAO {
                     namedParameters.addValue("openBids", openBids);
                 }
 
-                // On sélectionne "Mes enchères remportées
+                // On sélectionne "Mes enchères en cours"
                 if (myCurrentBids != null) {
                     sql.append(" AND b.user_nb = :userId");
                     namedParameters.addValue("userId", userNb);
@@ -164,6 +164,7 @@ public class SoldItemDAOImpl implements SoldItemDAO {
                     namedParameters.addValue("myCurrentBids", myCurrentBids);
                 }
 
+                // On sélectionne "Mes enchères remportées"
                 if (wonBids != null) {
                     sql.append(" AND b.user_nb = :userId");
                     namedParameters.addValue("userId", userNb);
